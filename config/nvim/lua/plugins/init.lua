@@ -8,6 +8,15 @@ return require("packer").startup(function()
 
     -- basic
     use "tpope/vim-surround"
+
+    use {
+      'neovim/nvim-lspconfig',
+      requires = {
+        'williamboman/nvim-lsp-installer',
+        'jose-elias-alvarez/nvim-lsp-ts-utils',
+        'jose-elias-alvarez/null-ls.nvim',
+        },
+    }
     
     -- appearance
     use {
@@ -39,6 +48,23 @@ return require("packer").startup(function()
       config = function()
         require('gitsigns').setup {}
       end
+    }
+
+    -- Autocompletion plugin
+    use {
+      'hrsh7th/nvim-cmp',
+      -- TODO verify the need for each of these
+      requires = {
+        'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
+        'hrsh7th/cmp-cmdline',
+        'hrsh7th/cmp-emoji',
+        'onsails/lspkind-nvim', -- Enables icons on completions
+        'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip',
+      },
+      config = conf 'nvim-cmp',
     }
 
     use {
