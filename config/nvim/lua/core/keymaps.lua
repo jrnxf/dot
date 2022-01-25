@@ -70,10 +70,11 @@ map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false })
 -- Git
 map('n', '<space>gs', '<cmd>Neogit<CR>')
 -- Telescope
-if is_git_dir == 0 then
-  map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
+if is_git_dir() == 0 then
+    map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
 else
-  map('n', '<C-p>', '<cmd>lua require"telescope.builtin".find_files()<CR>')
+    print("is not git dir")
+    map('n', '<C-p>', '<cmd>lua require"telescope.builtin".find_files()<CR>')
 end
 map('n', '<space>fb', '<cmd>Telescope buffers theme=get_dropdown<CR>')
 map('n', '<space>fh', '<cmd>lua require"telescope.builtin".help_tags()<CR>')

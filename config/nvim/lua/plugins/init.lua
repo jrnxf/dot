@@ -11,7 +11,21 @@ return require("packer").startup(function()
 
     -- appearance
     use 'rmehri01/onenord.nvim'
-
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {
+          'kyazdani42/nvim-web-devicons',
+        },
+        config = conf 'nvim-tree'
+    }
+    use {
+      'akinsho/nvim-bufferline.lua',
+      config = conf 'nvim-bufferline'
+    }
+    use {
+      'nvim-lualine/lualine.nvim',
+      config = conf 'lualine'
+    }
     -- search
     use {
         'nvim-telescope/telescope.nvim',
