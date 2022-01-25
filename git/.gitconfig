@@ -1,0 +1,7 @@
+[user]
+name = Colby Thomas
+email = coloradocolby@gmail.com
+[init]
+defaultBranch = main
+[pull]
+rebase = true

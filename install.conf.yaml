@@ -1,0 +1,29 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean:
+    ~/:
+      force: true
+    ~/.config:
+      recursive: true
+
+- link:
+    ~/.zshrc: shell/.zshrc
+    ~/.gitconfig: git/.gitconfig
+    ~/.gitignore: git/.gitignore
+    # nvim
+    ~/.config/nvim:
+      glob: true
+      path: config/nvim/*
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - command: rm -rf ~/.local/share/nvim/site/pack/packer && git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+      stderr: true
+      quiet: true
+      description: Installing Packer
+    - command: nvim --headless -u NONE -c 'autocmd User PackerComplete quitall' -c 'lua require("plugins")' -c 'lua require("packer").sync()'
+      stderr: true
+      quiet: true
+      description: Installing Neovim plugins
