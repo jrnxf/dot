@@ -19,7 +19,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 
 alias dev="~/Dev"
-alias reload="source ~/.zshrc"
+alias reload="source ~/.zshrc && ~/dotfiles/install"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias xclip="xclip -selection c" # now pipe to clipboard like echo 'colby thomas' | xclip
@@ -38,7 +38,8 @@ alias gotop="gotop --mbps -f"
 
 alias path='echo -e ${PATH//:/\\n}'
 alias f='fzf --height=90% --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right,border-left  --padding=0'
-alias v='nvim $(f)'
+alias v='nvim'
+alias vd='nvim ~/dotfiles'
 
 # DOCKER
 alias d-ra='docker rmi -f $(docker images -aq)' # Remove all images
@@ -48,5 +49,4 @@ alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
 alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
-alias dotfiles='/usr/bin/git --git-dir=/home/colby/.dotfiles/ --work-tree=/home/colby'
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
