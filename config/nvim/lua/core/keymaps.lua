@@ -70,7 +70,7 @@ map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false })
 -- Git
 map('n', '<space>gs', '<cmd>Neogit<CR>')
 -- Telescope
-if is_git_dir() == 0 then
+if is_git_dir {} == 0 then
     map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
 else
     print("is not git dir")
