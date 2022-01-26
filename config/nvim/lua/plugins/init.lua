@@ -7,15 +7,20 @@ return require("packer").startup(function()
     end
 
     -- basic
-    use "tpope/vim-surround"
+    use {
+      "tpope/vim-surround",
+    }
+    use "tpope/vim-commentary"
+
 
     use {
       'neovim/nvim-lspconfig',
+      config = require 'lsp', -- this reference local module
       requires = {
         'williamboman/nvim-lsp-installer',
         'jose-elias-alvarez/nvim-lsp-ts-utils',
         'jose-elias-alvarez/null-ls.nvim',
-        },
+      },
     }
     
     -- appearance
