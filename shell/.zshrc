@@ -1,3 +1,8 @@
+
+#### FIG ENV VARIABLES ####
+# Please make sure this block is at the start of this file.
+[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
+#### END FIG ENV VARIABLES ####
 ZSH_THEME="agnoster"
 ZSH="${HOME}/.oh-my-zsh"
 plugins=(git zsh-autosuggestions shrink-path)
@@ -19,27 +24,27 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 
 alias dev="~/Dev"
-alias reload="source ~/.zshrc && ~/dotfiles/install"
+alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias xclip="xclip -selection c" # now pipe to clipboard like echo 'colby thomas' | xclip
 alias clear="clear && printf '\e[3J'"
 alias skrrrt="~/Dev/skrrrt"
 alias m="cd ~/monthly"
+alias ms="cd ~/monthly/stx"
 alias mf="cd ~/monthly/frontend"
 alias mb="cd ~/monthly/backend"
-alias vim="nvim"
-alias v="nvim"
-alias q="clear"
-alias fzg='nvim "$(git ls-files | fzf)"'
+alias df="cd ~/dotfiles"
 alias x="exit"
+alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
 alias gotop="gotop --mbps -f"
 
-alias path='echo -e ${PATH//:/\\n}'
-alias f='fzf --height=90% --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right,border-left  --padding=0'
 alias v='nvim'
-alias vd='nvim ~/dotfiles'
+alias vim="nvim"
+alias f='fzf --height=90% --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right,border-left  --padding=0'
+alias fzg='nvim "$(git ls-files | f)"'
+alias vd='cd ~/dotfiles && fzg'
 
 # DOCKER
 alias d-ra='docker rmi -f $(docker images -aq)' # Remove all images
@@ -50,3 +55,8 @@ alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
+
+#### FIG ENV VARIABLES ####
+# Please make sure this block is at the end of this file.
+[ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
+#### END FIG ENV VARIABLES ####

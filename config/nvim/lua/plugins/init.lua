@@ -12,6 +12,14 @@ return require("packer").startup(function()
     }
     use "tpope/vim-commentary"
 
+    -- treesitter
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        config = conf 'nvim-treesitter'
+    }
+    use "nvim-treesitter/playground"
+    use("windwp/nvim-ts-autotag") -- automatically close jsx tags
 
     use {
       'neovim/nvim-lspconfig',
@@ -22,14 +30,24 @@ return require("packer").startup(function()
         'jose-elias-alvarez/null-ls.nvim',
       },
     }
-    
+
     -- appearance
     use {
       'rmehri01/onenord.nvim',
-      config = function() 
+      config = function()
         require'onenord'.setup {}
       end
     }
+    -- use {
+    --   'navarasu/onedark.nvim',
+    --   config = function()
+    --     local onedark = require'onedark'
+    --     onedark.setup {
+    --       style = 'darker'
+    --     }
+    --     onedark.load()
+    --   end
+    -- }
     use {
         'kyazdani42/nvim-tree.lua',
         requires = {

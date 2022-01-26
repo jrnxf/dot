@@ -8,13 +8,14 @@ return function()
     return
   end
 
+  local on_attach = require 'lsp.on-attach'
   -- Register a handler that will be called for each installed server when it's ready
   -- (i.e. when installation is finished or if the server is already installed).
   lsp_installer.on_server_ready(function(server)
       print(server.name .. " lsp is ready")
       local opts = {
         -- handlers = handlers
-        on_attach = require 'lsp.on-attach'
+        on_attach = on_attach
       }
 
 
