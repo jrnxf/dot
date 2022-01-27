@@ -13,6 +13,7 @@
     ~/.zshrc: shell/.zshrc
     ~/.gitconfig: git/.gitconfig
     ~/.gitignore: git/.gitignore
+    ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/nvim:
       glob: true
       path: config/nvim/*

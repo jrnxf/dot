@@ -3,9 +3,9 @@ return function()
     if not ok then
       return
     end
-  
+
     local map = require('nvim-tree.config').nvim_tree_callback
-  
+
     nvim_tree.setup {
       auto_close = true,
       git = {
