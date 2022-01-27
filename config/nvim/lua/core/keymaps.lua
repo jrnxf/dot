@@ -35,6 +35,8 @@ map('n', '<Right>', '<cmd>wincmd ><CR>')
 map('n', '<space>=', '<cmd>wincmd =<CR>')
 
 -- Insert
+map('i', 'kj', '<Esc>')
+map('i', 'jk', '<Esc>')
 map('i', '<C-c>', '<Esc>')
 map('i', '<S-CR>', '<Esc>o')
 map('i', '<C-CR>', '<Esc>O')

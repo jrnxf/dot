@@ -11,6 +11,7 @@ return require("packer").startup(function()
       "tpope/vim-surround",
     }
     use "tpope/vim-commentary"
+    use "tpope/vim-fugitive"
 
     -- treesitter
     use {
@@ -94,7 +95,7 @@ return require("packer").startup(function()
       'windwp/nvim-autopairs', -- autocomplete pairs
       wants = 'nvim-cmp',
       config = function()
-        require('nvim-autopairs').setup {}
+        require'nvim-autopairs'.setup {}
       end
     }
 
