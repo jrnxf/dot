@@ -40,8 +40,6 @@ map('i', 'jk', '<Esc>')
 map('i', '<C-c>', '<Esc>')
 map('i', '<S-CR>', '<Esc>o')
 map('i', '<C-CR>', '<Esc>O')
--- map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', { expr = true })
--- map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', { expr = true })
 
 -- Visual
 map('x', '<', '<gv')
@@ -70,12 +68,12 @@ map('c', '<C-d>', '<Del>', { silent = false })
 map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false })
 
 -- Git
-map('n', '<space>gs', '<cmd>Neogit<CR>')
+-- map('n', '<space>gs', '<cmd>Neogit<CR>')
+
 -- Telescope
 if is_git_dir {} == 0 then
     map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
 else
-    print("is not git dir")
     map('n', '<C-p>', '<cmd>lua require"telescope.builtin".find_files()<CR>')
 end
 map('n', '<space>fb', '<cmd>Telescope buffers theme=get_dropdown<CR>')
@@ -83,8 +81,10 @@ map('n', '<space>fh', '<cmd>lua require"telescope.builtin".help_tags()<CR>')
 map('n', '<space>fo', '<cmd>lua require"telescope.builtin".oldfiles()<CR>')
 map('n', '<space>fw', '<cmd>lua require"telescope.builtin".live_grep()<CR>')
 map('n', '<space>fd', '<cmd>lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles" })<CR>')
+
 -- Tree
 map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>')
+
 -- Vim surround ( noremap need to be false to work)
 map('n', 'ds', '<Plug>Dsurround', { noremap = false })
 map('n', 'cs', '<Plug>Csurround', { noremap = false })
@@ -96,4 +96,3 @@ map('n', 'SS', '<Plug>YSsurround', { noremap = false })
 map('x', 's', '<Plug>VSurround', { noremap = false })
 map('x', 'S', '<Plug>VgSurround', { noremap = false })
 
-vim.cmd [[command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor]]

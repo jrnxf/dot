@@ -10,19 +10,28 @@
       recursive: true
 
 - link:
-    ~/.zshrc: shell/.zshrc
-    ~/.gitconfig: git/.gitconfig
-    ~/.gitignore: git/.gitignore
+    ~/.zshrc: shell/zshrc
+    ~/.gitconfig: git/gitconfig
+    ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/nvim:
       glob: true
       path: config/nvim/*
 
 - shell:
-    - [git submodule update --init --recursive, Installing submodules]
+    - command: ./setup_homebrew.sh
+      description: Setting up Homebrew
+      stdout: true
+      stderr: true
+    - command: rm -rf ~/.tmux && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm,
+      description: Installing TPM
+      stdout: true
+      stderr: true
     - command: rm -rf ~/.local/share/nvim/site/pack/packer && git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-      stderr: true
       description: Installing Packer
-    - command: nvim --headless -u NONE -c 'autocmd User PackerComplete quitall' -c 'lua require("plugins")' -c 'lua require("packer").sync()'
+      stdout: true
       stderr: true
+    - command: nvim --headless -u NONE -c 'autocmd User PackerComplete quitall' -c 'lua require("plugins")' -c 'lua require("packer").sync()'
       description: Installing Neovim plugins
+      stdout: true
+      stderr: true
