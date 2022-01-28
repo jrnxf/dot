@@ -1,0 +1,5 @@
+[git_branch]
+symbol = "🌱 "
+
+[aws]
+disabled = true
