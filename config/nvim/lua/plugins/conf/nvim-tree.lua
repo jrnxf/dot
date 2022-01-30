@@ -1,24 +1,15 @@
 return function()
-    local ok, nvim_tree = safe_require 'nvim-tree'
-    if not ok then
-      return
-    end
+    local nvim_tree = require 'nvim-tree'
 
     local map = require('nvim-tree.config').nvim_tree_callback
 
     nvim_tree.setup {
       auto_close = true,
-      git = {
-          ignore = 1
-      },
-      open_on_setup = true,
       update_focused_file = {
         enable = true
       },
       view = {
-        width = 35,
-        side = 'left',
-        auto_resize = true, -- resive after opening a file
+        auto_resize = true,
         mappings = {
           custom_only = false, -- `custom_only = false` will merge list of mappings with defaults
           list = {
@@ -37,4 +28,4 @@ return function()
         },
       },
     }
-  end
+end

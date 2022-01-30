@@ -7,22 +7,21 @@ map('x', '<leader>', '<Nop>')
 -- Normal
 map('n', 'Q', '<Nop>')
 map('n', 'q:', '<Nop>')
-map('n', '<C-c>', '<Esc>')
 map('n', 'Y', 'y$')
 map('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true })
 map('n', 'x', '"_x')
 map('n', 'X', '"_X')
-map('n', '<leader>w', '<cmd>w!<CR>')
-map('n', '<leader>x', '<cmd>x!<CR>')
-map('n', '<leader>q', '<cmd>q!<CR>')
+
+map('n', '<C-s>', '<cmd>update!<CR>')
+map('n', '<C-q>', '<cmd>q!<CR>')
+
 map('n', '<F9>', '<cmd>lua require"core.compiler".compile_and_run()<CR>')
--- stylua: ignore
--- Copy relative filepath eg: from nvim folder this would look like: "lua/core/keymaps.lua" copied to clipboard
-map( 'n', '<space>fp', '<cmd>let @*=fnamemodify(expand("%"), ":~:.") | echo( \'"\' . (fnamemodify(expand("%"), ":~:.")) . \'" copied to clipboard\')<CR>')
+
 -- Buffers
 map('n', '<Tab>', '<cmd>bn<CR>')
 map('n', '<S-Tab>', '<cmd>bp<CR>')
-map('n', '<space>bd', '<cmd>bd<CR>')
+map('n', '<space>d', '<cmd>Bdelete<CR>') -- uses bbye
+
 -- Window
 map('n', '<C-h>', '<cmd>wincmd h<CR>')
 map('n', '<C-j>', '<cmd>wincmd j<CR>')
@@ -70,8 +69,10 @@ map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false })
 -- Git
 -- map('n', '<space>gs', '<cmd>Neogit<CR>')
 
+map('n', '<C-r>', '<cmd>lua reload_nvim_conf()<CR>')
+
 -- Telescope
-if is_git_dir {} == 0 then
+if is_git_dir{} == 0 then
     map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
 else
     map('n', '<C-p>', '<cmd>lua require"telescope.builtin".find_files()<CR>')

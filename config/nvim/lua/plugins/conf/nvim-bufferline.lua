@@ -1,16 +1,16 @@
 return function()
-  local ok, bufferline = safe_require 'bufferline'
-  if not ok then
-    return
-  end
+  local bufferline = require 'bufferline'
 
   bufferline.setup {
     options = {
-      numbers = "buffer_id",
-      offsets = { { filetype = 'NvimTree', highlight="Directory" } },
+      offsets = { 
+        {
+          filetype = "NvimTree",
+        }
+      },
+      show_buffer_icons = false,
       show_buffer_close_icons = false,
       show_close_icon = false,
-      show_tab_indicators = true,
     },
   }
 end

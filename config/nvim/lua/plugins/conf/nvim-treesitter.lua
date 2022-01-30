@@ -1,8 +1,5 @@
 return function()
-  local ok, nvim_treesitter_configs = safe_require 'nvim-treesitter.configs'
-  if not ok then
-    return
-  end
+  local nvim_treesitter_configs = require 'nvim-treesitter.configs'
 
   nvim_treesitter_configs.setup {
     -- maintained is any parser with maintainers
