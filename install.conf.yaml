@@ -24,7 +24,7 @@
       description: Setting up Homebrew
       stdout: true
       stderr: true
-    - command: rm -rf ~/.tmux && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm,
+    - command: rm -rf ~/.tmux && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
       description: Installing TPM
       stdout: true
       stderr: true
