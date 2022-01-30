@@ -1,5 +1,6 @@
 vim.cmd("packadd packer.nvim")
-return require("packer").startup(function()
+
+return require("packer").startup(function(use)
     use({ "wbthomason/packer.nvim", opt = true })
 
     local function conf(name)
@@ -12,6 +13,8 @@ return require("packer").startup(function()
     }
     use "tpope/vim-commentary"
     use "tpope/vim-fugitive"
+
+    use "moll/vim-bbye"
 
     -- treesitter
     use {
@@ -31,6 +34,7 @@ return require("packer").startup(function()
         'jose-elias-alvarez/null-ls.nvim',
       },
     }
+    use "folke/lua-dev.nvim" -- better sumneko_lua settings
 
     -- appearance
     use {
@@ -40,14 +44,13 @@ return require("packer").startup(function()
       end
     }
     -- use {
-    --   'navarasu/onedark.nvim',
-    --   config = function()
-    --     local onedark = require'onedark'
-    --     onedark.setup {
-    --       style = 'darker'
-    --     }
-    --     onedark.load()
-    --   end
+    --     'navarasu/onedark.nvim',
+    --     config = function()
+    --         require('onedark').setup {
+    --             style = 'cool'
+    --         }
+    --         require('onedark').load()
+    --     end
     -- }
     use {
         'kyazdani42/nvim-tree.lua',
@@ -62,7 +65,13 @@ return require("packer").startup(function()
     }
     use {
       'nvim-lualine/lualine.nvim',
-      config = conf 'lualine',
+      config = function()
+        require'lualine'.setup {
+          options = {
+            theme = 'nord'
+          },
+        }
+      end
     }
     use {
       'lewis6991/gitsigns.nvim',
@@ -70,7 +79,7 @@ return require("packer").startup(function()
         'nvim-lua/plenary.nvim'
       },
       config = function()
-        require('gitsigns').setup {}
+        require'gitsigns'.setup {}
       end
     }
 

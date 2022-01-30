@@ -1,12 +1,8 @@
 -- TODO understand this file, walk through it!
 return function()
-  local cmp_ok, cmp = safe_require 'cmp'
-  local luasnip_ok, luasnip = safe_require 'luasnip'
-  local lspkind_ok, lspkind = safe_require 'lspkind'
-  if not cmp_ok or not luasnip_ok or not lspkind_ok then
-    print "bad news bears"
-    return
-  end
+  local cmp = require 'cmp'
+  local luasnip = require 'luasnip'
+  local lspkind = require 'lspkind'
 
   vim.opt.completeopt = 'menu,menuone,noselect'
 
