@@ -34,17 +34,25 @@ alias m="cd ~/monthly"
 alias ms="cd ~/monthly/stx"
 alias mf="cd ~/monthly/frontend"
 alias mb="cd ~/monthly/backend"
-alias df="cd ~/dotfiles"
+alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
 alias gotop="gotop --mbps -f"
+alias ls="exa"
+alias cat="bat"
 
 alias v='nvim'
 alias vim="nvim"
 alias f='fzf --height=90% --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right,border-left  --padding=0'
 alias fzg='nvim "$(git ls-files | f)"'
 alias vd='cd ~/dotfiles && fzg'
+
+
+alias g="git"
+
+alias t="tmux"
+alias ta="tmux a"
 
 # DOCKER
 alias d-ra='docker rmi -f $(docker images -aq)' # Remove all images
