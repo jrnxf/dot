@@ -1,7 +1,21 @@
 [user]
-name = Colby Thomas
-email = coloradocolby@gmail.com
-[init]
-defaultBranch = main
+    name = Colby Thomas
+    email = coloradocolby@gmail.com
 [pull]
-rebase = true
+	ff = only
+[alias]
+	s = status -s
+	ss = status
+	l = log --stat
+	d = diff
+	c = commit
+	a = add
+	f = fetch
+	rb = rebase
+	co = checkout
+	g = grep
+	rs = reset
+	p = push
+	b = branch
+[init]
+	defaultBranch = main
