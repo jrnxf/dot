@@ -1,9 +1,9 @@
 tap "aws/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask"
+tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
-
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.9"
 # Official Amazon AWS command-line interface
@@ -14,6 +14,8 @@ brew "bat"
 brew "docker"
 # Modern replacement for 'ls'
 brew "exa"
+# Banner-like program prints strings as ASCII art
+brew "figlet"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # Distributed revision control system
@@ -40,6 +42,8 @@ brew "tmux"
 brew "virtualenv"
 # Access X11 clipboards from the command-line
 brew "xclip"
+# JavaScript package manager
+brew "yarn"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -48,20 +52,26 @@ brew "zsh-autosuggestions"
 cask "alfred"
 # Automatic tiling window manager similar to xmonad
 cask "amethyst"
-# App to build and share containerized applications and microservices
-cask "docker"
 # Web browser
 cask "firefox"
+cask "font-hack-nerd-font"
+cask "font-noto-nerd-font"
+# Web browser
+cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Password manager
 cask "lastpass"
+# Screen and video recording software
+cask "loom"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # App to write, plan, collaborate, and get organized
 cask "notion"
 # Calculator and converter application
 cask "numi"
+# Open-source software for live streaming and screen recording
+cask "obs"
 # Collaboration platform for API development
 cask "postman"
 # Tool to reverse the direction of scrolling
@@ -72,5 +82,7 @@ cask "slack"
 cask "spotify"
 # Open-source code editor
 cask "visual-studio-code"
+# Multimedia player
+cask "vlc"
 # Video communication and virtual meeting platform
 cask "zoom"
