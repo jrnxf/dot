@@ -1,33 +1,29 @@
 local M = {}
 
-function _G.is_git_dir()
+M.is_git_dir = function()
   return os.execute 'git rev-parse --is-inside-work-tree >> /dev/null 2>&1'
 end
 
-function _G.reload_nvim_conf()
-  for name,_ in pairs(package.loaded) do
+M.reload_nvim_conf = function()
+  for name, _ in pairs(package.loaded) do
     -- core, lsp, and plugins are namespaced under my lua folder
-    -- since lua caches these modules, I need to manually set 
+    -- since lua caches these modules, I need to manually set
     -- their values to nil in the cache to perform a full reload!
-    if name:match('^core') or name:match('^lsp') or name:match('^plugins') then
+    if name:match '^core' or name:match '^lsp' or name:match '^plugins' then
       package.loaded[name] = nil
     end
   end
 
   dofile(vim.env.MYVIMRC)
-  vim.notify("nvim cfg reloaded!", vim.log.levels.INFO)
+  vim.notify('nvim cfg reloaded!', vim.log.levels.INFO)
 end
-
--- Mappings
-M.keymap = {}
-
 local options = { noremap = true, silent = true }
 
-function M.keymap.buf_map(bufnr, mode, key, cmd, opts)
+M.buf_map = function(bufnr, mode, key, cmd, opts)
   vim.api.nvim_buf_set_keymap(bufnr, mode, key, cmd, opts or options)
 end
 
-function M.keymap.map(mode, key, cmd, opts)
+M.map = function(mode, key, cmd, opts)
   vim.api.nvim_set_keymap(mode, key, cmd, opts or options)
 end
 

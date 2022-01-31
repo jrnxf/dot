@@ -32,10 +32,14 @@ brew "neofetch"
 brew "neovim"
 # Manage multiple Node.js versions
 brew "nvm"
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Cross-shell prompt for astronauts
 brew "starship"
+# Opinionated Lua code formatter
+brew "stylua"
 # Terminal multiplexer
 brew "tmux"
 # Tool for creating isolated virtual python environments

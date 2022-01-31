@@ -3,10 +3,10 @@ return function()
 
   bufferline.setup {
     options = {
-      offsets = { 
+      offsets = {
         {
-          filetype = "NvimTree",
-        }
+          filetype = 'NvimTree',
+        },
       },
       show_buffer_icons = false,
       show_buffer_close_icons = false,

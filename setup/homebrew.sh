@@ -5,3 +5,4 @@ else
     echo "Updating Homebrew"
     brew update
 fi
+
