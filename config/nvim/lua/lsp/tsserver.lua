@@ -20,6 +20,10 @@ M.getOpts = function(on_attach, capabilities)
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
 
+      -- we only want null_ls to format
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+
       ts_utils.setup(ts_utils_settings)
       ts_utils.setup_client(client)
 
