@@ -20,7 +20,7 @@
       path: config/nvim/*
 
 - shell:
-    - command: ./setup_homebrew.sh
+    - command: ./setup/homebrew.sh
       description: Setting up Homebrew
       stdout: true
       stderr: true
@@ -32,7 +32,7 @@
       description: Installing Packer
       stdout: true
       stderr: true
-    - command: nvim --headless -u NONE -c 'autocmd User PackerComplete quitall' -c 'lua require("plugins")' -c 'lua require("packer").sync()'
-      description: Installing Neovim plugins
+    - command: nvim --headless -u NONE -c 'au User PackerComplete quitall' -c 'lua require("plugins")' -c 'PackerSync'
+      description: Installing Neovim plugins with Packer
       stdout: true
       stderr: true
