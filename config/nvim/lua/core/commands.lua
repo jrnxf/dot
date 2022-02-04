@@ -5,9 +5,11 @@ vim.cmd [[
     augroup END
 ]]
 
-vim.cmd 'command! Reload lua require"core.utils".reload_nvim_conf()'
+vim.cmd 'command! NvimReload lua require"core.utils".reload_nvim_conf()'
 
--- -- paste this above to override nord background
--- augroup NordOverrides
---     au colorscheme nord :hi normal guibg=#2C313C
--- augroup END
+-- hi Normal guibg=NONE ctermbg=NONE
+vim.cmd [[
+ augroup NordOverrides
+  au colorscheme * :hi normal guibg=NONE ctermbg=NONE
+ augroup END
+]]

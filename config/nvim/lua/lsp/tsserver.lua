@@ -1,11 +1,13 @@
 local u = require 'core.utils'
 
 local ts_utils_settings = {
-  -- debug = true,
+  -- imports
   import_all_scan_buffers = 100,
   update_imports_on_move = true,
-  -- filter out dumb module warning
-  filter_out_diagnostics_by_code = { 80001 },
+  enable_import_on_completion = true,
+  always_organize_imports = true,
+  -- hints
+  auto_inlay_hints = false,
 }
 
 local M = {}
@@ -16,7 +18,7 @@ M.getOpts = function(on_attach, capabilities)
 
   local opts = {
     root_dir = lspconfig.util.root_pattern 'package.json',
-    init_options = ts_utils.init_options,
+    -- commenting this out because I don't like the inlay hints
     on_attach = function(client, bufnr)
       on_attach(client, bufnr)
 

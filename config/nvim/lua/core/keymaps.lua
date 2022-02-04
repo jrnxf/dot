@@ -12,15 +12,11 @@ u.map('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true 
 u.map('n', 'x', '"_x')
 u.map('n', 'X', '"_X')
 
-u.map('n', '<C-s>', '<cmd>update!<CR>')
-u.map('n', '<C-q>', '<cmd>q!<CR>')
-
-u.map('n', '<F9>', '<cmd>lua require"core.compiler".compile_and_run()<CR>')
-
 -- Buffers
 u.map('n', '<Tab>', '<cmd>bn<CR>')
 u.map('n', '<S-Tab>', '<cmd>bp<CR>')
 u.map('n', '<leader>d', '<cmd>Bdelete<CR>') -- uses bbye
+u.map('n', '<leader><leader>', '<c-^>')
 
 -- Window
 u.map('n', '<C-h>', '<cmd>wincmd h<CR>')
@@ -45,7 +41,6 @@ u.map('x', '<', '<gv')
 u.map('x', '>', '>gv')
 u.map('x', 'K', ":move '<-2<CR>gv-gv")
 u.map('x', 'J', ":move '>+1<CR>gv-gv")
-
 -- Terminal
 u.map('t', '<C-w>h', '<cmd>wincmd h<CR>')
 u.map('t', '<C-w>j', '<cmd>wincmd j<CR>')
@@ -68,16 +63,19 @@ u.map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false })
 
 -- Telescope
 if u.is_git_dir {} == 0 then
-  u.map('n', '<C-p>', '<cmd>lua require"telescope.builtin".git_files()<CR>')
+  u.map('n', '<C-p>', '<cmd>Telescope git_files<CR>')
 else
-  u.map('n', '<C-p>', '<cmd>lua require"telescope.builtin".find_files()<CR>')
+  u.map('n', '<C-p>', '<cmd>Telescope find_files<CR>')
 end
-u.map('n', '<space>fb', '<cmd>Telescope buffers theme=get_dropdown<CR>')
-u.map('n', '<space>fh', '<cmd>lua require"telescope.builtin".help_tags()<CR>')
-u.map('n', '<space>fo', '<cmd>lua require"telescope.builtin".oldfiles()<CR>')
-u.map('n', '<space>fw', '<cmd>lua require"telescope.builtin".live_grep()<CR>')
-u.map('n', '<space>fd', '<cmd>lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles" })<CR>')
-
+-- TODO: set up diagnostics for
+u.map('n', '<leader>fb', '<cmd>Telescope buffers<CR>')
+u.map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>')
+u.map('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>')
+u.map('n', '<leader>fw', '<cmd>Telescope live_grep<CR>')
+u.map('n', '<leader>fm', '<cmd>Telescope man_pages<CR>')
+u.map('n', '<leader>gb', '<cmd>Telescope git_branches<CR>')
+-- TODO: study if it's possible to write teh command below like the ones above (it has params, unlike the others)
+u.map('n', '<leader>fd', '<cmd>lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles" })<CR>')
 -- Tree
 u.map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>')
 

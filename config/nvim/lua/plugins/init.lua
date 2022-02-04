@@ -25,6 +25,7 @@ return require('packer').startup(function(use)
     end,
   }
   use 'nvim-treesitter/playground'
+  use 'windwp/nvim-ts-autotag'
 
   use {
     'rmehri01/onenord.nvim',
@@ -38,14 +39,13 @@ return require('packer').startup(function(use)
     requires = {
       'kyazdani42/nvim-web-devicons',
     },
-    config = conf 'nvim-tree',
+    config = conf 'tree',
   }
 
   use {
     'akinsho/nvim-bufferline.lua',
-    config = conf 'nvim-bufferline',
+    config = conf 'bufferline',
   }
-
   use {
     'nvim-lualine/lualine.nvim',
     config = function()
@@ -80,7 +80,7 @@ return require('packer').startup(function(use)
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
     },
-    config = conf 'nvim-cmp',
+    config = conf 'cmp',
   }
 
   use {
@@ -93,11 +93,18 @@ return require('packer').startup(function(use)
 
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { { 'nvim-lua/plenary.nvim' } },
+    requires = { { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' } },
     config = conf 'telescope',
   }
 
   use 'williamboman/nvim-lsp-installer'
+
+  use {
+    'ray-x/go.nvim',
+    config = function()
+      require('go').setup {}
+    end,
+  }
 
   use {
     'neovim/nvim-lspconfig',

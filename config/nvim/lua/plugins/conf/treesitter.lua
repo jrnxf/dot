@@ -6,6 +6,6 @@ return function()
     ensure_installed = 'maintained',
     highlight = { enable = true },
     -- see https://github.com/windwp/nvim-ts-autotag
-    -- autotag = { enable = true },
+    autotag = { enable = true },
   }
 end
