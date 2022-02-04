@@ -1,5 +1,5 @@
-local border_opts = { border = 'single', focusable = false, scope = 'line' }
 local lsp = vim.lsp
+local border_opts = { border = 'single', focusable = false, scope = 'line' }
 
 vim.diagnostic.config { virtual_text = false, float = border_opts }
 lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
@@ -34,7 +34,7 @@ local on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
   u.buf_map(bufnr, 'n', '<Leader>rn', ':LspRename<CR>')
   u.buf_map(bufnr, 'n', '<Leader>a', ':LspDiagLine<CR>')
-  u.buf_map(bufnr, 'n', '<Leader>q', ':LspDiagQuickfix<CR>')
+  u.buf_map(bufnr, 'n', '<Leader>qf', ':LspDiagQuickfix<CR>')
   u.buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
   u.buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
 
@@ -55,7 +55,7 @@ lsp_installer.on_server_ready(function(server)
   }
 
   -- custom server configurations
-  if server.name == 'eslint' or server.name == 'sumneko_lua' or server.name == 'tsserver' then
+  if server.name == 'gopls' or server.name == 'eslint' or server.name == 'sumneko_lua' or server.name == 'tsserver' then
     opts = require('lsp.' .. server.name).getOpts(on_attach, capabilities)
   end
 

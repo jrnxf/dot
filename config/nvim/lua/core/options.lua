@@ -1,76 +1,60 @@
 local o = vim.opt
--- Appearance
-o.cmdheight = 1
-o.colorcolumn = '80'
-o.cursorline = true
-o.number = true
-o.relativenumber = true
-o.ruler = false -- My statusline takes care of this
-o.showmode = false
-o.signcolumn = 'yes'
-o.termguicolors = true
-o.wrap = false
 
--- Backups
-o.backup = false
-o.writebackup = false
-o.swapfile = false
+local global = require 'core.global'
 
--- Completion
-o.completeopt = 'menuone,noselect'
-o.pumblend = 10 -- Popup menu transparency
-o.pumheight = 8 -- Popup menu height
+local function load_options()
+  local global_opts = {
+    -- General
+    clipboard = 'unnamedplus',
+    scrolloff = 8,
+    sidescrolloff = 8,
+    splitbelow = true, -- :split   new window on bottom of current one
+    splitright = true, -- :vsplit  new window to right of current one
+    termguicolors = true,
+    mouse = 'a',
 
--- General
-o.clipboard = 'unnamedplus'
-o.hidden = true
-o.joinspaces = false
-o.mouse = 'a'
-o.scrolloff = 8
-o.sidescrolloff = 8
-o.splitbelow = true
-o.splitright = true
-o.timeoutlen = 1000
-o.updatetime = 100
-o.virtualedit = 'block'
-o.iskeyword = o.iskeyword + '-'
+    cursorline = true,
+    number = true,
 
--- Performance
-o.lazyredraw = true
+    relativenumber = true,
+    signcolumn = 'yes', -- extra line to left of numbers for signs
+    wrap = false,
 
--- Search
-o.inccommand = 'nosplit' -- show substitutions incrementally
-o.ignorecase = true
-o.smartcase = true
-o.wildignore = { '.git/*', 'node_modules/*' }
-o.wildignorecase = true
+    -- Completion
+    completeopt = 'menuone,noselect',
+    pumblend = 5, -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent
+    pumheight = 10, -- p(op)u(p)m(enu) height
+    pumwidth = 20, -- p(op)u(p)m(enu) height
 
--- Tabs
-o.expandtab = true
-o.shiftwidth = 4
-o.softtabstop = 4
-o.tabstop = 4
+    -- Performance
+    lazyredraw = true,
 
--- Shortmess
-o.shortmess = o.shortmess
-  + {
-    A = true, -- don't give the "ATTENTION" message when an existing swap file is found.
-    I = true, -- don't give the intro message when starting Vim |:intro|.
-    W = true, -- don't give "written" or "[w]" when writing a file
-    c = true, -- don't give |ins-completion-menu| messages
-    m = true, -- use "[+]" instead of "[Modified]"
+    -- Search
+    inccommand = 'nosplit', -- show substitutions incrementally
+    ignorecase = true,
+    smartcase = true,
+    wildignore = { '.git/*', 'node_modules/*' },
+    wildignorecase = true,
+
+    -- Backups
+    backup = false,
+    writebackup = false,
+    swapfile = false,
+
+    -- Undos
+    undodir = global.cache_dir .. 'undo/',
+    undofile = true,
+
+    -- Tabs
+    expandtab = true,
+    autoindent = true,
+    tabstop = 2,
+    shiftwidth = 2,
   }
 
--- Format options
-o.formatoptions = o.formatoptions
-  + {
-    c = false,
-    o = false, -- O and o, don't continue comments
-    r = true, -- Pressing Enter will continue comments
-  }
+  for name, value in pairs(global_opts) do
+    vim.opt[name] = value
+  end
+end
 
--- Remove builtin plugins
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_zip = 1
+load_options()

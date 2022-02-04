@@ -15,7 +15,7 @@ M.reload_nvim_conf = function()
   end
 
   dofile(vim.env.MYVIMRC)
-  vim.notify('nvim cfg reloaded!', vim.log.levels.INFO)
+  vim.notify('Reloaded', vim.log.levels.INFO)
 end
 local options = { noremap = true, silent = true }
 

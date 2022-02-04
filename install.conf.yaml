@@ -20,8 +20,8 @@
       path: config/nvim/*
 
 - shell:
-    - command: ./setup/homebrew.sh
-      description: Setting up Homebrew
+    - command: ./setup/mac.sh
+      description: Setting up Mac
       stdout: true
       stderr: true
     - command: rm -rf ~/.tmux && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
