@@ -4,27 +4,28 @@ return require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim', opt = true }
 
   local conf = function(name)
-    return require('plugins.conf.' .. name)
+    return require('plugins.' .. name)
   end
+
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'tpope/vim-fugitive'
+  use 'moll/vim-bbye' -- easy buffer closing
 
-  use 'moll/vim-bbye'
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+    requires = {
+      'nvim-treesitter/playground',
+      'windwp/nvim-ts-autotag',
+    },
     config = function()
       require('nvim-treesitter.configs').setup {
-        -- maintained is any parser with maintainers
-        ensure_installed = 'maintained',
+        ensure_installed = 'maintained', -- install any parser with maintainer
         highlight = { enable = true },
       }
     end,
   }
-
-  use 'nvim-treesitter/playground'
-  use 'windwp/nvim-ts-autotag'
 
   use {
     'rmehri01/onenord.nvim',
@@ -32,6 +33,7 @@ return require('packer').startup(function(use)
       require('onenord').setup {}
     end,
   }
+
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {
@@ -44,6 +46,7 @@ return require('packer').startup(function(use)
     'akinsho/nvim-bufferline.lua',
     config = conf 'bufferline',
   }
+
   use {
     'nvim-lualine/lualine.nvim',
     config = function()
@@ -91,7 +94,7 @@ return require('packer').startup(function(use)
 
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' } },
+    requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
     config = conf 'telescope',
   }
 
@@ -110,8 +113,7 @@ return require('packer').startup(function(use)
       'williamboman/nvim-lsp-installer',
       'jose-elias-alvarez/nvim-lsp-ts-utils',
       'jose-elias-alvarez/null-ls.nvim',
+      'folke/lua-dev.nvim',
     },
   }
-
-  use 'folke/lua-dev.nvim'
 end)

@@ -6,7 +6,7 @@ M.getOpts = function(on_attach, capabilities)
     on_attach = function(client, bufnr)
       client.resolved_capabilities.document_formatting = true
       on_attach(client, bufnr)
-    end,
+asdfasdf    end,
     capabilities = capabilities,
     settings = {
       format = {

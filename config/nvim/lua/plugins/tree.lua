@@ -10,7 +10,6 @@ return function()
     view = {
       auto_resize = true,
       mappings = {
-        custom_only = false, -- `custom_only = false` will merge list of mappings with defaults
         list = {
           { key = '<C-R>', cb = map 'refresh' },
           { key = 'a', cb = map 'create' },
@@ -24,6 +23,7 @@ return function()
           { key = 'Y', cb = map 'copy_path' },
           { key = 'y', cb = map 'copy_name' },
         },
+        custom_only = false, -- false means the list above will merge with defaults
       },
     },
   }
