@@ -6,13 +6,11 @@ return require('packer').startup(function(use)
   local conf = function(name)
     return require('plugins.conf.' .. name)
   end
-
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'tpope/vim-fugitive'
 
   use 'moll/vim-bbye'
-
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -24,6 +22,7 @@ return require('packer').startup(function(use)
       }
     end,
   }
+
   use 'nvim-treesitter/playground'
   use 'windwp/nvim-ts-autotag'
 
@@ -33,7 +32,6 @@ return require('packer').startup(function(use)
       require('onenord').setup {}
     end,
   }
-
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {

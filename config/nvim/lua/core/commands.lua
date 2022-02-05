@@ -9,7 +9,9 @@ vim.cmd 'command! NvimReload lua require"core.utils".reload_nvim_conf()'
 
 -- hi Normal guibg=NONE ctermbg=NONE
 vim.cmd [[
- augroup NordOverrides
+ augroup nord_overrides
   au colorscheme * :hi normal guibg=NONE ctermbg=NONE
  augroup END
 ]]
+
+
