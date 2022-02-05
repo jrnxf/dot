@@ -1,6 +1,7 @@
 local u = require 'core.utils'
 
 vim.g.mapleader = ' '
+
 u.map('n', '<leader>', '<Nop>')
 u.map('x', '<leader>', '<Nop>')
 
@@ -97,6 +98,8 @@ u.map('n', 'SS', '<Plug>YSsurround', { noremap = false })
 u.map('x', 's', '<Plug>VSurround', { noremap = false })
 u.map('x', 'S', '<Plug>VgSurround', { noremap = false })
 
+u.map('n', '<leader>re', ':NvimReload<CR> | :PackerSync<CR>')
+
 -- global quickfix
 u.map('n', '<leader>qo', ':copen<CR>')
 u.map('n', '<leader>qc', ':cclose<CR>')
@@ -108,3 +111,24 @@ u.map('n', '<leader>lo', ':lua vim.diagnostic.setloclist()<CR>') -- will auto op
 u.map('n', '<leader>lc', ':lclose<CR>') -- kinda confused, this seems to work but is it not possible to have many location lists open?
 u.map('n', '<leader>j', ':lnext<CR>zz')
 u.map('n', '<leader>k', ':lprev<CR>zz')
+
+local M = {}
+
+-- Buffer LSP
+M.set_buffer_lsp_maps = function(bufnr)
+  u.buf_map(bufnr, 'n', 'gD', ':LspDeclaration<CR>')
+  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>')
+  u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>')
+  u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>')
+  u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>')
+  u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
+  u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
+  u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
+  u.buf_map(bufnr, 'n', '<Leader>rn', ':LspRename<CR>')
+  u.buf_map(bufnr, 'n', '<Leader>a', ':LspDiagLine<CR>')
+  u.buf_map(bufnr, 'n', '<Leader>qf', ':LspDiagQuickfix<CR>')
+  u.buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
+  u.buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
+end
+
+return M
