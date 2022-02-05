@@ -17,6 +17,7 @@ M.reload_nvim_conf = function()
   dofile(vim.env.MYVIMRC)
   vim.notify('Reloaded', vim.log.levels.INFO)
 end
+
 local options = { noremap = true, silent = true }
 
 M.buf_map = function(bufnr, mode, key, cmd, opts)
