@@ -28,4 +28,121 @@ M.map = function(mode, key, cmd, opts)
   vim.api.nvim_set_keymap(mode, key, cmd, opts or options)
 end
 
+-- -- 'dir: up or down
+-- -- TODO: see about sending in bufnr and being smart about
+-- -- if the user wants to cycle a loclist or quickfix list
+-- M.cycle_list = function(dir)
+--   local wininfo = vim.fn.getwininfo()
+--   local is_loclist_open = false
+--   local is_quickfix_open = false
+
+--   for _, win in pairs(wininfo) do
+--     -- print(vim.inspect(win))
+--     if win['loclist'] == 1 then
+--       is_loclist_open = true
+--     elseif win['quickfix'] == 1 then
+--       is_quickfix_open = true
+--     end
+--   end
+
+--   print('loclist open ' .. tostring(is_loclist_open))
+--   print('quickfix open ' .. tostring(is_quickfix_open))
+--   print(vim.buffer())
+
+--   if is_loclist_open == true and dir == 'down' then
+--     vim.cmd [[ lnext ]]
+--   elseif is_loclist_open == true and dir == 'up' then
+--     vim.cmd [[ lprev ]]
+--   elseif is_quickfix_open == true and dir == 'down' then
+--     vim.cmd [[ cnext ]]
+--   elseif is_quickfix_open == true and dir == 'up' then
+--     vim.cmd [[ cprev ]]
+--   end
+-- end
+
+-- -- trying out Trouble
+-- -- 'q': find the quickfix window
+-- -- 'l': find all loclist windows
+-- M.find_qf = function(type)
+--   local wininfo = vim.fn.getwininfo()
+--   local win_tbl = {}
+--   for _, win in pairs(wininfo) do
+--     local found = false
+--     if type == 'l' and win['loclist'] == 1 then
+--       found = true
+--     end
+--     -- loclist window has 'quickfix' set, eliminate those
+--     if type == 'q' and win['quickfix'] == 1 and win['loclist'] == 0 then
+--       found = true
+--     end
+--     if found then
+--       table.insert(win_tbl, { winid = win['winid'], bufnr = win['bufnr'] })
+--     end
+--   end
+--   return win_tbl
+-- end
+
+-- -- open quickfix if not empty
+-- M.open_qf = function()
+--   local qf_name = 'quickfix'
+--   local qf_empty = function()
+--     return vim.tbl_isempty(vim.fn.getqflist())
+--   end
+--   if not qf_empty() then
+--     vim.cmd 'copen'
+--     vim.cmd 'wincmd J'
+--   else
+--     print(string.format('%s is empty.', qf_name))
+--   end
+-- end
+
+-- -- enum all non-qf windows and open
+-- -- loclist on all windows where not empty
+-- M.open_loclist_all = function()
+--   local wininfo = vim.fn.getwininfo()
+--   local qf_name = 'loclist'
+--   local qf_empty = function(winnr)
+--     return vim.tbl_isempty(vim.fn.getloclist(winnr))
+--   end
+--   for _, win in pairs(wininfo) do
+--     if win['quickfix'] == 0 then
+--       if not qf_empty(win['winnr']) then
+--         -- switch active window before ':lopen'
+--         vim.api.nvim_set_current_win(win['winid'])
+--         vim.cmd 'lopen'
+--       else
+--         print(string.format('%s is empty.', qf_name))
+--       end
+--     end
+--   end
+-- end
+
+-- -- Can also use #T ?
+-- M.tablelength = function(T)
+--   local count = 0
+--   for _ in pairs(T) do
+--     count = count + 1
+--   end
+--   return count
+-- end
+
+-- -- toggle quickfix/loclist on/off
+-- -- type='*': qf toggle and send to bottom
+-- -- type='l': loclist toggle (all windows)
+-- M.toggle_qf = function(type)
+--   local windows = M.find_qf(type)
+--   if M.tablelength(windows) > 0 then
+--     -- hide all visible windows
+--     for _, win in pairs(windows) do
+--       vim.api.nvim_win_hide(win.winid)
+--     end
+--   else
+--     -- no windows are visible, attempt to open
+--     if type == 'l' then
+--       M.open_loclist_all()
+--     else
+--       M.open_qf()
+--     end
+--   end
+-- end
 return M

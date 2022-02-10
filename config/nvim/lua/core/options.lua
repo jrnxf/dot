@@ -1,5 +1,3 @@
-local o = vim.opt
-
 local global = require 'core.global'
 
 local function load_options()
@@ -12,10 +10,8 @@ local function load_options()
     splitright = true, -- :vsplit  new window to right of current one
     termguicolors = true,
     mouse = 'a',
-
     cursorline = true,
     number = true,
-
     relativenumber = true,
     signcolumn = 'yes', -- extra line to left of numbers for signs
     wrap = false,

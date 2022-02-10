@@ -1,4 +1,3 @@
--- TODO understand this file, walk through it!
 return function()
   local cmp = require 'cmp'
   local luasnip = require 'luasnip'

@@ -1,6 +1,7 @@
 return function()
   local telescope = require 'telescope'
   local actions = require 'telescope.actions'
+  local trouble = require 'trouble.providers.telescope'
 
   telescope.setup {
     defaults = {
@@ -12,8 +13,12 @@ return function()
         i = {
           ['<C-j>'] = actions.move_selection_next,
           ['<C-k>'] = actions.move_selection_previous,
+          ['<C-t>'] = trouble.open_with_trouble,
         },
-        n = { ['<C-c>'] = actions.close },
+        n = {
+          ['<C-c>'] = actions.close,
+          ['<C-t>'] = trouble.open_with_trouble,
+        },
       },
     },
   }
