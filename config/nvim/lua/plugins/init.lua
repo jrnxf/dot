@@ -13,6 +13,18 @@ return require('packer').startup(function(use)
   use 'moll/vim-bbye' -- easy buffer closing
 
   use {
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('trouble').setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end,
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     requires = {
@@ -28,11 +40,44 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup {}
+    end,
+  }
+
+  use {
     'rmehri01/onenord.nvim',
     config = function()
       require('onenord').setup {}
     end,
   }
+
+  -- use {
+  --   'rebelot/kanagawa.nvim',
+  --   config = function()
+  --     vim.cmd [[colorscheme kanagawa]]
+  --   end,
+  -- }
+
+  -- use {
+  --   'navarasu/onedark.nvim',
+  --   config = function()
+  --     require('onedark').setup {
+  --       style = 'cool',
+  --     }
+  --     require('onedark').load()
+  --   end,
+  -- }
+
+  -- -- make sure to fix padding on nvim-tree with this theme
+  -- use {
+  --   'catppuccin/nvim',
+  --   as = 'catppuccin',
+  --   config = function()
+  --     vim.cmd [[colorscheme catppuccin]]
+  --   end,
+  -- }
 
   use {
     'kyazdani42/nvim-tree.lua',

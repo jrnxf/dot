@@ -4,10 +4,8 @@ vim.cmd [[
       au TextYankPost * silent! lua vim.highlight.on_yank { timeout = 200 }
     augroup END
 ]]
-
 -- add this command to the user defined commands
 vim.cmd 'command! NvimReload lua require"core.utils".reload_nvim_conf()'
-
 -- example theme override
 -- vim.cmd [[
 --  augroup nord_overrides
