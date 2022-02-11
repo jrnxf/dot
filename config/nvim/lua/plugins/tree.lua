@@ -7,6 +7,9 @@ return function()
     update_focused_file = {
       enable = true,
     },
+    diagnostics = {
+      enable = true,
+    },
     view = {
       auto_resize = true,
       mappings = {
