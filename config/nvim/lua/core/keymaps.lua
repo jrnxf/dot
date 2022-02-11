@@ -11,28 +11,26 @@ u.map('n', 'Y', 'y$')
 u.map('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true })
 u.map('n', 'x', '"_x')
 u.map('n', 'X', '"_X')
+
 -- Map `Y` to copy to end of line
 -- conistent with the behaviour of `C` and `D`
 u.map('n', 'Y', 'y$', { noremap = true })
 u.map('v', 'Y', '<Esc>y$gv', { noremap = true })
+
+-- Keep matches center screen when cycling with n|N
+u.map('n', 'n', 'nzzzv', { noremap = true })
+u.map('n', 'N', 'Nzzzv', { noremap = true })
+
 -- Navigate buffers
-u.map('n', '<S-Tab>', ':bp<CR>')
-u.map('n', '<Tab>', ':bn<CR>')
 u.map('n', '[b', ':bprevious<CR>', { noremap = true })
 u.map('n', ']b', ':bnext<CR>', { noremap = true })
 u.map('n', '[B', ':bfirst<CR>', { noremap = true })
 u.map('n', ']B', ':blast<CR>', { noremap = true })
 u.map('n', 'bb', '<c-^>')
 u.map('n', '<leader>d', ':Bdelete<CR>') -- uses bbye
--- trying out Trouble
--- -- Quickfix list mappings
--- u.map('n', '<C-q>', "<cmd>lua require'core.utils'.toggle_qf('q')<CR>", { noremap = true })
--- u.map('n', '<C-k>', ':cprevious<CR>zz', { noremap = true })
--- u.map('n', '<C-j>', ':cnext<CR>zz', { noremap = true })
--- -- Location list mappings
--- u.map('n', '<leader>l', "<cmd>lua require'core.utils'.toggle_qf('l')<CR>", { noremap = true })
--- u.map('n', '<leader>k', ':lprevious<CR>zz', { noremap = true })
--- u.map('n', '<leader>j', ':lnext<CR>zz', { noremap = true })
+
+u.map('n', '<Tab>', ':ZenMode<CR>')
+
 -- Window
 u.map('n', '<Up>', ':wincmd -<CR>')
 u.map('n', '<Down>', ':wincmd +<CR>')
@@ -112,24 +110,14 @@ u.map('n', '<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<
 })
 
 -- Trouble
-u.map('n', '<leader>xx', '<cmd>Trouble<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xw', '<cmd>Trouble workspace_diagnostics<cr>', { silent = true, noremap = true })
+u.map('n', '<leader>xx', '<cmd>Trouble<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xd', '<cmd>Trouble document_diagnostics<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xl', '<cmd>Trouble loclist<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xq', '<cmd>Trouble quickfix<cr>', { silent = true, noremap = true })
 u.map('n', 'gR', '<cmd>Trouble lsp_references<cr>', { silent = true, noremap = true })
-u.map(
-  'n',
-  '<C-j>',
-  ':lua require("trouble").next({skip_groups = true, jump = true})<CR>',
-  { silent = true, noremap = true }
-)
-u.map(
-  'n',
-  '<C-k>',
-  ':lua require("trouble").previous({skip_groups = true, jump = true})<CR>',
-  { silent = true, noremap = true }
-)
+u.map('n', '<C-j>', ':lua require("trouble").next({skip_groups = true, jump = true})<CR>')
+u.map('n', '<C-k>', ':lua require("trouble").previous({skip_groups = true, jump = true})<CR>')
 
 -- jump to the next item, skipping the group = true});
 local M = {}
