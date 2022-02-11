@@ -25,6 +25,31 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'folke/which-key.nvim',
+    config = function()
+      require('which-key').setup {}
+    end,
+  }
+
+  use {
+    'folke/twilight.nvim',
+    config = function()
+      require('twilight').setup {}
+    end,
+  }
+
+  use {
+    'folke/zen-mode.nvim',
+    config = function()
+      require('zen-mode').setup {
+        -- window = {
+        --   width = 0.6,
+        -- },
+      }
+    end,
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     requires = {
@@ -46,38 +71,36 @@ return require('packer').startup(function(use)
     end,
   }
 
+  -- use {
+  --   'morhetz/gruvbox',
+  --   config = function()
+  --     vim.cmd [[colorscheme gruvbox]]
+  --   end,
+  -- }
+
   use {
-    'rmehri01/onenord.nvim',
+    'max397574/better-escape.nvim',
     config = function()
-      require('onenord').setup {}
+      require('better_escape').setup {
+        mapping = { 'jk', 'kj' },
+      }
     end,
   }
 
-  -- use {
-  --   'rebelot/kanagawa.nvim',
-  --   config = function()
-  --     vim.cmd [[colorscheme kanagawa]]
-  --   end,
-  -- }
+  use {
+    'rmehri01/onenord.nvim',
+    config = function()
+      -- if you want to inspect colors, paste this in command mode ↓
+      -- lua print(vim.inspect(require'onenord.colors'.load()))
 
-  -- use {
-  --   'navarasu/onedark.nvim',
-  --   config = function()
-  --     require('onedark').setup {
-  --       style = 'cool',
-  --     }
-  --     require('onedark').load()
-  --   end,
-  -- }
-
-  -- -- make sure to fix padding on nvim-tree with this theme
-  -- use {
-  --   'catppuccin/nvim',
-  --   as = 'catppuccin',
-  --   config = function()
-  --     vim.cmd [[colorscheme catppuccin]]
-  --   end,
-  -- }
+      require('onenord').setup {
+        custom_colors = {
+          bg = '#22262E',
+          active = '#282E38', -- nvim-tree, cursorline
+        },
+      }
+    end,
+  }
 
   use {
     'kyazdani42/nvim-tree.lua',
@@ -97,7 +120,26 @@ return require('packer').startup(function(use)
     config = function()
       require('lualine').setup {
         options = {
-          theme = 'nord',
+          theme = 'onenord',
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+        },
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'filesize' },
+          lualine_y = { 'filetype' },
+          lualine_z = { 'location' },
+        },
+        -- dont like the look of an inactive session line
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = {},
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {},
         },
       }
     end,
@@ -127,14 +169,6 @@ return require('packer').startup(function(use)
       'saadparwaiz1/cmp_luasnip',
     },
     config = conf 'cmp',
-  }
-
-  use {
-    'windwp/nvim-autopairs', -- autocomplete pairs
-    wants = 'nvim-cmp',
-    config = function()
-      require('nvim-autopairs').setup {}
-    end,
   }
 
   use {
