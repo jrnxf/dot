@@ -1,4 +1,9 @@
-
+# fzf nord theme
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
+    --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
+    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 #### FIG ENV VARIABLES ####
 # Please make sure this block is at the start of this file.
 [ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
@@ -29,6 +34,7 @@ alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias xclip="xclip -selection c" # now pipe to clipboard like echo 'colby thomas' | xclip
 alias clear="clear && printf '\e[3J'"
+alias celar="clear" # always fat finger this lol
 alias skrrrt="~/Dev/skrrrt"
 alias m="cd ~/monthly"
 alias ms="cd ~/monthly/stx"
@@ -42,12 +48,13 @@ alias gotop="gotop --mbps -f"
 alias ls="exa"
 alias cat="bat"
 
-alias v='nvim'
-alias vim="nvim"
-alias f='fzf --height=90% --preview "bat --style=numbers --color=always --line-range :500 {}" --preview-window right,border-left  --padding=0'
-alias fzg='nvim "$(git ls-files | f)"'
-alias vd='cd ~/dotfiles && fzg'
+alias f='fzf --height=30%'
 
+alias v='nvim'
+alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-window right,border-left  --padding=0'
+alias vim="nvim"
+alias vv='v "$(git ls-files | f)"'
+alias vd='cd ~/dotfiles && vv'
 
 alias g="git"
 
