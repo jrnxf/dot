@@ -29,8 +29,6 @@ u.map('n', ']B', ':blast<CR>', { noremap = true })
 u.map('n', 'bb', '<c-^>')
 u.map('n', '<leader>d', ':Bdelete<CR>') -- uses bbye
 
-u.map('n', '<Tab>', ':ZenMode<CR>')
-
 -- Window
 u.map('n', '<Up>', ':wincmd -<CR>')
 u.map('n', '<Down>', ':wincmd +<CR>')

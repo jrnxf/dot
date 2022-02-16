@@ -24,12 +24,12 @@ return require('packer').startup(function(use)
     end,
   }
 
-  -- use {
-  --   'folke/which-key.nvim',
-  --   config = function()
-  --     require('which-key').setup {}
-  --   end,
-  -- }
+  use {
+    'folke/which-key.nvim',
+    config = function()
+      require('which-key').setup {}
+    end,
+  }
 
   use {
     'folke/twilight.nvim',
