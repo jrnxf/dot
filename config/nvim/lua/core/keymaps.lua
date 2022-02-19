@@ -26,8 +26,10 @@ u.map('n', '[b', ':bprevious<CR>', { noremap = true })
 u.map('n', ']b', ':bnext<CR>', { noremap = true })
 u.map('n', '[B', ':bfirst<CR>', { noremap = true })
 u.map('n', ']B', ':blast<CR>', { noremap = true })
-u.map('n', 'bb', '<c-^>')
-u.map('n', '<leader>d', ':Bdelete<CR>') -- uses bbye
+
+u.map('n', '<leader>q', ':q!<CR>')
+u.map('n', '<leader>u', ':u<CR>')
+u.map('n', '<leader>w', ':Bdelete<CR>') -- uses bbye
 
 -- Window
 u.map('n', '<Up>', ':wincmd -<CR>')
@@ -36,8 +38,6 @@ u.map('n', '<Left>', ':wincmd <<CR>')
 u.map('n', '<Right>', ':wincmd ><CR>')
 u.map('n', '<leader>=', ':wincmd =<CR>')
 
-u.map('n', '<leader>w', ':update<CR>')
-u.map('n', '<leader>q', ':wincmd =<CR>')
 -- Insert
 u.map('i', 'kj', '<Esc>')
 u.map('i', 'jk', '<Esc>')
@@ -49,6 +49,8 @@ u.map('v', '>', '>gv')
 -- shift lines up or down
 u.map('v', 'K', ":move '<-2<cr>gv-gv")
 u.map('v', 'J', ":move '>+1<cr>gv-gv")
+
+u.map('v', '<leader>d', '"_d')
 -- send highlighted text to void register and paste (maintain your paste)
 u.map('v', '<leader>p', '"_dP')
 
@@ -86,6 +88,7 @@ u.map('n', '<leader>fm', ':Telescope man_pages<CR>')
 u.map('n', '<leader>gb', ':Telescope git_branches<CR>')
 -- TODO: study if it's possible to write the command below like the ones above (it has params, unlike the others)
 u.map('n', '<leader>fd', ':lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles" })<CR>')
+u.map('n', '<leader>cw', ':lua require"telescope.builtin".grep_string({search = vim.fn.expand("<cword>") })<CR>')
 
 -- Tree
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
@@ -113,7 +116,10 @@ u.map('n', '<leader>xx', '<cmd>Trouble<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xd', '<cmd>Trouble document_diagnostics<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xl', '<cmd>Trouble loclist<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xq', '<cmd>Trouble quickfix<cr>', { silent = true, noremap = true })
-u.map('n', 'gR', '<cmd>Trouble lsp_references<cr>', { silent = true, noremap = true })
+u.map('n', 'gr', '<cmd>Trouble lsp_references<cr>', { silent = true, noremap = true })
+u.map('n', 'gd', '<cmd>Trouble lsp_definitions<cr>', { silent = true, noremap = true })
+u.map('n', 'gi', '<cmd>Trouble lsp_implementations<cr>', { silent = true, noremap = true })
+u.map('n', 'gt', '<cmd>Trouble lsp_type_definitions<cr>', { silent = true, noremap = true })
 u.map('n', '<C-j>', ':lua require("trouble").next({skip_groups = true, jump = true})<CR>')
 u.map('n', '<C-k>', ':lua require("trouble").previous({skip_groups = true, jump = true})<CR>')
 
@@ -123,18 +129,19 @@ local M = {}
 -- Buffer LSP
 M.set_buffer_lsp_maps = function(bufnr)
   u.buf_map(bufnr, 'n', 'gD', ':LspDeclaration<CR>')
-  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>')
-  u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>')
-  u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>')
-  u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>')
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
   u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
-  u.buf_map(bufnr, 'n', '<leader>a', ':LspDiagLine<CR>')
-  u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>')
-  u.buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
-  u.buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
+  u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
+  u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
+  u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
+  -- u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>') -- prefer trouble
+  -- u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>') -- prefer trouble
+  -- u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>') -- prefer trouble
+  -- u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>') -- prefer trouble
+  -- u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>') -- prefer trouble
+  -- u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>') -- prefer trouble
 end
 
 return M

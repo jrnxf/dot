@@ -4,12 +4,14 @@ return function()
 
   nvim_tree.setup {
     auto_close = true,
+    disable_netrw = true,
     update_focused_file = {
       enable = true,
     },
     diagnostics = {
       enable = true,
     },
+    hijack_cursor = true,
     view = {
       auto_resize = true,
       mappings = {
@@ -27,6 +29,11 @@ return function()
           { key = 'y', cb = map 'copy_name' },
         },
         custom_only = false, -- false means the list above will merge with defaults
+      },
+    },
+    actions = {
+      open_file = {
+        quit_on_open = true,
       },
     },
   }
