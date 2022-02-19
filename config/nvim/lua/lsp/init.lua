@@ -28,7 +28,13 @@ lsp_installer.on_server_ready(function(server)
   }
 
   -- custom server configurations
-  if server.name == 'gopls' or server.name == 'eslint' or server.name == 'sumneko_lua' or server.name == 'tsserver' then
+  if
+    server.name == 'gopls'
+    or server.name == 'eslint'
+    or server.name == 'sumneko_lua'
+    or server.name == 'tsserver'
+    or server.name == 'efm'
+  then
     opts = require('lsp.' .. server.name).getOpts(on_attach, capabilities)
   end
 

@@ -25,8 +25,17 @@ local M = {}
 M.getOpts = function(on_attach, capabilities)
   local luadev = require('lua-dev').setup {
     lspconfig = {
-      on_attach = on_attach,
-      capailities = capabilities,
+
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+
+        -- we only want null_ls to format
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+      end,
+
+      capabilities = capabilities,
+
       settings = settings,
       flags = {
         debounce_text_changes = 150,
