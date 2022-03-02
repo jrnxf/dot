@@ -52,17 +52,11 @@ return require('packer').startup(function(use)
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-    requires = {
-      'nvim-treesitter/playground',
-      'windwp/nvim-ts-autotag',
-    },
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = 'maintained', -- install any parser with maintainer
-        highlight = { enable = true },
-      }
-    end,
+    config = conf 'treesitter',
   }
+
+  use 'windwp/nvim-ts-autotag' -- automatically close jsx tags
+  use 'JoosepAlviste/nvim-ts-context-commentstring' -- makes jsx comments actually work
 
   use {
     'karb94/neoscroll.nvim',
@@ -170,7 +164,15 @@ return require('packer').startup(function(use)
     },
     config = conf 'cmp',
   }
-
+  use {
+    'windwp/nvim-autopairs', -- autocomplete pairs
+    config = function()
+      require('nvim-autopairs').setup {
+        check_ts = true,
+      }
+    end,
+    wants = 'nvim-cmp',
+  }
   use {
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
