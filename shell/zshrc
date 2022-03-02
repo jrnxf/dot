@@ -32,7 +32,6 @@ alias dev="~/Dev"
 alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
-alias xclip="xclip -selection c" # now pipe to clipboard like echo 'colby thomas' | xclip
 alias clear="clear && printf '\e[3J'"
 alias celar="clear" # always fat finger this lol
 alias skrrrt="~/Dev/skrrrt"

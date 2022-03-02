@@ -1,3 +1,7 @@
+-- NOTES
+-- for rust, make sure you have all rust-related tools installed
+-- https://rustup.rs/
+
 local lsp = vim.lsp
 local border_opts = { border = 'single', focusable = false, scope = 'line' }
 
