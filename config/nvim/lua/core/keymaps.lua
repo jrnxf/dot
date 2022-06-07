@@ -118,10 +118,10 @@ u.map('n', '<leader>xx', '<cmd>Trouble<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xd', '<cmd>Trouble document_diagnostics<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xl', '<cmd>Trouble loclist<cr>', { silent = true, noremap = true })
 u.map('n', '<leader>xq', '<cmd>Trouble quickfix<cr>', { silent = true, noremap = true })
-u.map('n', 'gr', '<cmd>Trouble lsp_references<cr>', { silent = true, noremap = true })
-u.map('n', 'gd', '<cmd>Trouble lsp_definitions<cr>', { silent = true, noremap = true })
-u.map('n', 'gi', '<cmd>Trouble lsp_implementations<cr>', { silent = true, noremap = true })
-u.map('n', 'gt', '<cmd>Trouble lsp_type_definitions<cr>', { silent = true, noremap = true })
+-- u.map('n', 'gr', '<cmd>Trouble lsp_references<cr>', { silent = true, noremap = true })
+-- u.map('n', 'gd', '<cmd>Trouble lsp_definitions<cr>', { silent = true, noremap = true })
+-- u.map('n', 'gi', '<cmd>Trouble lsp_implementations<cr>', { silent = true, noremap = true })
+-- u.map('n', 'gt', '<cmd>Trouble lsp_type_definitions<cr>', { silent = true, noremap = true })
 u.map('n', '<C-j>', ':lua require("trouble").next({skip_groups = true, jump = true})<CR>')
 u.map('n', '<C-k>', ':lua require("trouble").previous({skip_groups = true, jump = true})<CR>')
 
@@ -138,12 +138,12 @@ M.set_buffer_lsp_maps = function(bufnr)
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
   u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
   u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
-  -- u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>') -- prefer trouble
-  -- u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>') -- prefer trouble
-  -- u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>') -- prefer trouble
-  -- u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>') -- prefer trouble
-  -- u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>') -- prefer trouble
-  -- u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>') -- prefer trouble
+  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>') -- prefer trouble -- but seems like not maintained anymore
+  u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>') -- prefer trouble
+  u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>') -- prefer trouble
+  u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>') -- prefer trouble
+  u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>') -- prefer trouble
+  u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>') -- prefer trouble
 end
 
 return M
