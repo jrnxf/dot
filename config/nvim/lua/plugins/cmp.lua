@@ -59,7 +59,7 @@ return function()
       --     fallback()
       --   end
       -- end),
-    },
+   },
     -- Sources order are actually their priority order
     sources = {
       { name = 'nvim_lua' },

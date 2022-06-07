@@ -35,17 +35,23 @@ alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
 alias celar="clear" # always fat finger this lol
 alias skrrrt="~/Dev/skrrrt"
-alias m="cd ~/monthly"
-alias ms="cd ~/monthly/stx"
-alias mf="cd ~/monthly/frontend"
-alias mb="cd ~/monthly/backend"
+alias s="cd ~/studio"
+alias ss="cd ~/studio/stx"
+alias sf="cd ~/studio/frontend"
+alias sb="cd ~/studio/backend"
+alias sd="cd ~/studio/design-system"
+alias m="cd ~/studio"
+alias ms="cd ~/studio/stx"
+alias mf="cd ~/studio/frontend"
+alias mb="cd ~/studio/backend"
+alias md="cd ~/studio/design-system"
 alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
 alias gotop="gotop --mbps -f"
 alias ls="exa"
-alias cat="bat"
+alias cat="cat"
 
 alias f='fzf --height=30%'
 
@@ -70,8 +76,18 @@ alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
 
+# https://github.com/emk/rust-musl-builder
+alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
+
 #### FIG ENV VARIABLES ####
 # Please make sure this block is at the end of this file.
 [ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
 #### END FIG ENV VARIABLES ####
 alias lg='lazygit'
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+stars () {
+  curl -s https://api.github.com/repos/coloradocolby/thokr | jq '. | {name, stargazers_count} | join(" - ")'
+}
+

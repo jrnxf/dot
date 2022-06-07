@@ -7,7 +7,8 @@ return function()
     defaults = {
       prompt_prefix = '❯ ',
       selection_caret = '❯ ',
-      layout_config = { horizontal = { preview_width = 0.5 } },
+      layout_strategy = 'vertical',
+      layout_config = { vertical = { preview_width = 0.5 } },
       file_ignore_patterns = { 'node_modules/.*' },
       mappings = {
         i = {

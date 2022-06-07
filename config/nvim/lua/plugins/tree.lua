@@ -2,12 +2,17 @@ return function()
   local nvim_tree = require 'nvim-tree'
 
   nvim_tree.setup {
-    auto_close = true,
     update_focused_file = {
       enable = true,
     },
     diagnostics = {
       enable = true,
+    },
+    actions = {
+      open_file = {
+        quit_on_open = true,
+        resize_window = true,
+      },
     },
     view = {
       auto_resize = true,
