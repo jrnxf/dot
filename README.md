@@ -1,3 +1,3 @@
-# dot dot dot
+# dotfiles
 
-in this ~ we live laugh love 🤪
+🏠 the dot spot
