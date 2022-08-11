@@ -8,9 +8,9 @@ M.setup = function(on_attach)
     sources = {
       b.diagnostics.eslint,
       b.code_actions.eslint,
-      -- NOTE: for stylua, prettier, etc to work, they must be installed on the machine!
+      -- NOTE: for stylua, prettierd, etc to work, they must be installed on the machine!
       b.formatting.stylua,
-      b.formatting.prettier,
+      b.formatting.prettierd,
     },
     on_attach = on_attach,
   }

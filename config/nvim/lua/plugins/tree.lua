@@ -15,7 +15,6 @@ return function()
       },
     },
     view = {
-      auto_resize = true,
       mappings = {
         custom_only = false, -- false means the list above will merge with defaults
         list = {
@@ -33,10 +32,5 @@ return function()
         },
       },
     },
-    -- actions = {
-    --   open_file = {
-    --     quit_on_open = true,
-    --   },
-    -- },
   }
 end
