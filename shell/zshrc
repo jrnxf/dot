@@ -92,3 +92,4 @@ stars () {
   curl -s https://api.github.com/repos/coloradocolby/thokr | jq '. | {name, stargazers_count} | join(" - ")'
 }
 
+export HISTTIMEFORMAT="%m/%d/%y %T "

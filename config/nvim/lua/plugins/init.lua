@@ -65,13 +65,6 @@ return require('packer').startup(function(use)
     end,
   }
 
-  -- use {
-  --   'morhetz/gruvbox',
-  --   config = function()
-  --     vim.cmd [[colorscheme gruvbox]]
-  --   end,
-  -- }
-
   use {
     'max397574/better-escape.nvim',
     config = function()
@@ -179,8 +172,12 @@ return require('packer').startup(function(use)
     config = conf 'telescope',
   }
 
-  use 'williamboman/nvim-lsp-installer'
-
+  use {
+    'williamboman/mason.nvim',
+    config = function()
+      require('mason').setup {}
+    end,
+  }
   use {
     'ray-x/go.nvim',
     config = function()
@@ -189,9 +186,17 @@ return require('packer').startup(function(use)
   }
 
   use {
+    'williamboman/mason-lspconfig.nvim',
+    config = function()
+      require('mason-lspconfig').setup {}
+    end,
+  }
+
+  use {
     'neovim/nvim-lspconfig',
     requires = {
-      'williamboman/nvim-lsp-installer',
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
       'jose-elias-alvarez/nvim-lsp-ts-utils',
       'jose-elias-alvarez/null-ls.nvim',
       'folke/lua-dev.nvim',

@@ -23,27 +23,10 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-local lsp_installer = require 'nvim-lsp-installer'
-
-lsp_installer.on_server_ready(function(server)
-  local opts = {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-
-  -- custom server configurations
-  if
-    server.name == 'gopls'
-    or server.name == 'eslint'
-    or server.name == 'sumneko_lua'
-    or server.name == 'tsserver'
-    or server.name == 'efm'
-  then
-    opts = require('lsp.' .. server.name).getOpts(on_attach, capabilities)
-  end
-
-  server:setup(opts)
-end)
-
--- null_ls isn't really a language server, so we setup manually
+require('lsp.efm').getOpts(on_attach, capabilities)
+require('lsp.eslint').getOpts(on_attach, capabilities)
+require('lsp.gopls').getOpts(on_attach, capabilities)
 require('lsp.null_ls').setup(on_attach)
+require('lsp.rust_analyzer').getOpts(on_attach, capabilities)
+require('lsp.sumneko_lua').getOpts(on_attach, capabilities)
+require('lsp.tsserver').getOpts(on_attach, capabilities)
