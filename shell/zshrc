@@ -80,16 +80,9 @@ alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luama
 # https://github.com/emk/rust-musl-builder
 alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
+export HISTTIMEFORMAT="%m/%d/%y %T "
+
 #### FIG ENV VARIABLES ####
 # Please make sure this block is at the end of this file.
 [ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
 #### END FIG ENV VARIABLES ####
-alias lg='lazygit'
-
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-stars () {
-  curl -s https://api.github.com/repos/coloradocolby/thokr | jq '. | {name, stargazers_count} | join(" - ")'
-}
-
-export HISTTIMEFORMAT="%m/%d/%y %T "

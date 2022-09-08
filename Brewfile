@@ -5,13 +5,11 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
+brew "python@3.10"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
 # Python code formatter
 brew "black", link: false
 # Pack, ship and run any application as a lightweight container
@@ -22,6 +20,8 @@ brew "exa"
 brew "figlet"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GitHub command-line tool
+brew "gh"
 # Distributed revision control system
 brew "git"
 # Open source programming language to build simple/reliable/efficient software
@@ -42,10 +42,10 @@ brew "neovim"
 brew "node"
 # Manage multiple Node.js versions
 brew "nvm"
-# Object-relational database system
-brew "postgresql"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Cross-shell prompt for astronauts
@@ -54,8 +54,6 @@ brew "starship"
 brew "stylua"
 # Terminal multiplexer
 brew "tmux"
-# Tool for creating isolated virtual python environments
-brew "virtualenv"
 # Access X11 clipboards from the command-line
 brew "xclip"
 # JavaScript package manager
@@ -64,22 +62,17 @@ brew "yarn"
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
+# GPU-accelerated terminal emulator
+cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
-# Automatic tiling window manager similar to xmonad
-cask "amethyst"
-# Video calls designed for energy, ideas and action
-cask "around"
 # Web browser
 cask "firefox"
+# Developer targeted fonts with a high number of glyphs
 cask "font-hack-nerd-font"
 cask "font-noto-nerd-font"
-# Web browser
-cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Password manager
-cask "lastpass"
 # Screen and video recording software
 cask "loom"
 # Reverse proxy, secure introspectable tunnels to localhost
@@ -92,8 +85,6 @@ cask "numi"
 cask "obs"
 # Collaboration platform for API development
 cask "postman"
-# Tool to reverse the direction of scrolling
-cask "scroll-reverser"
 # Team communication and collaboration software
 cask "slack"
 # Music streaming service
