@@ -21,6 +21,8 @@ brew "docker"
 brew "exa"
 # Banner-like program prints strings as ASCII art
 brew "figlet"
+# User-friendly command-line shell for UNIX-like operating systems
+brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU internationalization (i18n) and localization (l10n) library
@@ -81,6 +83,8 @@ brew "zsh-autosuggestions"
 brew "garden-io/garden/garden-cli"
 # GPU-accelerated terminal emulator
 cask "alacritty"
+# Calendar for professionals and teams
+cask "cron"
 # Web browser
 cask "firefox"
 # Developer targeted fonts with a high number of glyphs

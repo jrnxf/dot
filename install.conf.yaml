@@ -16,6 +16,9 @@
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/alacritty/alacritty.yml: config/alacritty.yml
     ~/.config/starship.toml: config/starship.toml
+    ~/.config/fish:
+      glob: true
+      path: shell/fish/*
     ~/.config/nvim:
       glob: true
       path: config/nvim/*

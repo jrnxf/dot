@@ -1,16 +1,23 @@
 # fzf nord theme
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-    --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
-    --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
-    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+# set -x FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+#     --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
+#     --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
+#     --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+#     --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
-export PATH=~/bin:~/.local/bin:~/go/bin:$PATH
+set --export EDITOR nvim
 
-export EDITOR="nvim"
+fish_add_path --move $HOME/.local/bin
+fish_add_path $HOME/bin
+fish_add_path $HOME/go/bin
+fish_add_path $HOME/.cargo/bin
+fish_add_path /opt/homebrew/bin
+
+# disable greeting
+set fish_greeting
 
 alias dev="~/Dev"
-alias reload="source ~/.zshrc"
+alias reload="source ~/.config/fish/config.fish"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
@@ -60,4 +67,8 @@ alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luama
 # https://github.com/emk/rust-musl-builder
 alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
-export HISTTIMEFORMAT="%m/%d/%y %T "
+starship init fish | source
+
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
