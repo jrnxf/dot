@@ -1,4 +1,5 @@
 tap "aws/tap"
+tap "garden-io/garden"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
@@ -12,6 +13,8 @@ brew "awscli"
 brew "bat"
 # Python code formatter
 brew "black", link: false
+# GNU File, Shell, and Text utilities
+brew "coreutils"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
 # Modern replacement for 'ls'
@@ -20,6 +23,8 @@ brew "exa"
 brew "figlet"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -32,8 +37,14 @@ brew "gotop"
 brew "hasura-cli"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
+# Tool that can switch between kubectl contexts easily and create aliases
+brew "kubectx"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Node version management
+brew "n"
 # Fast, highly customisable system info script
 brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -42,8 +53,12 @@ brew "neovim"
 brew "node"
 # Manage multiple Node.js versions
 brew "nvm"
+# Object-relational database system
+brew "postgresql@14"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
+# Python version management
+brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.9"
 # Search tool like grep and The Silver Searcher
@@ -62,10 +77,10 @@ brew "yarn"
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
+# Development engine for Kubernetes
+brew "garden-io/garden/garden-cli"
 # GPU-accelerated terminal emulator
 cask "alacritty"
-# Application launcher and productivity software
-cask "alfred"
 # Web browser
 cask "firefox"
 # Developer targeted fonts with a high number of glyphs
@@ -73,6 +88,8 @@ cask "font-hack-nerd-font"
 cask "font-noto-nerd-font"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# App to manage software development and track bugs
+cask "linear-linear"
 # Screen and video recording software
 cask "loom"
 # Reverse proxy, secure introspectable tunnels to localhost
