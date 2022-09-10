@@ -13,16 +13,17 @@ fish_add_path $HOME/go/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path /opt/homebrew/bin
 
+
 # disable greeting
 set fish_greeting
 
-alias dev="~/Dev"
+alias dev="cd ~/Dev"
 alias reload="source ~/.config/fish/config.fish"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
 alias celar="clear" # always fat finger this lol
-alias skrrrt="~/Dev/skrrrt"
+alias skrrrt="cd ~/Dev/skrrrt"
 alias s="cd ~/studio"
 alias ss="cd ~/studio/stx"
 alias sf="cd ~/studio/frontend"
@@ -37,7 +38,6 @@ alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
-alias gotop="gotop --mbps -f"
 alias ls="exa"
 alias cat="cat"
 
