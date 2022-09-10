@@ -83,6 +83,8 @@ brew "zsh-autosuggestions"
 brew "garden-io/garden/garden-cli"
 # GPU-accelerated terminal emulator
 cask "alacritty"
+# Cross platform SQL editor and database management app
+cask "beekeeper-studio"
 # Calendar for professionals and teams
 cask "cron"
 # Web browser
