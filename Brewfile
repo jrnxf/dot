@@ -100,6 +100,8 @@ cask "linear-linear"
 cask "loom"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
+# VPN client for secure internet access and private browsing
+cask "nordvpn"
 # App to write, plan, collaborate, and get organized
 cask "notion"
 # Calculator and converter application
@@ -108,6 +110,8 @@ cask "numi"
 cask "obs"
 # Collaboration platform for API development
 cask "postman"
+# Move and resize windows using keyboard shortcuts or snap areas
+cask "rectangle"
 # Team communication and collaboration software
 cask "slack"
 # Music streaming service

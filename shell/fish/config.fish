@@ -18,6 +18,7 @@ fish_add_path /opt/homebrew/bin
 set fish_greeting
 
 alias dev="cd ~/Dev"
+alias p="cd ~/Dev/pocus/"
 alias reload="source ~/.config/fish/config.fish"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
