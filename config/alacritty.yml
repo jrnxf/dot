@@ -15,13 +15,13 @@ mouse:
 
 font:
   normal:
-    family: SpaceMono Nerd Font
+    family: SpaceMono Nerd Font Mono
     style: Regular
   bold:
-    family: SpaceMono Nerd Font
+    family: SpaceMono Nerd Font Mono
     style: Bold
   italic:
-    family: SpaceMono Nerd Font
+    family: SpaceMono Nerd Font Mono
     style: Italic
   size: 17.0
   offset:

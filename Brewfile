@@ -89,9 +89,15 @@ cask "beekeeper-studio"
 cask "cron"
 # Web browser
 cask "firefox"
+# Flip clock screensaver
+cask "fliqlo"
 # Developer targeted fonts with a high number of glyphs
 cask "font-hack-nerd-font"
 cask "font-noto-nerd-font"
+cask "font-space-mono"
+cask "font-space-mono-nerd-font"
+# Web browser
+cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # App to manage software development and track bugs
@@ -110,6 +116,8 @@ cask "numi"
 cask "obs"
 # Collaboration platform for API development
 cask "postman"
+# Control your tools with a few keystrokes
+cask "raycast"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
 # Team communication and collaboration software
