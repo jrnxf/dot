@@ -30,7 +30,7 @@ alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
-alias gotop="gotop --mbps -f"
+alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="cat"
 
