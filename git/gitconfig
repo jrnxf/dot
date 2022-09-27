@@ -20,3 +20,5 @@
 	b = branch
 [init]
 	defaultBranch = main
+[core]
+	excludesfile = /Users/colby/.gitignore
