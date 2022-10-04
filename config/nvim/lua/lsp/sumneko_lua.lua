@@ -30,8 +30,8 @@ M.getOpts = function(on_attach, capabilities)
         on_attach(client, bufnr)
 
         -- we only want null_ls to format
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
       end,
 
       capabilities = capabilities,

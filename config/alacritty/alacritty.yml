@@ -2,15 +2,17 @@ env:
   TERM: xterm-256color
 
 window:
-  decorations: "buttonless"
-  opacity: 0.8
   padding:
-    x: 4
-    y: 10
+    x: 10 # nvim expects this on line 6
+    y: 10 # nvim expects this on line 7
+  decorations: "buttonless"
+  opacity: 0.95
+
 
 scrolling:
   history: 10000
   multiplier: 3
+
 
 mouse:
   hide_when_typing: true

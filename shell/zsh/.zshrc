@@ -3,7 +3,6 @@ export ZSH="$HOME/.oh-my-zsh"
 plugins=(git tmux zsh-autosuggestions)
 
 ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_DEFAULT_SESSION_NAME=colby
 
 source $ZSH/oh-my-zsh.sh
 

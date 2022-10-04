@@ -5,6 +5,7 @@ local M = {}
 
 M.setup = function(on_attach)
   null_ls.setup {
+    debug = true,
     sources = {
       b.diagnostics.eslint,
       b.code_actions.eslint,

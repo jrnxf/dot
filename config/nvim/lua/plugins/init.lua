@@ -109,6 +109,17 @@ return require('packer').startup(function(use)
     end,
   }
 
+  -- use {
+  --   'xiyaowong/nvim-transparent',
+  --   config = function()
+  --     require('transparent').setup {
+  --       enable = true, -- boolean: enable transparent
+  --       extra_groups = {},
+  --       exclude = {}, -- table: groups you don't want to clear
+  --     }
+  --   end,
+  -- }
+
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {
@@ -154,9 +165,6 @@ return require('packer').startup(function(use)
 
   use {
     'lewis6991/gitsigns.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-    },
     config = function()
       require('gitsigns').setup {}
     end,
@@ -188,7 +196,7 @@ return require('packer').startup(function(use)
   }
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
+    requires = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
     config = conf 'telescope',
   }
 
@@ -198,6 +206,7 @@ return require('packer').startup(function(use)
       require('mason').setup {}
     end,
   }
+
   use {
     'ray-x/go.nvim',
     config = function()
@@ -212,14 +221,10 @@ return require('packer').startup(function(use)
     end,
   }
 
-  use {
-    'neovim/nvim-lspconfig',
-    requires = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'jose-elias-alvarez/nvim-lsp-ts-utils',
-      'jose-elias-alvarez/null-ls.nvim',
-      'folke/lua-dev.nvim',
-    },
-  }
+  use 'neovim/nvim-lspconfig'
+
+
+  use 'jose-elias-alvarez/null-ls.nvim'
+  use 'jose-elias-alvarez/typescript.nvim'
+  use 'nvim-lua/plenary.nvim'
 end)
