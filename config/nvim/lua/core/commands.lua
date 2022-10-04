@@ -6,12 +6,6 @@ vim.cmd [[
 ]]
 -- add this command to the user defined commands
 vim.cmd 'command! NvimReload lua require"core.utils".reload_nvim_conf()'
--- example theme override
--- vim.cmd [[
---  augroup nord_overrides
---   au colorscheme * :hi normal guibg=NONE ctermbg=NONE
---  augroup END
--- ]]
 
 -- add buffer diagnostics to the location list
 -- DiagnosticChanged = after diagnostics have changed

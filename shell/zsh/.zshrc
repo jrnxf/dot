@@ -1,30 +1,30 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+plugins=(git tmux zsh-autosuggestions)
+
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_DEFAULT_SESSION_NAME=colby
+
+source $ZSH/oh-my-zsh.sh
+
 # fzf nord theme
-# set -x FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-#     --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
-#     --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
-#     --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-#     --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
+    --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
+    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
-set --export EDITOR nvim
+export PATH=~/bin:~/.local/bin:~/go/bin:$PATH
 
-fish_add_path --move $HOME/.local/bin
-fish_add_path $HOME/bin
-fish_add_path $HOME/go/bin
-fish_add_path $HOME/.cargo/bin
-fish_add_path /opt/homebrew/bin
+export EDITOR="nvim"
 
-
-# disable greeting
-set fish_greeting
-
-alias dev="cd ~/Dev"
+alias dev="~/Dev"
 alias p="cd ~/Dev/pocus/"
-alias reload="source ~/.config/fish/config.fish"
+alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
-alias celar="clear" # always fat finger this lol
-alias skrrrt="cd ~/Dev/skrrrt"
+alias skrrrt="~/Dev/skrrrt"
 alias s="cd ~/studio"
 alias ss="cd ~/studio/stx"
 alias sf="cd ~/studio/frontend"
@@ -39,21 +39,17 @@ alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
 alias tmux="tmux -2" # keep colorscheme in tmux
+alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="cat"
-
-alias f='fzf --height=30%'
 
 alias v='nvim'
 alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-window right,border-left  --padding=0'
 alias vim="nvim"
-alias vv='v "$(git ls-files | f)"'
+alias vv='v "$(git ls-files | fzf)"'
 alias vd='cd ~/dotfiles && vv'
 
 alias g="git"
-
-alias t="tmux"
-alias ta="tmux a"
 
 # DOCKER
 alias d-ra='docker rmi -f $(docker images -aq)' # Remove all images
@@ -68,8 +64,8 @@ alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luama
 # https://github.com/emk/rust-musl-builder
 alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
-starship init fish | source
+export HISTTIMEFORMAT="%m/%d/%y %T "
 
-if status is-interactive
-    # Commands to run in interactive sessions can go here
-end
+eval $(thefuck --alias)
+eval $(starship init zsh)
+

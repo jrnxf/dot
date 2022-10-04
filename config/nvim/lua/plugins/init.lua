@@ -74,6 +74,26 @@ return require('packer').startup(function(use)
     end,
   }
 
+  -- use {
+  --   'catppuccin/nvim',
+  --   as = 'catppuccin',
+  --   config = function()
+  --     require('catppuccin').setup {}
+
+  --     -- catppuccin theme
+  --     vim.g.catppuccin_flavour = 'mocha' -- latte, frappe, macchiato, mocha
+  --     vim.cmd 'colorscheme catppuccin'
+  --   end,
+  -- }
+
+  -- use {
+  --   'sonph/onehalf',
+  --   rtp = 'vim/',
+  --   config = function()
+  --     vim.cmd 'colorscheme onehalfdark'
+  --   end,
+  -- }
+
   use {
     'rmehri01/onenord.nvim',
     config = function()
