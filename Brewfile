@@ -1,4 +1,5 @@
 tap "aws/tap"
+tap "fsouza/prettierd"
 tap "garden-io/garden"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -63,6 +64,8 @@ brew "pyenv"
 brew "python@3.9"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Safe, concurrent, practical language
+brew "rust"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Opinionated Lua code formatter
@@ -79,6 +82,8 @@ brew "yarn"
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
+# prettier, on SPEED!
+brew "fsouza/prettierd/prettierd"
 # Development engine for Kubernetes
 brew "garden-io/garden/garden-cli"
 # Command-line helper for the 1Password password manager

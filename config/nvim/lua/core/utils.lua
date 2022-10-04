@@ -24,9 +24,25 @@ M.buf_map = function(bufnr, mode, key, cmd, opts)
   vim.api.nvim_buf_set_keymap(bufnr, mode, key, cmd, opts or options)
 end
 
+M.buf_command = function(bufnr, name, fn, opts)
+  vim.api.nvim_buf_create_user_command(bufnr, name, fn, opts or {})
+end
+
 M.map = function(mode, key, cmd, opts)
   vim.api.nvim_set_keymap(mode, key, cmd, opts or options)
 end
+
+
+M.table = {
+  some = function(tbl, cb)
+      for k, v in pairs(tbl) do
+          if cb(k, v) then
+              return true
+          end
+      end
+      return false
+  end,
+}
 
 -- -- 'dir: up or down
 -- -- TODO: see about sending in bufnr and being smart about

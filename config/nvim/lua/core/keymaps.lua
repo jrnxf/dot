@@ -138,7 +138,7 @@ M.set_buffer_lsp_maps = function(bufnr)
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
   u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
   u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
-  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>') -- prefer trouble -- but seems like not maintained anymore
+  -- u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>') -- prefer trouble -- but seems like not maintained anymore
   u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>') -- prefer trouble
   u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>') -- prefer trouble
   u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>') -- prefer trouble

@@ -2,9 +2,30 @@ return function()
   local treesitter = require 'nvim-treesitter.configs'
 
   treesitter.setup {
-    ensure_installed = 'all',
-    ignore_install = { 'phpdoc' }, -- List of parsers to ignore installing
-    highlight = { enable = true },
+    ensure_installed = {
+      "bash",
+      "c",
+      "cpp",
+      "css",
+      "javascript",
+      "json",
+      "jsonc",
+      "lua",
+      "make",
+      "markdown",
+      "markdown_inline",
+      "scss",
+      "toml",
+      "tsx",
+      "typescript",
+      "yaml",
+    },
+    highlight = { 
+      enable = true,
+      disable = function(_, bufnr)
+        return vim.api.nvim_buf_line_count(bufnr) > 5000
+      end, 
+    },
     -- plugins
     autopairs = { enable = true },
     context_commentstring = {
