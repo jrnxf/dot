@@ -10,15 +10,14 @@
       recursive: true
 
 - link:
-    ~/.zshrc: shell/zshrc
+    ~/.zshrc: shell/zsh/.zshrc
     ~/.gitconfig: git/gitconfig
     ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
-    ~/.config/alacritty/alacritty.yml: config/alacritty.yml
     ~/.config/starship.toml: config/starship.toml
-    ~/.config/fish:
+    ~/.config/alacritty:
       glob: true
-      path: shell/fish/*
+      path: config/alacritty/*
     ~/.config/nvim:
       glob: true
       path: config/nvim/*

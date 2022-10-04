@@ -4,7 +4,6 @@ disabled = true
 
 [git_branch]
 symbol = " "
-# symbol = "🌱 "
 
 [aws]
 disabled = true

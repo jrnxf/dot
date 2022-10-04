@@ -21,8 +21,6 @@ brew "docker"
 brew "exa"
 # Banner-like program prints strings as ASCII art
 brew "figlet"
-# User-friendly command-line shell for UNIX-like operating systems
-brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU internationalization (i18n) and localization (l10n) library
@@ -69,6 +67,8 @@ brew "ripgrep"
 brew "starship"
 # Opinionated Lua code formatter
 brew "stylua"
+# Programmatically correct mistyped console commands
+brew "thefuck"
 # Terminal multiplexer
 brew "tmux"
 # Access X11 clipboards from the command-line
@@ -81,6 +81,8 @@ brew "zsh"
 brew "zsh-autosuggestions"
 # Development engine for Kubernetes
 brew "garden-io/garden/garden-cli"
+# Command-line helper for the 1Password password manager
+cask "1password-cli"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Cross platform SQL editor and database management app
@@ -98,6 +100,8 @@ cask "font-space-mono"
 cask "font-space-mono-nerd-font"
 # Web browser
 cask "google-chrome"
+# Open-source video transcoder
+cask "handbrake"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # App to manage software development and track bugs
