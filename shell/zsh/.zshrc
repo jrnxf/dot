@@ -2,7 +2,8 @@ export ZSH="$HOME/.oh-my-zsh"
 
 plugins=(git tmux zsh-autosuggestions)
 
-ZSH_TMUX_AUTOSTART=true
+# i like this but it's annoying in vscode
+# ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -13,7 +14,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
     --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
-export PATH=~/bin:~/.local/bin:~/go/bin:$PATH
+export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/Dev/pocus/development/scripts:$PATH
 
 export EDITOR="nvim"
 
@@ -45,8 +46,7 @@ alias cat="cat"
 alias v='nvim'
 alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-window right,border-left  --padding=0'
 alias vim="nvim"
-alias vv='v "$(git ls-files | fzf)"'
-alias vd='cd ~/dotfiles && vv'
+alias vd='cd ~/dotfiles && vim .'
 
 alias g="git"
 

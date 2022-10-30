@@ -35,12 +35,12 @@ end
 
 M.table = {
   some = function(tbl, cb)
-      for k, v in pairs(tbl) do
-          if cb(k, v) then
-              return true
-          end
+    for k, v in pairs(tbl) do
+      if cb(k, v) then
+        return true
       end
-      return false
+    end
+    return false
   end,
 }
 
