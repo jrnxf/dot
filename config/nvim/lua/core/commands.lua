@@ -1,24 +1,32 @@
-function Sad(line_nr, from, to, fname)
-  vim.cmd(string.format("silent !sed -i'.bak' '%ss/%s/%s/' %s && rm -rf %s.bak", line_nr, from, to, fname, fname))
-end
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    print(os.date '%A %B %d %I:%M:%S')
+  end,
+})
 
-function IncreasePadding()
-  Sad('06', 0, 10, '~/dotfiles/config/alacritty/alacritty.yml')
-  Sad('07', 0, 10, '~/dotfiles/config/alacritty/alacritty.yml')
-end
+-- function Sad(line_nr, from, to, fname)
+--   vim.cmd(string.format("silent !sed -i'.bak' '%ss/%s/%s/' %s && rm -rf %s.bak", line_nr, from, to, fname, fname))
+-- end
 
-function DecreasePadding()
-  Sad('06', 10, 0, '~/dotfiles/config/alacritty/alacritty.yml')
-  Sad('07', 10, 0, '~/dotfiles/config/alacritty/alacritty.yml')
-end
+-- function IncreasePadding()
+--   Sad('06', 0, 10, '~/dotfiles/config/alacritty/alacritty.yml')
+--   Sad('07', 0, 10, '~/dotfiles/config/alacritty/alacritty.yml')
+-- end
 
-vim.cmd [[
-  augroup ChangeAlacrittyPadding
-   au! 
-   au VimEnter * lua DecreasePadding()
-   au VimLeavePre * lua IncreasePadding()
-  augroup END 
-]]
+-- function DecreasePadding()
+--   Sad('06', 10, 0, '~/dotfiles/config/alacritty/alacritty.yml')
+--   Sad('07', 10, 0, '~/dotfiles/config/alacritty/alacritty.yml')
+-- end
+
+-- vim.cmd [[
+--   augroup ChangeAlacrittyPadding
+--    au!
+--    au VimEnter * lua DecreasePadding()
+--    au VimLeavePre * lua IncreasePadding()
+--   augroup END
+-- ]]
+
+vim.cmd [[highlight NvimTreeWinSeparator guifg=#262C37 ]]
 
 vim.cmd [[
     augroup highlight_yank

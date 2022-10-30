@@ -3,8 +3,14 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim', opt = true }
 
-  local conf = function(name)
-    return require('plugins.' .. name)
+  local config = function(name)
+    return string.format("require('plugins.%s')", name)
+  end
+
+  local default_config = function(name)
+    return function()
+      require(name).setup {}
+    end
   end
 
   use 'tpope/vim-surround'
@@ -15,13 +21,7 @@ return require('packer').startup(function(use)
   use {
     'folke/trouble.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
-    config = function()
-      require('trouble').setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end,
+    config = config 'trouble',
   }
 
   use {
@@ -41,18 +41,14 @@ return require('packer').startup(function(use)
   use {
     'folke/zen-mode.nvim',
     config = function()
-      require('zen-mode').setup {
-        -- window = {
-        --   width = 0.6,
-        -- },
-      }
+      require('zen-mode').setup {}
     end,
   }
 
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-    config = conf 'treesitter',
+    config = config 'treesitter',
   }
 
   use 'windwp/nvim-ts-autotag' -- automatically close jsx tags
@@ -60,9 +56,7 @@ return require('packer').startup(function(use)
 
   use {
     'karb94/neoscroll.nvim',
-    config = function()
-      require('neoscroll').setup {}
-    end,
+    config = config 'neoscroll',
   }
 
   use {
@@ -86,51 +80,60 @@ return require('packer').startup(function(use)
   --   end,
   -- }
 
-  -- use {
-  --   'sonph/onehalf',
-  --   rtp = 'vim/',
-  --   config = function()
-  --     vim.cmd 'colorscheme onehalfdark'
-  --   end,
-  -- }
+  use {
+    'sonph/onehalf',
+    rtp = 'vim/',
+    config = function()
+      vim.cmd 'colorscheme onehalfdark'
+    end,
+  }
 
   use {
     'rmehri01/onenord.nvim',
     config = function()
       -- if you want to inspect colors, paste this in command mode ↓
       -- lua print(vim.inspect(require'onenord.colors'.load()))
+      local colors = {
+        bg = '#191c23',
+        active_line = '#262C37',
+      }
 
       require('onenord').setup {
+        custom_highlights = {
+          CursorLine = {
+            bg = colors.active_line,
+          },
+        },
         custom_colors = {
-          bg = '#22262E',
-          active = '#282E38', -- nvim-tree, cursorline
+          bg = colors.bg,
+          active = colors.bg,
+          float = colors.active_line,
         },
       }
     end,
   }
 
-  -- use {
-  --   'xiyaowong/nvim-transparent',
-  --   config = function()
-  --     require('transparent').setup {
-  --       enable = true, -- boolean: enable transparent
-  --       extra_groups = {},
-  --       exclude = {}, -- table: groups you don't want to clear
-  --     }
-  --   end,
-  -- }
-
+  use {
+    'xiyaowong/nvim-transparent',
+    config = function()
+      require('transparent').setup {
+        enable = true, -- boolean: enable transparent
+        extra_groups = {},
+        exclude = {}, -- table: groups you don't want to clear
+      }
+    end,
+  }
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {
       'kyazdani42/nvim-web-devicons',
     },
-    config = conf 'tree',
+    config = config 'tree',
   }
 
   use {
     'akinsho/nvim-bufferline.lua',
-    config = conf 'bufferline',
+    config = config 'bufferline',
   }
 
   use {
@@ -183,7 +186,7 @@ return require('packer').startup(function(use)
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
     },
-    config = conf 'cmp',
+    config = config 'cmp',
   }
   use {
     'windwp/nvim-autopairs', -- autocomplete pairs
@@ -197,7 +200,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
-    config = conf 'telescope',
+    config = config 'telescope',
   }
 
   use {
@@ -222,7 +225,6 @@ return require('packer').startup(function(use)
   }
 
   use 'neovim/nvim-lspconfig'
-
 
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/typescript.nvim'
