@@ -1,10 +1,10 @@
 local u = require('core.utils')
-local ts_builtin = require('telescope.builtin')
 
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     local bufferPath = vim.fn.expand('%:p')
     if vim.fn.isdirectory(bufferPath) ~= 0 then
+      local ts_builtin = require('telescope.builtin')
       vim.api.nvim_buf_delete(0, { force = true })
       if u.is_git_dir() == 0 then
         ts_builtin.git_files({ show_untracked = true })
@@ -32,11 +32,9 @@ vim.api.nvim_create_autocmd('DiagnosticChanged', {
   end,
 })
 
-vim.cmd([[highlight NvimTreeWinSeparator guifg=#262C37 ]])
+vim.cmd('highlight NvimTreeWinSeparator guifg=#262C37')
 
--- add this command to the user defined commands
-vim.cmd('command! NvimReload lua require"core.utils".reload_nvim_conf()')
-
+vim.cmd('command! Reload lua require("core.utils").reload()')
 vim.cmd('command! LspDeclaration lua vim.lsp.buf.declaration()')
 vim.cmd('command! LspDefinition lua vim.lsp.buf.definition()')
 vim.cmd('command! LspFormatting lua vim.lsp.buf.formatting()')

@@ -64,16 +64,10 @@ u.map('c', '<C-l>', '<Right>', { silent = false })
 u.map('c', '<C-d>', '<Del>', { silent = false })
 u.map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false }) -- prints the current file path
 
--- Splits
-u.map('n', 'vs', ':vs<CR>')
-u.map('n', 'sp', ':sp<CR>')
-
 -- Git
-u.map('n', 'gs', ':G<CR>') -- theirs
-u.map('n', 'gj', ':diffget //2<CR>') -- theirs
-u.map('n', 'gk', ':diffget //3<CR>') -- mine
-
-u.map('n', '<leader>re', ':NvimReload<CR> | :PackerSync<CR>')
+-- u.map('n', 'gs', ':G<CR>') -- theirs
+-- u.map('n', 'gj', ':diffget //2<CR>') -- theirs
+-- u.map('n', 'gk', ':diffget //3<CR>') -- mine
 
 -- Search and Replace
 -- 'c.' for word, '<leader>c.' for WORD

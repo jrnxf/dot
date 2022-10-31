@@ -66,41 +66,20 @@ end
 
 -- triggered when an lsp client attaches on a buffer
 local on_attach = function(client, bufnr)
-  -- commands
-  u.buf_command(bufnr, 'LspHover', vim.lsp.buf.hover)
-  u.buf_command(bufnr, 'LspDiagPrev', vim.diagnostic.goto_prev)
-  u.buf_command(bufnr, 'LspDiagNext', vim.diagnostic.goto_next)
-  u.buf_command(bufnr, 'LspDiagLine', vim.diagnostic.open_float)
-  u.buf_command(bufnr, 'LspDiagQuickfix', vim.diagnostic.setqflist)
-  u.buf_command(bufnr, 'LspSignatureHelp', vim.lsp.buf.signature_help)
-  u.buf_command(bufnr, 'LspTypeDef', vim.lsp.buf.type_definition)
-  u.buf_command(bufnr, 'LspRangeAct', vim.lsp.buf.range_code_action)
-  u.buf_command(bufnr, 'LspRename', function()
-    vim.lsp.buf.rename()
-  end)
-
-  u.buf_command(bufnr, 'LspRef', 'FzfLua lsp_references')
-  u.buf_command(bufnr, 'LspSym', 'FzfLua lsp_workspace_symbols')
-  u.buf_command(bufnr, 'LspAct', 'FzfLua lsp_code_actions')
-  u.buf_command(bufnr, 'LspDef', function()
-    require('fzf-lua').lsp_definitions({
-      jump_to_single_result = true,
-    })
-  end)
-
-  -- bindings
-  u.buf_map(bufnr, 'n', 'gi', ':LspRename<CR>')
+  u.buf_map(bufnr, 'n', 'gD', ':LspDeclaration<CR>')
+  u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
-  u.buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
-  u.buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
-  u.buf_map(bufnr, 'n', '<leader>a', ':LspDiagLine<CR>')
-  u.buf_map(bufnr, 'i', '<C-x><C-x>', '<cmd> LspSignatureHelp<CR>')
-
-  u.buf_map(bufnr, 'n', 'gy', ':LspRef<CR>')
-  u.buf_map(bufnr, 'n', 'gh', ':LspTypeDef<CR>')
-  u.buf_map(bufnr, 'n', 'gd', ':LspDef<CR>')
-  u.buf_map(bufnr, 'n', 'ga', ':LspAct<CR>')
-  u.buf_map(bufnr, 'v', 'ga', '<Esc><cmd> LspRangeAct<CR>')
+  u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
+  u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
+  u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
+  u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
+  u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
+  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>')
+  u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>')
+  u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>')
+  u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>')
+  u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>')
+  u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>')
 
   if client.supports_method('textDocument/formatting') then
     u.buf_command(bufnr, 'LspFormatting', function()
