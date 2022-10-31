@@ -1,9 +1,15 @@
 local cmp = require('cmp')
 local lspkind = require('lspkind')
+local luasnip = require('luasnip')
 
 vim.opt.completeopt = 'menu,menuone,noselect'
 
 cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
   formatting = {
     format = lspkind.cmp_format({
       with_text = false,
