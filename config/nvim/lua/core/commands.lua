@@ -32,8 +32,6 @@ vim.api.nvim_create_autocmd('DiagnosticChanged', {
   end,
 })
 
-vim.cmd('highlight NvimTreeWinSeparator guifg=#262C37')
-
 vim.cmd('command! Reload lua require("core.utils").reload()')
 vim.cmd('command! LspDeclaration lua vim.lsp.buf.declaration()')
 vim.cmd('command! LspDefinition lua vim.lsp.buf.definition()')

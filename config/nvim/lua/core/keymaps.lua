@@ -34,6 +34,8 @@ u.map('n', '<leader>bq', ':Bdelete<CR>') -- uses bbye
 
 u.map('n', '<leader>w', ':update<CR>')
 
+u.map('n', '<leader>re', ':Reload<CR>')
+
 -- Window
 u.map('n', '<Up>', ':wincmd -<CR>')
 u.map('n', '<Down>', ':wincmd +<CR>')

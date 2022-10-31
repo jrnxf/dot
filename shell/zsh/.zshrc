@@ -3,7 +3,7 @@ export ZSH="$HOME/.oh-my-zsh"
 plugins=(git tmux zsh-autosuggestions)
 
 # i like this but it's annoying in vscode
-ZSH_TMUX_AUTOSTART=true
+# ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
 

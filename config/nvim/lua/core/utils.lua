@@ -17,6 +17,7 @@ M.reload = function()
 
   dofile(vim.env.MYVIMRC)
   require('packer').sync()
+  vim.notify('reloaded')
 end
 
 local default_map_options = { noremap = true, silent = true }

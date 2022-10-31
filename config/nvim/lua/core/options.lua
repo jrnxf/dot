@@ -3,6 +3,7 @@ local global = require('core.global')
 local function load_options()
   local global_opts = {
     -- General
+    background = 'dark',
     clipboard = 'unnamedplus',
     scrolloff = 8,
     sidescrolloff = 8,
