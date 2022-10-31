@@ -4,7 +4,7 @@ env:
 window:
   padding:
     x: 10 # nvim expects this on line 6
-    y: 110 # nvim expects this on line 7
+    y: 10 # nvim expects this on line 7
   dimensions:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
@@ -35,7 +35,6 @@ font:
   glyph_offset:
     x: 0
     y: 0
-  use_thin_strokes: true
 
 draw_bold_text_with_bright_colors: false
 #191D25
@@ -59,7 +58,7 @@ color_schemes:
       matches:
         foreground: CellBackground
         background: "#88c0d0"
-      bar:
+      footer_bar:
         background: "#434c5e"
         foreground: "#d8dee9"
     normal:

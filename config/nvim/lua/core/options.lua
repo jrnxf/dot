@@ -1,4 +1,4 @@
-local global = require 'core.global'
+local global = require('core.global')
 
 local function load_options()
   local global_opts = {

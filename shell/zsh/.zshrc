@@ -7,13 +7,6 @@ plugins=(git tmux zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-# fzf nord theme
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-    --color=fg:#e5e9f0,bg:#22262E,hl:#81a1c1
-    --color=fg+:#e5e9f0,bg+:#22262E,hl+:#81a1c1
-    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
-
 export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/Dev/pocus/development/scripts:$PATH
 
 export EDITOR="nvim"
@@ -43,10 +36,12 @@ alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="cat"
 
-alias v='nvim'
 alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-window right,border-left  --padding=0'
+
+alias v='nvim'
 alias vim="nvim"
 alias vd='cd ~/dotfiles && vim .'
+
 
 alias g="git"
 

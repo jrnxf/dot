@@ -1,7 +1,7 @@
 -- NOTES
 -- for rust, make sure you have all rust-related tools installed
 -- https://rustup.rs/
-local u = require 'core.utils'
+local u = require('core.utils')
 
 local lsp = vim.lsp
 
@@ -11,10 +11,10 @@ local border_opts = {
   scope = 'line',
 }
 
-vim.diagnostic.config {
+vim.diagnostic.config({
   virtual_text = false,
   float = border_opts,
-}
+})
 
 local eslint_disabled_buffers = {}
 
@@ -29,7 +29,7 @@ lsp.handlers['textDocument/publishDiagnostics'] = function(_, result, ctx, confi
   end
 
   for _, diagnostic in ipairs(result.diagnostics) do
-    if diagnostic.message:find 'The file does not match your project config' then
+    if diagnostic.message:find('The file does not match your project config') then
       local bufnr = vim.uri_to_bufnr(result.uri)
       eslint_disabled_buffers[bufnr] = true
     end
@@ -39,15 +39,15 @@ lsp.handlers['textDocument/publishDiagnostics'] = function(_, result, ctx, confi
   return lsp.diagnostic.on_publish_diagnostics(nil, result, ctx, config)
 end
 
-local km = require 'core.keymaps'
+local km = require('core.keymaps')
 
 local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
 local lsp_formatting = function(bufnr)
-  local clients = vim.lsp.get_active_clients {
+  local clients = vim.lsp.get_active_clients({
     bufnr = bufnr,
-  }
-  lsp.buf.format {
+  })
+  lsp.buf.format({
     bufnr = bufnr,
     filter = function(client)
       -- if client.name == 'eslint' then
@@ -61,7 +61,7 @@ local lsp_formatting = function(bufnr)
         -- end)
       end
     end,
-  }
+  })
 end
 
 -- triggered when an lsp client attaches on a buffer
@@ -83,9 +83,9 @@ local on_attach = function(client, bufnr)
   u.buf_command(bufnr, 'LspSym', 'FzfLua lsp_workspace_symbols')
   u.buf_command(bufnr, 'LspAct', 'FzfLua lsp_code_actions')
   u.buf_command(bufnr, 'LspDef', function()
-    require('fzf-lua').lsp_definitions {
+    require('fzf-lua').lsp_definitions({
       jump_to_single_result = true,
-    }
+    })
   end)
 
   -- bindings
@@ -102,15 +102,15 @@ local on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'n', 'ga', ':LspAct<CR>')
   u.buf_map(bufnr, 'v', 'ga', '<Esc><cmd> LspRangeAct<CR>')
 
-  if client.supports_method 'textDocument/formatting' then
+  if client.supports_method('textDocument/formatting') then
     u.buf_command(bufnr, 'LspFormatting', function()
       lsp_formatting(bufnr)
     end)
 
-    vim.api.nvim_clear_autocmds {
+    vim.api.nvim_clear_autocmds({
       group = augroup,
       buffer = bufnr,
-    }
+    })
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = augroup,
       buffer = bufnr,
@@ -122,7 +122,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-for _, server in ipairs {
+for _, server in ipairs({
   -- "bashls",
   -- "ccls",
   'eslint',
@@ -131,6 +131,6 @@ for _, server in ipairs {
   -- "pyright",
   'sumneko_lua',
   'tsserver',
-} do
+}) do
   require('lsp.' .. server).setup(on_attach, capabilities)
 end

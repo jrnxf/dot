@@ -1,10 +1,10 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
-local telescope = require 'telescope'
-local actions = require 'telescope.actions'
-local trouble = require 'trouble.providers.telescope'
+local telescope = require('telescope')
+local actions = require('telescope.actions')
+local trouble = require('trouble.providers.telescope')
 
-telescope.setup {
+telescope.setup({
   defaults = {
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
@@ -23,7 +23,7 @@ telescope.setup {
       },
     },
   },
-}
+})
 
 if u.is_git_dir() == 0 then
   u.map('n', '<C-p>', ':lua require"telescope.builtin".git_files({show_untracked = true})<CR>')
@@ -34,9 +34,8 @@ end
 u.map('n', '<leader>fb', ':Telescope buffers<CR>')
 u.map('n', '<leader>fh', ':Telescope help_tags<CR>')
 u.map('n', '<leader>fo', ':Telescope oldfiles<CR>')
-u.map('n', '<leader>co', ':Telescope colorscheme<CR>')
 u.map('n', '<leader>fw', ':Telescope live_grep<CR>')
-u.map('n', '<leader>gb', ':Telescope git_branches<CR>')
+u.map('n', '<leader>co', ':Telescope colorscheme<CR>')
 -- TODO: study if it's possible to write the command below like the ones above (it has params, unlike the others)
 u.map(
   'n',

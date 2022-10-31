@@ -1,6 +1,6 @@
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-local lspkind = require 'lspkind'
+local cmp = require('cmp')
+local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 
 vim.opt.completeopt = 'menu,menuone,noselect'
 
@@ -11,7 +11,7 @@ cmp.setup({
     end,
   },
   formatting = {
-    format = lspkind.cmp_format {
+    format = lspkind.cmp_format({
       with_text = false,
       menu = {
         buffer = '[buf]',
@@ -20,7 +20,7 @@ cmp.setup({
         path = '[path]',
         luasnip = '[snip]',
       },
-    },
+    }),
   },
   experimental = {
     native_menu = false,
@@ -33,10 +33,10 @@ cmp.setup({
     ['<C-u>'] = cmp.mapping.scroll_docs(-1), -- up
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    },
+    }),
   },
   -- Sources order are actually their priority order
   sources = {
