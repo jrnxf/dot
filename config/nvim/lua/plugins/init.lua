@@ -1,11 +1,18 @@
-vim.cmd('packadd packer.nvim')
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    vim.cmd([[packadd packer.nvim]])
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
-  use({ 'wbthomason/packer.nvim', opt = true })
-
-  local config = function(name)
-    return string.format("require('plugins.%s')", name)
-  end
+  use('wbthomason/packer.nvim')
 
   use('tpope/vim-surround')
   use('tpope/vim-commentary')
@@ -15,13 +22,11 @@ return require('packer').startup(function(use)
   use({
     'folke/trouble.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
-    config = config('trouble'),
   })
 
   use({
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-    config = config('treesitter'),
   })
 
   use({ -- automatically close jsx tags
@@ -36,12 +41,10 @@ return require('packer').startup(function(use)
 
   use({
     'karb94/neoscroll.nvim',
-    config = config('neoscroll'),
   })
 
   use({
     'ggandor/leap.nvim',
-    config = config('leap'),
   })
 
   use({
@@ -53,44 +56,23 @@ return require('packer').startup(function(use)
     end,
   })
 
-  use({
-    'rmehri01/onenord.nvim',
-    config = function()
-      -- to inspect colors run: lua print(vim.inspect(require'onenord.colors'.load()))
-      local colors = {
-        bg = '#191c23',
-        active_line = '#262C37',
-      }
-
-      require('onenord').setup({
-        custom_highlights = {
-          CursorLine = {
-            bg = colors.active_line,
-          },
-        },
-        custom_colors = {
-          bg = colors.bg,
-          active = colors.bg,
-          float = colors.active_line,
-        },
-      })
-    end,
-  })
+  -- colorschemes
+  use('rmehri01/onenord.nvim')
+  use('navarasu/onedark.nvim')
+  use({ 'rose-pine/neovim', as = 'rose-pine' })
+  use('catppuccin/nvim')
 
   use({
     'kyazdani42/nvim-tree.lua',
     requires = 'kyazdani42/nvim-web-devicons',
-    config = config('tree'),
   })
 
   use({
     'akinsho/nvim-bufferline.lua',
-    config = config('bufferline'),
   })
 
   use({
     'nvim-lualine/lualine.nvim',
-    config = config('lualine'),
   })
 
   use({
@@ -110,8 +92,8 @@ return require('packer').startup(function(use)
       'hrsh7th/cmp-emoji', -- emojis
       'onsails/lspkind-nvim', -- icons pictograms
     },
-    config = config('cmp'),
   })
+
   use({
     'windwp/nvim-autopairs', -- autocomplete pairs
     config = function()
@@ -120,10 +102,10 @@ return require('packer').startup(function(use)
       })
     end,
   })
+
   use({
     'nvim-telescope/telescope.nvim',
     requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
-    config = config('telescope'),
   })
 
   use({
@@ -156,4 +138,10 @@ return require('packer').startup(function(use)
   })
 
   use('jose-elias-alvarez/typescript.nvim')
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)

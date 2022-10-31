@@ -1,3 +1,7 @@
+vim.notify('init')
 require('core')
 require('plugins')
-require('lsp')
+
+
+
+vim.cmd('colorscheme onenord')

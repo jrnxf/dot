@@ -1,3 +1,4 @@
+vim.notify("after/plugin/nvim-tree")
 local u = require('core.utils')
 
 require('nvim-tree').setup({

@@ -43,3 +43,18 @@ u.map(
   ':lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles", show_untracked = true })<CR>'
 )
 u.map('n', '<leader>cw', ':lua require"telescope.builtin".grep_string({search = vim.fn.expand("<cword>") })<CR>')
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    local bufferPath = vim.fn.expand('%:p')
+    if vim.fn.isdirectory(bufferPath) ~= 0 then
+      local ts_builtin = require('telescope.builtin')
+      vim.api.nvim_buf_delete(0, { force = true })
+      if u.is_git_dir() == 0 then
+        ts_builtin.git_files({ show_untracked = true })
+      else
+        ts_builtin.find_files()
+      end
+    end
+  end,
+})

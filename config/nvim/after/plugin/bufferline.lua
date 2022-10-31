@@ -1,3 +1,4 @@
+vim.notify('after/plugin/bufferline')
 require('bufferline').setup({
   options = {
     offsets = {
