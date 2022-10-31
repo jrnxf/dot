@@ -1,4 +1,4 @@
-require('neoscroll').setup {}
+require('neoscroll').setup({})
 
 local t = {}
 -- Syntax: t[keys] = {function, {function arguments}}

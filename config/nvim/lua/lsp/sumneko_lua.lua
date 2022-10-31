@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-  require('lspconfig').sumneko_lua.setup {
+  require('lspconfig').sumneko_lua.setup({
     on_attach = on_attach,
     settings = {
 
@@ -29,7 +29,7 @@ M.setup = function(on_attach, capabilities)
       debounce_text_changes = 150,
     },
     capabilities = capabilities,
-  }
+  })
 end
 
 return M

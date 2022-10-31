@@ -1,7 +1,7 @@
 local M = {}
 
 M.is_git_dir = function()
-  return os.execute 'git rev-parse --is-inside-work-tree >> /dev/null 2>&1'
+  return os.execute('git rev-parse --is-inside-work-tree >> /dev/null 2>&1')
 end
 
 M.reload_nvim_conf = function()
@@ -9,7 +9,7 @@ M.reload_nvim_conf = function()
     -- core, lsp, and plugins are namespaced under my lua folder
     -- since lua caches these modules, I need to manually set
     -- their values to nil in the cache to perform a full reload!
-    if name:match '^core' or name:match '^lsp' or name:match '^plugins' then
+    if name:match('^core') or name:match('^lsp') or name:match('^plugins') then
       package.loaded[name] = nil
     end
   end
@@ -31,7 +31,6 @@ end
 M.map = function(mode, key, cmd, opts)
   vim.api.nvim_set_keymap(mode, key, cmd, opts or options)
 end
-
 
 M.table = {
   some = function(tbl, cb)

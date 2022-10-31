@@ -1,6 +1,6 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
-require('fzf-lua').setup {
+require('fzf-lua').setup({
   keymap = {
     fzf = {
       ['ctrl-q'] = 'select-all+accept',
@@ -16,7 +16,7 @@ require('fzf-lua').setup {
   fzf_opts = {
     ['--layout'] = 'default',
   },
-}
+})
 
 if u.is_git_dir() == 0 then
   u.map('n', '<leader>f', '<cmd>FzfLua git_files<CR>')

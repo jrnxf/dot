@@ -1,4 +1,4 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
 vim.g.mapleader = ' '
 vim.g.loaded_netrw = 1

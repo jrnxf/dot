@@ -1,9 +1,9 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-  require('typescript').setup {
+  require('typescript').setup({
     server = {
       on_attach = function(client, bufnr)
         on_attach(client, bufnr)
@@ -16,7 +16,7 @@ M.setup = function(on_attach, capabilities)
       end,
       capabilities = capabilities,
     },
-  }
+  })
 end
 
 return M

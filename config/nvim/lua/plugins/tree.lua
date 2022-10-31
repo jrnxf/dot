@@ -1,6 +1,6 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
-require('nvim-tree').setup {
+require('nvim-tree').setup({
   hijack_directories = {
     enable = false, -- when I open a dir i usually use telescope to find my file. I also hate seeing nvim-tree in full screen
   },
@@ -39,6 +39,6 @@ require('nvim-tree').setup {
       },
     },
   },
-}
+})
 
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')

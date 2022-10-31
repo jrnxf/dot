@@ -1,10 +1,10 @@
-local u = require 'core.utils'
+local u = require('core.utils')
 
-require('trouble').setup {
+require('trouble').setup({
   -- your configuration comes here
   -- or leave it empty to use the default settings
   -- refer to the configuration section below
-}
+})
 
 -- Trouble
 u.map('n', '<leader>xw', '<cmd>Trouble workspace_diagnostics<cr>', { silent = true, noremap = true })

@@ -1,10 +1,10 @@
-local null_ls = require 'null-ls'
+local null_ls = require('null-ls')
 local b = null_ls.builtins
 
 local M = {}
 
 M.setup = function(on_attach)
-  null_ls.setup {
+  null_ls.setup({
     debug = true,
     sources = {
       b.diagnostics.eslint,
@@ -14,7 +14,7 @@ M.setup = function(on_attach)
       b.formatting.prettierd,
     },
     on_attach = on_attach,
-  }
+  })
 end
 
 return M

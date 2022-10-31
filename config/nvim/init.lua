@@ -1,3 +1,3 @@
-require 'core'
-require 'plugins'
-require 'lsp'
+require('core')
+require('plugins')
+require('lsp')
