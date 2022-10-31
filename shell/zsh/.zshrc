@@ -3,7 +3,7 @@ export ZSH="$HOME/.oh-my-zsh"
 plugins=(git tmux zsh-autosuggestions)
 
 # i like this but it's annoying in vscode
-# ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -17,17 +17,8 @@ alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
-alias skrrrt="~/Dev/skrrrt"
-alias s="cd ~/studio"
-alias ss="cd ~/studio/stx"
-alias sf="cd ~/studio/frontend"
-alias sb="cd ~/studio/backend"
-alias sd="cd ~/studio/design-system"
-alias m="cd ~/studio"
-alias ms="cd ~/studio/stx"
-alias mf="cd ~/studio/frontend"
-alias mb="cd ~/studio/backend"
-alias md="cd ~/studio/design-system"
+alias skrrrt="cd ~/Dev/skrrrt"
+alias s="cd ~/Dev/skrrrt"
 alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
@@ -38,7 +29,7 @@ alias cat="cat"
 
 alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-window right,border-left  --padding=0'
 
-alias v='nvim'
+alias v='nvim .'
 alias vim="nvim"
 alias vd='cd ~/dotfiles && vim .'
 

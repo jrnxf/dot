@@ -8,8 +8,8 @@ telescope.setup({
   defaults = {
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
-    layout_strategy = 'horizontal',
-    layout_config = { vertical = { preview_width = 0.7 } },
+    layout_strategy = 'flex',
+    layout_config = { flex = { preview_width = 0.7 } },
     file_ignore_patterns = { 'node_modules/.*' },
     mappings = {
       i = {
