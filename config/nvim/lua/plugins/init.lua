@@ -25,7 +25,7 @@ return require('packer').startup({
     use('tpope/vim-fugitive')
     use('moll/vim-bbye')
 
-    use('stevearc/dressing.nvim')
+    use('stevearc/dressing.nvim') -- breaks in nvim-tree floating mode
     use({
       'vigoux/notifier.nvim',
       config = function()
@@ -94,7 +94,7 @@ return require('packer').startup({
     use({
       'kyazdani42/nvim-tree.lua',
       requires = 'kyazdani42/nvim-web-devicons',
-      config = config('tree'),
+      config = config('nvim-tree'),
     })
 
     use({
@@ -124,7 +124,7 @@ return require('packer').startup({
         'hrsh7th/cmp-emoji', -- emojis
         'onsails/lspkind-nvim', -- icons pictograms
         'L3MON4D3/LuaSnip', -- nvim-cmp needs at least one snippet source
-        'saadparwaiz1/cmp_luasnip' -- luasnips,
+        'saadparwaiz1/cmp_luasnip', -- luasnips,
       },
       config = config('cmp'),
     })
@@ -175,7 +175,7 @@ return require('packer').startup({
 
     use('jose-elias-alvarez/typescript.nvim')
 
-    -- TODO Automatically set up your configuration after cloning packer.nvim
+    -- TODO: Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
       require('packer').sync()
