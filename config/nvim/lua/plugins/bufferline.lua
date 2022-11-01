@@ -4,7 +4,7 @@ require('bufferline').setup({
       {
         text = '',
         filetype = 'NvimTree',
-        -- padding = 1,
+        padding = 1,
       },
     },
     show_buffer_icons = true,

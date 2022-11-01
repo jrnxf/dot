@@ -3,6 +3,10 @@ require('lualine').setup({
     theme = 'onenord',
     section_separators = { left = '', right = '' },
     component_separators = { left = '', right = '' },
+    disabled_filetypes = {
+      'packer', -- not necessary when in float mode but still keeping this around
+      'NvimTree',
+    },
   },
   sections = {
     lualine_a = { 'mode' },

@@ -4,6 +4,11 @@ local telescope = require('telescope')
 local actions = require('telescope.actions')
 local trouble = require('trouble.providers.telescope')
 
+local switch_to_tree_view = function(prompt_bufnr)
+  actions.close(prompt_bufnr)
+  vim.api.nvim_command(':NvimTreeToggle')
+end
+
 telescope.setup({
   defaults = {
     prompt_prefix = '❯ ',
@@ -13,11 +18,13 @@ telescope.setup({
     file_ignore_patterns = { 'node_modules/.*' },
     mappings = {
       i = {
+        ['<C-n>'] = switch_to_tree_view,
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
         ['<C-t>'] = trouble.open_with_trouble,
       },
       n = {
+        ['<C-n>'] = switch_to_tree_view,
         ['<C-c>'] = actions.close,
         ['<C-t>'] = trouble.open_with_trouble,
       },
