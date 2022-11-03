@@ -1,16 +1,11 @@
 local u = require('core.utils')
 
 vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    local bufferPath = vim.fn.expand('%:p')
-    if vim.fn.isdirectory(bufferPath) ~= 0 then
-      local ts_builtin = require('telescope.builtin')
+  callback = function(args)
+    vim.notify(args.file)
+    if vim.fn.isdirectory(args.file) ~= 0 then
       vim.api.nvim_buf_delete(0, { force = true })
-      if u.is_git_dir() == 0 then
-        ts_builtin.git_files({ show_untracked = true })
-      else
-        ts_builtin.find_files()
-      end
+      u.smart_telescope_files()
     end
   end,
 })
@@ -32,16 +27,15 @@ vim.api.nvim_create_autocmd('DiagnosticChanged', {
   end,
 })
 
-vim.cmd('command! Reload lua require("core.utils").reload()')
-vim.cmd('command! LspDeclaration lua vim.lsp.buf.declaration()')
-vim.cmd('command! LspDefinition lua vim.lsp.buf.definition()')
+vim.cmd('au User FugitiveIndex nmap <buffer> dt :Gtabedit <Plug><cfile><Bar>Gdiffsplit<CR>')
+
+vim.cmd('command! FullReload lua require("core.utils").full_reload()')
+
 vim.cmd('command! LspFormatting lua vim.lsp.buf.formatting()')
 vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 vim.cmd('command! LspHover lua vim.lsp.buf.hover()')
 vim.cmd('command! LspRename lua vim.lsp.buf.rename()')
-vim.cmd('command! LspReferences lua vim.lsp.buf.references()')
 vim.cmd('command! LspTypeDefinition lua vim.lsp.buf.type_definition()')
-vim.cmd('command! LspImplementation lua vim.lsp.buf.implementation()')
 vim.cmd('command! LspSignatureHelp lua vim.lsp.buf.signature_help()')
 vim.cmd('command! LspDiagQuickfix lua vim.diagnostic.setqflist()')
 vim.cmd('command! LspDiagLoclist lua vim.diagnostic.setloclist()')

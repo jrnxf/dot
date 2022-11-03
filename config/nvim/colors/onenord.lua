@@ -14,6 +14,6 @@ require('onenord').setup({
   },
   custom_colors = {
     bg = colors.primary,
-    active = colors.secondary,
+    active = colors.primary,
   },
 })

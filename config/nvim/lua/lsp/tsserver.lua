@@ -12,7 +12,7 @@ M.setup = function(on_attach, capabilities)
         u.buf_map(bufnr, 'n', 'gO', ':TypescriptOrganizeImports<CR>')
         u.buf_map(bufnr, 'n', 'gI', ':TypescriptRenameFile<CR>')
         -- override
-        u.buf_map(bufnr, 'n', 'gd', ':TypescriptGoToSourceDefinition<CR>')
+        -- u.buf_map(bufnr, 'n', 'gd', ':TypescriptGoToSourceDefinition<CR>')
       end,
       capabilities = capabilities,
     },

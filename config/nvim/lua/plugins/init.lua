@@ -45,12 +45,6 @@ return require('packer').startup({
     })
 
     use({
-      'folke/trouble.nvim',
-      requires = 'kyazdani42/nvim-web-devicons',
-      config = config('trouble'),
-    })
-
-    use({
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
       config = config('treesitter'),
@@ -140,7 +134,20 @@ return require('packer').startup({
 
     use({
       'nvim-telescope/telescope.nvim',
-      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-fzy-native.nvim' },
+      requires = {
+        'nvim-lua/plenary.nvim', -- sssential library
+        'kyazdani42/nvim-web-devicons', -- file icons
+        { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }, -- faster and better search syntax
+        'xiyaowong/telescope-emoji.nvim', -- emoji picker
+        {
+          'dhruvmanila/telescope-bookmarks.nvim',
+          tag = '*',
+          -- Uncomment if the selected browser is Firefox, Waterfox or buku
+          -- requires = {
+          --   'kkharji/sqlite.lua',
+          -- }
+        },
+      },
       config = config('telescope'),
     })
 

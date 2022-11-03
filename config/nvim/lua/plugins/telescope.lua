@@ -1,8 +1,11 @@
 local u = require('core.utils')
 
+local km = require('core.keymaps')
+
 local telescope = require('telescope')
+local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
-local trouble = require('trouble.providers.telescope')
+local cmd = vim.api.nvim_create_user_command
 
 local switch_to_tree_view = function(prompt_bufnr)
   actions.close(prompt_bufnr)
@@ -13,40 +16,71 @@ telescope.setup({
   defaults = {
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
-    layout_strategy = 'flex',
-    layout_config = { flex = { preview_width = 0.7 } },
+    layout_strategy = 'horizontal',
+    layout_config = { horizontal = { width = 0.9, preview_width = 0.6, height = 0.9 } },
+    { 'nvim-telescope/telescope-github.nvim' },
     file_ignore_patterns = { 'node_modules/.*' },
     mappings = {
       i = {
         ['<C-n>'] = switch_to_tree_view,
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
-        ['<C-t>'] = trouble.open_with_trouble,
+        ['<C-p>'] = actions.close,
+        ['<C-d>'] = actions.delete_buffer,
       },
       n = {
         ['<C-n>'] = switch_to_tree_view,
         ['<C-c>'] = actions.close,
-        ['<C-t>'] = trouble.open_with_trouble,
+        ['<C-p>'] = actions.close,
+        ['<C-d>'] = actions.delete_buffer,
       },
+    },
+  },
+  extensions = {
+    emoji = {
+      action = function(emoji)
+        -- emoji represents a table with the following properties:
+        -- {name="", value="", cagegory="", description=""}
+        vim.api.nvim_put({ emoji.value }, 'c', false, true) -- insert when picked
+      end,
+    },
+    bookmarks = {
+      selected_browser = 'chrome',
     },
   },
 })
 
-if u.is_git_dir() == 0 then
-  u.map('n', '<C-p>', ':lua require"telescope.builtin".git_files({show_untracked = true})<CR>')
-else
-  u.map('n', '<C-p>', ':Telescope find_files<CR>')
-end
+telescope.load_extension('fzf')
+telescope.load_extension('emoji')
+telescope.load_extension('bookmarks')
 
-u.map('n', '<leader>fb', ':Telescope buffers<CR>')
-u.map('n', '<leader>fh', ':Telescope help_tags<CR>')
-u.map('n', '<leader>fo', ':Telescope oldfiles<CR>')
-u.map('n', '<leader>fw', ':Telescope live_grep<CR>')
-u.map('n', '<leader>co', ':Telescope colorscheme<CR>')
--- TODO: study if it's possible to write the command below like the ones above (it has params, unlike the others)
-u.map(
-  'n',
-  '<leader>fd',
-  ':lua require"telescope.builtin".git_files({cwd = "$HOME/dotfiles", show_untracked = true })<CR>'
-)
-u.map('n', '<leader>cw', ':lua require"telescope.builtin".grep_string({search = vim.fn.expand("<cword>") })<CR>')
+cmd('Rg', function(props)
+  builtin.grep_string({ search = props.args })
+end, { nargs = '*' })
+
+km.nnoremap('<C-p>', u.smart_telescope_files)
+
+-- MAPPINGS
+
+-- note, the idea behind the 'tt' mapping is so that not every
+-- builtin becomes yet another mapping. 'tt' and typing in the builtin
+-- is less memory overload, fast enough, and easier to maintain
+km.nnoremap('<leader>tt', ':Telescope<CR>')
+
+-- that being said, some super common builtins I'm fine with mapping
+-- mappings for
+km.nnoremap('<leader>fd', function()
+  builtin.git_files({ cwd = '$HOME/dotfiles', show_untracked = true })
+end)
+km.nnoremap('<leader>cw', function()
+  builtin.grep_string({ search = vim.fn.expand('<cword>') })
+end)
+km.nnoremap('<leader>bu', builtin.buffers)
+km.nnoremap('<leader>ht', builtin.help_tags)
+km.nnoremap('<leader>co', builtin.commands)
+km.nnoremap('<leader>ke', builtin.keymaps)
+km.nnoremap('<leader>lg', builtin.live_grep)
+
+-- TODO: see if it's possible to add these extensions below as options when using the 'tt' mapping
+km.nnoremap('<leader>teb', ':Telescope bookmarks<CR>')
+km.nnoremap('<leader>tee', ':Telescope emoji<CR>')
