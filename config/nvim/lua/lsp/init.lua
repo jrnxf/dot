@@ -1,5 +1,9 @@
 local u = require('core.utils')
 
+local builtin = require('telescope.builtin')
+
+local km = require('core.keymaps')
+
 local lsp = vim.lsp
 
 local border_opts = {
@@ -16,8 +20,6 @@ vim.diagnostic.config({
 lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
 lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 
-local km = require('core.keymaps')
-
 local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
 local lsp_formatting = function(bufnr)
@@ -27,19 +29,25 @@ end
 -- triggered when an lsp client attaches on a buffer
 local on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
-  u.buf_map(bufnr, 'n', 'gD', ':LspDeclaration<CR>')
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
   u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
   u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
-  u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>')
-  u.buf_map(bufnr, 'n', 'gt', ':LspTypeDefinition<CR>')
-  u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>')
-  u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>')
   u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>')
   u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>')
+
+
+  -- u.buf_map(bufnr, 'n', 'gd', ':LspDefinition<CR>')
+  -- u.buf_map(bufnr, 'n', 'gD', ':LspDeclaration<CR>')
+  -- u.buf_map(bufnr, 'n', 'gr', ':LspReferences<CR>')
+  -- u.buf_map(bufnr, 'n', 'gi', ':LspImplementation<CR>')
+
+  km.nnoremap('gd', builtin.lsp_definitions)
+  km.nnoremap('gD', builtin.lsp_type_definitions)
+  km.nnoremap('gr', builtin.lsp_references)
+  km.nnoremap('gi', builtin.lsp_implementations)
 
   if client.supports_method('textDocument/formatting') then
     u.buf_command(bufnr, 'LspFormatting', function()

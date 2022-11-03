@@ -29,21 +29,18 @@ u.map('n', ']b', ':bnext<CR>', { noremap = true })
 u.map('n', '[B', ':bfirst<CR>', { noremap = true })
 u.map('n', ']B', ':blast<CR>', { noremap = true })
 
-u.map('n', '<leader>q', ':qall!<CR>')
-u.map('n', '<leader>bb', ':Bdelete<CR>') -- uses bbye
+u.map('n', '<leader>w', ':Bdelete<CR>') -- uses bbye
 
 u.map('n', '<leader>j', ':update<CR>')
+u.map('n', '<C-[>', ':update<CR>')
 u.map('n', '<leader><leader>', ':wall<CR>')
 
-u.map('n', '<leader>re', ':Reload<CR>')
-
 -- Window
-u.map('n', '<Up>', ':wincmd -<CR>')
-u.map('n', '<Down>', ':wincmd +<CR>')
-u.map('n', '<Left>', ':wincmd <<CR>')
-u.map('n', '<Right>', ':wincmd ><CR>')
+u.map('n', '<Up>', ':wincmd +<CR>')
+u.map('n', '<Down>', ':wincmd -<CR>')
+u.map('n', '<Left>', ':wincmd ><CR>')
+u.map('n', '<Right>', ':wincmd <<CR>')
 u.map('n', '<leader>=', ':wincmd =<CR>')
-u.map('n', '<leader>=', ':Wincmd =<CR>')
 
 -- visual
 -- (un)indent lines
@@ -67,10 +64,12 @@ u.map('c', '<C-l>', '<Right>', { silent = false })
 u.map('c', '<C-d>', '<Del>', { silent = false })
 u.map('c', '<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false }) -- prints the current file path
 
+u.map('n', 'gx', ':!open <cWORD><CR><CR>') -- open browser to url under cWORD
+
 -- Git
--- u.map('n', 'gs', ':G<CR>') -- theirs
--- u.map('n', 'gj', ':diffget //2<CR>') -- theirs
--- u.map('n', 'gk', ':diffget //3<CR>') -- mine
+u.map('n', 'gs', ':0G<CR>') -- theirs
+u.map('n', 'gj', ':diffget //2<CR>') -- theirs
+u.map('n', 'gk', ':diffget //3<CR>') -- mine
 
 -- Search and Replace
 -- 'c.' for word, '<leader>c.' for WORD
@@ -87,7 +86,27 @@ u.map('n', '<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<
   silent = true,
 })
 
--- jump to the next item, skipping the group = true});
+-- Stolen github.com/ThePrimeagen/.dotfiles
+
 local M = {}
+
+local function bind(op, outer_opts)
+  outer_opts = outer_opts or { noremap = true }
+  return function(lhs, rhs, opts)
+    opts = vim.tbl_extend('force', outer_opts, opts or {})
+    vim.keymap.set(op, lhs, rhs, opts)
+  end
+end
+
+-- For more info see :help map-modes and :help lua-keymap
+M.map = bind('', { noremap = false })
+M.noremap = bind('')
+M.nmap = bind('n', { noremap = false })
+M.nnoremap = bind('n')
+M.vnoremap = bind('v')
+M.xnoremap = bind('x')
+M.inoremap = bind('i')
+M.tnoremap = bind('t')
+M.onoremap = bind('o')
 
 return M
