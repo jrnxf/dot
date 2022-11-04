@@ -1,5 +1,8 @@
+local km = require('core.keymaps')
+
 require('bufferline').setup({
   options = {
+    -- mode = 'tabs', -- useful if you prefer to bufferline to actually operate on tabs
     offsets = {
       {
         text = '',
@@ -8,7 +11,8 @@ require('bufferline').setup({
       },
     },
     show_buffer_icons = true,
-    show_buffer_close_icons = true,
-    show_close_icon = true,
   },
 })
+
+km.nnoremap('<Tab>', ':BufferLineCycleNext<CR>', { noremap = true })
+km.nnoremap('<S-Tab>', ':BufferLineCyclePrev<CR>', { noremap = true })

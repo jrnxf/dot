@@ -24,7 +24,7 @@ require('nvim-tree').setup({
   },
   view = {
     hide_root_folder = true,
-    adaptive_size = true, -- unnecessary in float mode with smart sizing
+    adaptive_size = true,
     -- NOTE:
     -- @ref https://github.com/nvim-tree/nvim-tree.lua/pull/1538#issuecomment-1223314278
     -- logic to calculate dynanic, centered tree positioning

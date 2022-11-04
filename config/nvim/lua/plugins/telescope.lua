@@ -58,29 +58,29 @@ cmd('Rg', function(props)
   builtin.grep_string({ search = props.args })
 end, { nargs = '*' })
 
-km.nnoremap('<C-p>', u.smart_telescope_files)
 
 -- MAPPINGS
 
 -- note, the idea behind the 'tt' mapping is so that not every
 -- builtin becomes yet another mapping. 'tt' and typing in the builtin
 -- is less memory overload, fast enough, and easier to maintain
-km.nnoremap('<leader>tt', ':Telescope<CR>')
+km.nnoremap(';t', builtin.builtin)
 
 -- that being said, some super common builtins I'm fine with mapping
 -- mappings for
-km.nnoremap('<leader>fd', function()
+km.nnoremap(';f', u.smart_telescope_files)
+km.nnoremap(';d', function()
   builtin.git_files({ cwd = '$HOME/dotfiles', show_untracked = true })
 end)
-km.nnoremap('<leader>cw', function()
+km.nnoremap(';cw', function()
   builtin.grep_string({ search = vim.fn.expand('<cword>') })
 end)
-km.nnoremap('<leader>bu', builtin.buffers)
-km.nnoremap('<leader>ht', builtin.help_tags)
-km.nnoremap('<leader>co', builtin.commands)
-km.nnoremap('<leader>ke', builtin.keymaps)
-km.nnoremap('<leader>lg', builtin.live_grep)
+km.nnoremap(';;', builtin.resume)
+km.nnoremap(';b', builtin.buffers)
+km.nnoremap(';cc', builtin.commands)
+km.nnoremap(';ht', builtin.help_tags)
+km.nnoremap(';g', builtin.live_grep)
 
--- TODO: see if it's possible to add these extensions below as options when using the 'tt' mapping
-km.nnoremap('<leader>teb', ':Telescope bookmarks<CR>')
-km.nnoremap('<leader>tee', ':Telescope emoji<CR>')
+-- TODO: see if it's possible to add these extensions below as options when using the ';t' mapping
+km.nnoremap(';eb', ':Telescope bookmarks<CR>')
+km.nnoremap(';ee', ':Telescope emoji<CR>')

@@ -4,6 +4,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
   callback = function(args)
     vim.notify(args.file)
     if vim.fn.isdirectory(args.file) ~= 0 then
+      -- this is a great setup
       vim.api.nvim_buf_delete(0, { force = true })
       u.smart_telescope_files()
     end
@@ -31,7 +32,7 @@ vim.cmd('au User FugitiveIndex nmap <buffer> dt :Gtabedit <Plug><cfile><Bar>Gdif
 
 vim.cmd('command! FullReload lua require("core.utils").full_reload()')
 
-vim.cmd('command! LspFormatting lua vim.lsp.buf.formatting()')
+vim.cmd('command! LspFormatting lua vim.lsp.buf.format()')
 vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 vim.cmd('command! LspHover lua vim.lsp.buf.hover()')
 vim.cmd('command! LspRename lua vim.lsp.buf.rename()')
