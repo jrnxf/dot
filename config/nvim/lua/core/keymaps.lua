@@ -23,17 +23,7 @@ u.map('v', 'Y', '<Esc>y$gv', { noremap = true })
 u.map('n', 'n', 'nzzzv', { noremap = true })
 u.map('n', 'N', 'Nzzzv', { noremap = true })
 
--- Navigate buffers
-u.map('n', '[b', ':bprevious<CR>', { noremap = true })
-u.map('n', ']b', ':bnext<CR>', { noremap = true })
-u.map('n', '[B', ':bfirst<CR>', { noremap = true })
-u.map('n', ']B', ':blast<CR>', { noremap = true })
-
-u.map('n', '<leader>w', ':Bdelete<CR>') -- uses bbye
-
-u.map('n', '<leader>j', ':update<CR>')
-u.map('n', '<C-[>', ':update<CR>')
-u.map('n', '<leader><leader>', ':wall<CR>')
+u.map('n', '<leader>bb', ':Bdelete<CR>') -- uses bbye
 
 -- Window
 u.map('n', '<Up>', ':wincmd +<CR>')

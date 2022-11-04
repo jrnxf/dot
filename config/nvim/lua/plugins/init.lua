@@ -25,7 +25,7 @@ return require('packer').startup({
     use('tpope/vim-fugitive')
     use('moll/vim-bbye')
 
-    use('stevearc/dressing.nvim') -- breaks in nvim-tree floating mode
+    use('stevearc/dressing.nvim')
     use({
       'vigoux/notifier.nvim',
       config = function()
@@ -36,6 +36,8 @@ return require('packer').startup({
         })
       end,
     })
+
+    use('folke/zen-mode.nvim')
     use({
       'folke/todo-comments.nvim',
       requires = 'nvim-lua/plenary.nvim',
@@ -117,7 +119,7 @@ return require('packer').startup({
         'hrsh7th/cmp-cmdline', -- vim's cmdline
         'hrsh7th/cmp-emoji', -- emojis
         'onsails/lspkind-nvim', -- icons pictograms
-        'L3MON4D3/LuaSnip', -- nvim-cmp needs at least one snippet source
+        'L3MON4D3/LuaSnip', -- nvim-cmp needs at least one snippet source TODO: eval
         'saadparwaiz1/cmp_luasnip', -- luasnips,
       },
       config = config('cmp'),
