@@ -12,6 +12,12 @@ brew "python@3.10"
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Remove large files or passwords from Git history like git-filter-branch
+brew "bfg"
 # Python code formatter
 brew "black", link: false
 # GNU File, Shell, and Text utilities
@@ -24,8 +30,6 @@ brew "exa"
 brew "figlet"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# GNU internationalization (i18n) and localization (l10n) library
-brew "gettext"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -36,6 +40,8 @@ brew "go"
 brew "gotop"
 # Command-Line Interface for Hasura GraphQL Engine
 brew "hasura-cli"
+# Kubernetes package manager
+brew "helm"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Kubernetes command-line interface
@@ -74,6 +80,8 @@ brew "stylua"
 brew "thefuck"
 # Terminal multiplexer
 brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
 # Access X11 clipboards from the command-line
 brew "xclip"
 # JavaScript package manager
@@ -83,13 +91,11 @@ brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # prettier, on SPEED!
-brew "fsouza/prettierd/prettierd"
+brew "fsouza/prettierd/prettierd", link: false
 # Development engine for Kubernetes
 brew "garden-io/garden/garden-cli"
 # Command-line helper for the 1Password password manager
 cask "1password-cli"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Cross platform SQL editor and database management app
 cask "beekeeper-studio"
 # Calendar for professionals and teams
@@ -109,6 +115,8 @@ cask "google-chrome"
 cask "handbrake"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Open-source keystroke visualizer
+cask "keycastr"
 # App to manage software development and track bugs
 cask "linear-linear"
 # Screen and video recording software

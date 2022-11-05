@@ -1,7 +1,7 @@
 local km = require('core.keymaps')
 local opts = { silent = true }
 
-km.nnoremap('<leader>a', function()
+km.nnoremap('<C-a>', function()
   require('harpoon.mark').add_file()
 end, opts)
 km.nnoremap('<C-h>', function()
