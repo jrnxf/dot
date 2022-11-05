@@ -1,0 +1,22 @@
+local km = require('core.keymaps')
+local opts = { silent = true }
+
+km.nnoremap('<leader>a', function()
+  require('harpoon.mark').add_file()
+end, opts)
+km.nnoremap('<C-h>', function()
+  require('harpoon.ui').toggle_quick_menu()
+end, opts)
+
+km.nnoremap('<C-j>', function()
+  require('harpoon.ui').nav_file(1)
+end, opts)
+km.nnoremap('<C-k>', function()
+  require('harpoon.ui').nav_file(2)
+end, opts)
+km.nnoremap('<C-l>', function()
+  require('harpoon.ui').nav_file(3)
+end, opts)
+km.nnoremap('<C-;>', function()
+  require('harpoon.ui').nav_file(4)
+end, opts)

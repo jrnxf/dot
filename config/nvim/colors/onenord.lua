@@ -1,6 +1,6 @@
 local colors = {
-  primary = '#191c23',
-  secondary = '#1e212a',
+  primary = '#151a23',
+  secondary = '#191f29',
 }
 
 -- paste in command mode to see available colors
