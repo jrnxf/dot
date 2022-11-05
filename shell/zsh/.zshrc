@@ -13,14 +13,12 @@ export EDITOR="nvim"
 
 alias dev="~/Dev"
 alias p="cd ~/Dev/pocus"
-alias vp="p && v"
 alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear="clear && printf '\e[3J'"
 alias skrrrt="cd ~/Dev/skrrrt"
 alias s="skrrrt"
-alias vs="s && v"
 alias dot="cd ~/dotfiles"
 alias x="exit"
 alias q="clear"
@@ -33,7 +31,6 @@ alias fzf='fzf --height=90% --preview "bat --line-range :500 {}" --preview-windo
 
 alias v='nvim .'
 alias vim="nvim"
-alias vd='cd ~/dotfiles && vim .'
 
 
 alias g="git"

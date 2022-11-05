@@ -2,9 +2,7 @@ local u = require('core.utils')
 
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function(args)
-    vim.notify(args.file)
     if vim.fn.isdirectory(args.file) ~= 0 then
-      -- this is a great setup
       vim.api.nvim_buf_delete(0, { force = true })
       u.smart_telescope_files()
     end

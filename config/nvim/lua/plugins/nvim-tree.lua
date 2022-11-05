@@ -1,9 +1,9 @@
 local u = require('core.utils')
 
-local close_nvim_open_telescope = function()
-  vim.api.nvim_command(':NvimTreeToggle')
-  u.smart_telescope_files()
-end
+-- local close_nvim_open_telescope = function()
+--   vim.api.nvim_command(':NvimTreeToggle')
+--   u.smart_telescope_files()
+-- end
 
 require('nvim-tree').setup({
   hijack_directories = {
@@ -67,11 +67,11 @@ require('nvim-tree').setup({
       list = {
         { key = '<C-c>', action = 'close' },
         { key = '<C-w>', action = 'close' },
-        {
-          key = '<C-p>',
-          action = 'close_nvim_open_telescope',
-          action_cb = close_nvim_open_telescope,
-        },
+        -- {
+        --   key = '<C-p>',
+        --   action = 'close_nvim_open_telescope',
+        --   action_cb = close_nvim_open_telescope,
+        -- },
         { key = '<C-R>', action = 'refresh' },
         { key = 'a', action = 'create' },
         { key = 'd', action = 'remove' },
@@ -89,14 +89,3 @@ require('nvim-tree').setup({
 })
 
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
-
--- recommmended way to close when NvimTree is only window, but very buggy
--- @ref https://github.com/nvim-tree/nvim-tree.lua/issues/1368
--- vim.api.nvim_create_autocmd('BufEnter', {
---   nested = true,
---   callback = function()
---     if #vim.api.nvim_list_wins() == 1 and vim.api.nvim_buf_get_name(0):match('NvimTree_') ~= nil then
---       vim.cmd('quit')
---     end
---   end,
--- })

@@ -9,6 +9,8 @@ require('nvim-treesitter.configs').setup({
     'lua',
     'markdown',
     'markdown_inline',
+    'prisma',
+    'query',
     'scss',
     'toml',
     'tsx',
@@ -20,6 +22,9 @@ require('nvim-treesitter.configs').setup({
     disable = function(_, bufnr)
       return vim.api.nvim_buf_line_count(bufnr) > 5000
     end,
+  },
+  playground = {
+    enable = true,
   },
   indent = {
     enable = true,

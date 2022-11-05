@@ -1,4 +1,3 @@
-vim.notify('lsp.init')
 local u = require('core.utils')
 local km = require('core.keymaps')
 local nvim_lsp = require('lspconfig')
@@ -43,10 +42,12 @@ end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities() -- TODO: eval differences here between above
 
+nvim_lsp.prismals.setup({})
+
 nvim_lsp.eslint.setup({
   capabilities = capabilities,
   on_attach = function(client, bufnr)
-    base_on_attach(bufnr)
+    base_on_attach(client, bufnr)
     client.server_capabilities.documentFormattingProvider = true
   end,
   root_dir = nvim_lsp.util.root_pattern('.eslintrc', '.eslintrc.js', '.eslintrc.json'),

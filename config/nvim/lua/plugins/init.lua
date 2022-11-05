@@ -48,6 +48,9 @@ return require('packer').startup({
 
     use({
       'nvim-treesitter/nvim-treesitter',
+      requires = {
+        'nvim-treesitter/playground', -- not required, but I like
+      },
       run = ':TSUpdate',
       config = config('treesitter'),
     })
@@ -94,11 +97,6 @@ return require('packer').startup({
     })
 
     use({
-      'akinsho/nvim-bufferline.lua',
-      config = config('bufferline'),
-    })
-
-    use({
       'nvim-lualine/lualine.nvim',
       config = config('lualine'),
     })
@@ -134,6 +132,7 @@ return require('packer').startup({
       end,
     })
 
+    use({ 'ThePrimeagen/harpoon', config = config('harpoon') })
     use({
       'nvim-telescope/telescope.nvim',
       requires = {
@@ -141,14 +140,7 @@ return require('packer').startup({
         'kyazdani42/nvim-web-devicons', -- file icons
         { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }, -- faster and better search syntax
         'xiyaowong/telescope-emoji.nvim', -- emoji picker
-        {
-          'dhruvmanila/telescope-bookmarks.nvim',
-          tag = '*',
-          -- Uncomment if the selected browser is Firefox, Waterfox or buku
-          -- requires = {
-          --   'kkharji/sqlite.lua',
-          -- }
-        },
+        { 'dhruvmanila/telescope-bookmarks.nvim', tag = '*' },
       },
       config = config('telescope'),
     })
@@ -182,6 +174,16 @@ return require('packer').startup({
       requires = 'nvim-lua/plenary.nvim',
     })
 
+    use({
+      'folke/which-key.nvim',
+      config = function()
+        require('which-key').setup({
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        })
+      end,
+    })
     use('jose-elias-alvarez/typescript.nvim')
 
     -- TODO: Automatically set up your configuration after cloning packer.nvim
