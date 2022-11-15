@@ -10,6 +10,7 @@ source $ZSH/oh-my-zsh.sh
 export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/Dev/pocus/development/scripts:$PATH
 
 export EDITOR="nvim"
+export POCUS_GARDEN_ENVIRONMENT="cloud"
 
 alias dev="~/Dev"
 alias p="cd ~/Dev/pocus"

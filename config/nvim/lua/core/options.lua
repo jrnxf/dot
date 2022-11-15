@@ -26,6 +26,9 @@ local function load_options()
     -- Performance
     lazyredraw = true,
 
+    -- winbar
+    winbar = '%=%m %f', -- off to right, [+] if modified, file path
+
     -- Search
     inccommand = 'nosplit', -- show substitutions incrementally
     ignorecase = true,

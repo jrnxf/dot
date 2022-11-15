@@ -1,14 +1,8 @@
 local u = require('core.utils')
 
--- local close_nvim_open_telescope = function()
---   vim.api.nvim_command(':NvimTreeToggle')
---   u.smart_telescope_files()
--- end
-
 require('nvim-tree').setup({
   hijack_directories = {
-    enable = true,
-    -- enable = false, -- when I open a dir i usually use telescope to find my file. I also hate seeing nvim-tree in full screen
+    enable = false, -- don't auto open nvim_tree on directories
   },
   update_focused_file = {
     enable = true,
@@ -67,11 +61,6 @@ require('nvim-tree').setup({
       list = {
         { key = '<C-c>', action = 'close' },
         { key = '<C-w>', action = 'close' },
-        -- {
-        --   key = '<C-p>',
-        --   action = 'close_nvim_open_telescope',
-        --   action_cb = close_nvim_open_telescope,
-        -- },
         { key = '<C-R>', action = 'refresh' },
         { key = 'a', action = 'create' },
         { key = 'd', action = 'remove' },

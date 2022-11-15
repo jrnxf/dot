@@ -1,16 +1,21 @@
 local u = require('core.utils')
-
 local km = require('core.keymaps')
 
 local telescope = require('telescope')
+local conf = require('telescope.config').values
+local finders = require('telescope.finders')
+local make_entry = require('telescope.make_entry')
+local pickers = require('telescope.pickers')
+local scan = require('plenary.scandir')
 local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
-local cmd = vim.api.nvim_create_user_command
+local action_set = require('telescope.actions.set')
+local action_state = require('telescope.actions.state')
 
--- local switch_to_tree_view = function(prompt_bufnr)
---   actions.close(prompt_bufnr)
---   vim.api.nvim_command(':NvimTreeToggle')
--- end
+local path = require('plenary.path')
+local os_sep = path.path.sep
+
+local cmd = vim.api.nvim_create_user_command
 
 telescope.setup({
   defaults = {
@@ -26,14 +31,12 @@ telescope.setup({
     file_ignore_patterns = { 'node_modules/.*' },
     mappings = {
       i = {
-        -- ['<C-n>'] = switch_to_tree_view,
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
         ['<C-p>'] = actions.close,
         ['<C-d>'] = actions.delete_buffer,
       },
       n = {
-        -- ['<C-n>'] = switch_to_tree_view,
         ['<C-c>'] = actions.close,
         ['<C-p>'] = actions.close,
         ['<C-d>'] = actions.delete_buffer,
@@ -63,12 +66,55 @@ telescope.load_extension('emoji')
 telescope.load_extension('bookmarks')
 telescope.load_extension('harpoon')
 
+-- custom pickers
+local live_grep_in_folder = function(opts)
+  opts = opts or {}
+  local data = {}
+  scan.scan_dir(vim.loop.cwd(), {
+    hidden = opts.hidden,
+    only_dirs = true,
+    respect_gitignore = opts.respect_gitignore,
+    on_insert = function(entry)
+      table.insert(data, entry .. os_sep)
+    end,
+  })
+  table.insert(data, 1, '.' .. os_sep)
+
+  pickers
+    .new(opts, {
+      prompt_title = 'Select Folder',
+      finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file(opts) }),
+      previewer = conf.file_previewer(opts),
+      sorter = conf.file_sorter(opts),
+      attach_mappings = function(prompt_bufnr)
+        action_set.select:replace(function()
+          local current_picker = action_state.get_current_picker(prompt_bufnr)
+          local dirs = {}
+          local selections = current_picker:get_multi_selection()
+          if vim.tbl_isempty(selections) then
+            table.insert(dirs, action_state.get_selected_entry().value)
+          else
+            for _, selection in ipairs(selections) do
+              table.insert(dirs, selection.value)
+            end
+          end
+          actions._close(prompt_bufnr, current_picker.initial_mode == 'insert')
+          require('telescope.builtin').live_grep({ search_dirs = dirs })
+        end)
+        return true
+      end,
+    })
+    :find()
+end
+
 -- MAPPINGS
 
--- note, the idea behind the 'tt' mapping is so that not every
--- builtin becomes yet another mapping. 'tt' and typing in the builtin
+-- note, the idea behind the 't' mapping is so that not every
+-- builtin becomes yet another mapping. 't' and typing in the builtin
 -- is less memory overload, fast enough, and easier to maintain
-km.nnoremap('<leader>tt', builtin.builtin)
+km.nnoremap('<leader>t', function()
+  builtin.builtin({ include_extensions = true })
+end)
 
 -- that being said, some super common builtins I'm fine with mapping
 -- mappings for
@@ -81,8 +127,5 @@ km.nnoremap('<leader>cw', function()
 end)
 km.nnoremap('<leader>co', builtin.resume) -- (c)ontinue
 km.nnoremap('<leader>fw', builtin.live_grep) -- (f)ind in (w)orkspace
+km.nnoremap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
 km.nnoremap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer
-
--- TODO: see if it's possible to add these extensions below as options when using the '<leader>t' mapping
-km.nnoremap('<leader>teb', ':Telescope bookmarks<CR>')
-km.nnoremap('<leader>tee', ':Telescope emoji<CR>')
