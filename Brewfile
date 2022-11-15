@@ -1,4 +1,5 @@
 tap "aws/tap"
+tap "charmbracelet/tap"
 tap "fsouza/prettierd"
 tap "garden-io/garden"
 tap "homebrew/bundle"
@@ -115,12 +116,16 @@ cask "google-chrome"
 cask "handbrake"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Keyboard customizer
+cask "karabiner-elements"
 # Open-source keystroke visualizer
 cask "keycastr"
 # App to manage software development and track bugs
 cask "linear-linear"
 # Screen and video recording software
 cask "loom"
+# Minimal browser that protects privacy
+cask "min"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # VPN client for secure internet access and private browsing
