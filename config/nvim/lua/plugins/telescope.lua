@@ -49,16 +49,10 @@ telescope.setup({
         vim.api.nvim_put({ emoji.value }, 'c', false, true) -- insert when picked
       end,
     },
-    bookmarks = {
-      selected_browser = 'chrome',
-    },
+    bookmarks = { selected_browser = 'chrome' },
   },
   -- if you want to configure themes for individual pickers, refer to below:
-  -- pickers = {
-  --   live_grep = {
-  --     theme = 'dropdown',
-  --   },
-  -- },
+  -- pickers = { live_grep = { theme = 'dropdown' } },
 })
 
 telescope.load_extension('fzf')

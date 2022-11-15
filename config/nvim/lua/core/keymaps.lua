@@ -26,10 +26,10 @@ u.map('n', 'N', 'Nzzzv', { noremap = true })
 u.map('n', '<leader>bb', ':Bdelete<CR>') -- uses bbye
 
 -- Window
-u.map('n', '<Up>', ':wincmd +<CR>')
-u.map('n', '<Down>', ':wincmd -<CR>')
-u.map('n', '<Left>', ':wincmd ><CR>')
-u.map('n', '<Right>', ':wincmd <<CR>')
+u.map('n', '<Up>', ':wincmd 2+<CR>')
+u.map('n', '<Down>', ':wincmd 2-<CR>')
+u.map('n', '<Left>', ':wincmd 2><CR>')
+u.map('n', '<Right>', ':wincmd 2<<CR>')
 u.map('n', '<leader>=', ':wincmd =<CR>')
 
 -- visual
