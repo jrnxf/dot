@@ -12,10 +12,18 @@ local actions = require('telescope.actions')
 local action_set = require('telescope.actions.set')
 local action_state = require('telescope.actions.state')
 
+local trouble = require('trouble.providers.telescope')
+
+local lga_actions = require('telescope-live-grep-args.actions')
+
 local path = require('plenary.path')
 local os_sep = path.path.sep
 
 local cmd = vim.api.nvim_create_user_command
+
+cmd('Rg', function(props)
+  builtin.grep_string({ search = props.args })
+end, { nargs = '*' })
 
 telescope.setup({
   defaults = {
@@ -35,11 +43,13 @@ telescope.setup({
         ['<C-k>'] = actions.move_selection_previous,
         ['<C-p>'] = actions.close,
         ['<C-d>'] = actions.delete_buffer,
+        ['<C-t>'] = trouble.open_with_trouble,
       },
       n = {
         ['<C-c>'] = actions.close,
         ['<C-p>'] = actions.close,
         ['<C-d>'] = actions.delete_buffer,
+        ['<C-t>'] = trouble.open_with_trouble,
       },
     },
   },
@@ -50,12 +60,27 @@ telescope.setup({
       end,
     },
     bookmarks = { selected_browser = 'chrome' },
+    live_grep_args = {
+      auto_quoting = true, -- enable/disable auto-quoting
+      -- define mappings, e.g.
+      mappings = { -- extend mappings
+        i = {
+          -- ['<C-k>'] = lga_actions.quote_prompt(), -- conflicts with selection navigation
+          ['<C-i>'] = lga_actions.quote_prompt({ postfix = ' --iglob ' }),
+        },
+      },
+      -- ... also accepts theme settings, for example:
+      -- theme = "dropdown", -- use dropdown theme
+      -- theme = { }, -- use own theme spec
+      -- layout_config = { mirror=true }, -- mirror preview pane
+    },
   },
   -- if you want to configure themes for individual pickers, refer to below:
   -- pickers = { live_grep = { theme = 'dropdown' } },
 })
 
 telescope.load_extension('fzf')
+telescope.load_extension('live_grep_args')
 telescope.load_extension('emoji')
 telescope.load_extension('bookmarks')
 telescope.load_extension('harpoon')
@@ -119,7 +144,10 @@ end)
 km.nnoremap('<leader>cw', function()
   builtin.grep_string({ search = vim.fn.expand('<cword>') })
 end)
-km.nnoremap('<leader>co', builtin.resume) -- (c)ontinue
-km.nnoremap('<leader>fw', builtin.live_grep) -- (f)ind in (w)orkspace
+km.nnoremap('<leader>co', builtin.commands) -- (co)mmands
+km.nnoremap('<leader>re', builtin.resume) -- (re)sume
+km.nnoremap('<leader>fw', function()
+  telescope.extensions.live_grep_args.live_grep_args()
+end) -- (f)ind in (w)orkspace
 km.nnoremap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
 km.nnoremap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer

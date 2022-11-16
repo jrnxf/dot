@@ -133,13 +133,14 @@ return require('packer').startup({
     })
 
     use({ 'ThePrimeagen/harpoon', config = config('harpoon') })
+    use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
     use({
       'nvim-telescope/telescope.nvim',
       requires = {
         'nvim-lua/plenary.nvim', -- sssential library
         'kyazdani42/nvim-web-devicons', -- file icons
-        { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }, -- faster and better search syntax
         'xiyaowong/telescope-emoji.nvim', -- emoji picker
+        'nvim-telescope/telescope-live-grep-args.nvim',
         { 'dhruvmanila/telescope-bookmarks.nvim', tag = '*' },
       },
       config = config('telescope'),
@@ -174,17 +175,13 @@ return require('packer').startup({
       requires = 'nvim-lua/plenary.nvim',
     })
 
-    use({
-      'folke/which-key.nvim',
-      config = function()
-        require('which-key').setup({
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
-        })
-      end,
-    })
     use('jose-elias-alvarez/typescript.nvim')
+
+    use({
+      'folke/trouble.nvim',
+      requires = 'kyazdani42/nvim-web-devicons',
+      config = config('trouble'),
+    })
 
     -- TODO: Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
