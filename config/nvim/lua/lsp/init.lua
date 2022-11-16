@@ -2,6 +2,7 @@ local u = require('core.utils')
 local km = require('core.keymaps')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
+local nlsb = null_ls.builtins
 
 -- serves as a reusable autogroup for all lsp formatting commands
 local augroup_lsp_formatting = vim.api.nvim_create_augroup('LspFormatting', {})
@@ -23,7 +24,6 @@ end
 
 -- triggered when an lsp client attaches on a buffer
 local base_on_attach = function(client, bufnr)
-  u.buf_map(bufnr, 'i', '<C-k>', ':LspSignatureHelp<CR>')
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
@@ -33,11 +33,12 @@ local base_on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>')
   u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>')
 
-  local tb = require('telescope.builtin')
-  km.nnoremap('gd', tb.lsp_definitions)
-  km.nnoremap('gD', tb.lsp_type_definitions)
-  km.nnoremap('gr', tb.lsp_references)
-  km.nnoremap('gi', tb.lsp_implementations)
+  -- gonna try out trouble
+  -- local tb = require('telescope.builtin')
+  -- km.nnoremap('gd', tb.lsp_definitions)
+  -- km.nnoremap('gD', tb.lsp_type_definitions)
+  -- km.nnoremap('gr', tb.lsp_references)
+  -- km.nnoremap('gi', tb.lsp_implementations)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities() -- TODO: eval differences here between above
@@ -121,15 +122,11 @@ null_ls.setup({
   debug = true,
   sources = {
     -- formatting
-    null_ls.builtins.formatting.prettierd,
-    null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.xmllint,
+    nlsb.formatting.prettierd,
+    nlsb.formatting.stylua,
     -- code actions
-    null_ls.builtins.code_actions.eslint_d,
-    -- diagnostics
-    null_ls.builtins.diagnostics.eslint_d.with({
-      diagnostics_format = '[eslint] #{m}\n(#{c})',
-    }),
+    nlsb.code_actions.gitsigns,
+    nlsb.code_actions.gitrebase,
   },
   on_attach = function(client, bufnr)
     if client.supports_method('textDocument/formatting') then
@@ -148,7 +145,7 @@ null_ls.setup({
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = { spacing = 4, prefix = '●' },
+  virtual_text = false, -- disables inline buffer lsp messages
   severity_sort = true,
 })
 
@@ -158,13 +155,3 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
-
-vim.diagnostic.config({
-  virtual_text = {
-    prefix = '●',
-  },
-  update_in_insert = true,
-  float = {
-    source = 'always', -- Or "if_many"
-  },
-})

@@ -76,7 +76,7 @@ u.map('n', '<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<
   silent = true,
 })
 
-u.map('n', '<leader>re', '<Esc>:FullReload<CR>', { noremap = true, silent = true })
+u.map('n', '<leader>fr', '<Esc>:FullReload<CR>', { noremap = true, silent = true })
 
 -- Stolen github.com/ThePrimeagen/.dotfiles
 
