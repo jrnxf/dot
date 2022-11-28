@@ -1,13 +1,12 @@
-local u = require('core.utils')
-
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function(args)
-    if vim.fn.isdirectory(args.file) ~= 0 then
-      vim.api.nvim_buf_delete(0, { force = true })
-      u.smart_telescope_files()
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd('VimEnter', {
+--   callback = function(args)
+--     -- this function detects if we're in
+--     if vim.fn.isdirectory(args.file) ~= 0 then
+--       vim.api.nvim_buf_delete(0, { force = true })
+--       -- u.smart_telescope_files() -- i'd rather just press <C-p> if I want this
+--     end
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
@@ -28,8 +27,7 @@ vim.api.nvim_create_autocmd('DiagnosticChanged', {
 
 vim.cmd('au User FugitiveIndex nmap <buffer> dt :Gtabedit <Plug><cfile><Bar>Gdiffsplit<CR>')
 
-vim.cmd('command! FullReload lua require("core.utils").full_reload()')
-
+vim.cmd('command! LuaSnipEdit lua require("luasnip.loaders.from_lua").edit_snippet_files()')
 vim.cmd('command! LspFormatting lua vim.lsp.buf.format()')
 vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
 vim.cmd('command! LspHover lua vim.lsp.buf.hover()')

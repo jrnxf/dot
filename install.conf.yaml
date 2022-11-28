@@ -15,27 +15,16 @@
     ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/starship.toml: config/starship.toml
-    ~/.config/alacritty:
-      glob: true
-      path: config/alacritty/*
+    ~/.config/alacritty/alacritty.yml: config/alacritty.yml
     ~/.config/nvim:
       glob: true
       path: config/nvim/*
-
 - shell:
     - command: ./setup/mac.sh
       description: Setting up Mac
       stdout: true
       stderr: true
-    - command: rm -rf ~/.tmux && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-      description: Installing TPM
-      stdout: true
-      stderr: true
-    - command: rm -rf ~/.local/share/nvim/site/pack/packer && git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-      description: Installing Packer
-      stdout: true
-      stderr: true
-    - command: nvim --headless -u NONE -c 'au User PackerComplete quitall' -c 'lua require("plugins")' -c 'PackerSync'
-      description: Installing Neovim plugins with Packer
+    - command: ./setup/neovim.sh
+      description: Setup Neovim
       stdout: true
       stderr: true

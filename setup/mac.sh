@@ -1,3 +1,4 @@
+#!/bin/sh
 # set up homebrew
 if [[ $(command -v brew) == "" ]]; then
     echo "Installing Hombrew"
