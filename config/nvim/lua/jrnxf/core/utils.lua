@@ -38,30 +38,6 @@ M.table = {
   end,
 }
 
-M.set_hl_from_map = function(hl_group)
-  for hl_name, opts in pairs(hl_group or {}) do
-    M.set_hl(hl_name, opts)
-  end
-end
-
-M.set_hl = function(hl_name, opts)
-  -- local is_ok, hl_def = pcall(vim.api.nvim_get_hl_by_name, hl_name, true)
-  -- local hhh = hl_def or {}
-  -- print(vim.inspect(hhh))
-  -- if is_ok then
-  -- for k, v in pairs(opts) do
-  --   -- print(vim.inspect({ k, v }))
-  --   hl_def[k] = v
-  -- end
-  -- print('-----')
-  -- print(vim.inspect({
-  --   hl_name,
-  --   hl_def,
-  -- }))
-  vim.api.nvim_set_hl(0, hl_name, opts)
-  -- end
-end
-
 M.exec_file = function()
   local ft = vim.api.nvim_buf_get_option(0, 'filetype')
   vim.cmd('silent! write')
@@ -83,14 +59,13 @@ M.open_url = function(url)
   elseif plat.is_linux then
     vim.cmd([[:execute 'silent !xdg-open ]] .. url .. "'")
   else
-    print('Unknown platform. Cannot open url')
+    vim.notify('Unknown platform. Cannot open url')
   end
 end
 
 M.open_url_under_cursor = function()
   local cword = vim.fn.expand('<cWORD>')
 
-  print('cword:' .. cword)
   -- Remove surronding quotes if exist
   local url = string.gsub(cword, [[.*['"](.*)['"].*$]], '%1')
 

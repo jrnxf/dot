@@ -21,6 +21,7 @@ o.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of
 }
 o.clipboard = 'unnamedplus'
+-- o.cmdheight = 0
 o.completeopt = 'menu,menuone,noselect'
 o.cursorline = true
 o.directory = swap
@@ -48,6 +49,7 @@ o.formatoptions = o.formatoptions -- :help fo-table
 o.ignorecase = true
 o.inccommand = 'nosplit'
 o.lazyredraw = true
+o.laststatus = 3
 o.list = true
 o.listchars = o.listchars
   + 'nbsp:⦸' -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
