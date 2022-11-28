@@ -1,4 +1,4 @@
-local u = require('core.utils')
+local u = require('jrnxf.core.utils')
 
 require('nvim-tree').setup({
   hijack_directories = {
@@ -60,7 +60,7 @@ require('nvim-tree').setup({
       custom_only = false, -- false means the list above will merge with defaults
       list = {
         { key = '<C-c>', action = 'close' },
-        { key = '<C-w>', action = 'close' },
+        -- { key = '<C-w>', action = 'close' },
         { key = '<C-R>', action = 'refresh' },
         { key = 'a', action = 'create' },
         { key = 'd', action = 'remove' },

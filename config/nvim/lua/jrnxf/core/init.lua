@@ -1,0 +1,5 @@
+require('jrnxf.core.utils')
+require('jrnxf.core.event')
+require('jrnxf.core.options')
+require('jrnxf.core.keymap')
+require('jrnxf.core.commands')

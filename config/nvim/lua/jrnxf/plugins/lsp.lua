@@ -1,7 +1,8 @@
-local u = require('core.utils')
-local km = require('core.keymaps')
+-- print('lsp')
+local u = require('jrnxf.core.utils')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
+
 local nlsb = null_ls.builtins
 
 -- serves as a reusable autogroup for all lsp formatting commands
@@ -23,22 +24,13 @@ local enable_format_on_save = function(bufnr, callback)
 end
 
 -- triggered when an lsp client attaches on a buffer
+---@diagnostic disable-next-line: unused-local
 local base_on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
-  u.buf_map(bufnr, 'n', '[d', ':LspDiagPrev<CR>')
-  u.buf_map(bufnr, 'n', ']d', ':LspDiagNext<CR>')
-  u.buf_map(bufnr, 'n', '<leader>qf', ':LspDiagQuickfix<CR>')
-  u.buf_map(bufnr, 'n', '<leader>ql', ':LspDiagLoclist<CR>')
-
-  -- gonna try out trouble
-  -- local tb = require('telescope.builtin')
-  -- km.nnoremap('gd', tb.lsp_definitions)
-  -- km.nnoremap('gD', tb.lsp_type_definitions)
-  -- km.nnoremap('gr', tb.lsp_references)
-  -- km.nnoremap('gi', tb.lsp_implementations)
+  u.buf_map(bufnr, 'n', '<leader>fo', ':LspFormatting<CR>')
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities() -- TODO: eval differences here between above

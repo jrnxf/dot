@@ -1,7 +1,2 @@
-require 'impatient'
-
-require('core')
-require('plugins')
-require('lsp')
-
-vim.cmd('colorscheme onenord')
+-- print('~~~~~ init ~~~~~')
+require('jrnxf.bootstrap').init()

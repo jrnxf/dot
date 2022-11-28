@@ -10,6 +10,7 @@ require('nvim-treesitter.configs').setup({
     'markdown',
     'markdown_inline',
     'prisma',
+    'regex',
     'query',
     'scss',
     'toml',
@@ -37,6 +38,5 @@ require('nvim-treesitter.configs').setup({
     enable = true,
     enable_autocmd = false,
   },
-  autopairs = { enable = true },
   autotag = { enable = true },
 })
