@@ -1,4 +1,3 @@
--- print('lsp')
 local u = require('jrnxf.core.utils')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')

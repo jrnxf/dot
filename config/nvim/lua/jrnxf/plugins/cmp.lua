@@ -1,6 +1,7 @@
 local cmp = require('cmp')
 local lspkind = require('lspkind')
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local luasnip = require('luasnip')
 
 -- NOTE: Lua 5.1 compatibility
 -- @ref (https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976)
@@ -20,12 +21,13 @@ cmp.setup({
   },
   formatting = {
     format = lspkind.cmp_format({
-      with_text = false,
+      mode = 'symbol_text',
+
       menu = {
-        luasnip = '[snp]',
         buffer = '[buf]',
+        luasnip = '[snp]',
         nvim_lsp = '[lsp]',
-        nvim_lua = '[api]',
+        nvim_lua = '[lua]',
         path = '[path]',
       },
     }),
@@ -39,7 +41,7 @@ cmp.setup({
     ['<C-d>'] = cmp.mapping.scroll_docs(1), -- down
     ['<C-u>'] = cmp.mapping.scroll_docs(-1), -- up
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
+    ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
@@ -47,6 +49,8 @@ cmp.setup({
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
@@ -56,6 +60,8 @@ cmp.setup({
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
@@ -69,15 +75,7 @@ cmp.setup({
     { name = 'treesitter' },
     { name = 'path' },
     { name = 'emoji' },
-    {
-      name = 'buffer',
-      keyword_length = 5,
-      option = {
-        get_bufnr = function() -- all buffers
-          return vim.api.nvim_list_bufs()
-        end,
-      },
-    },
+    { name = 'buffer' },
   },
 })
 

@@ -3,8 +3,8 @@ env:
 
 window:
   padding:
-    x: 10 # nvim expects this on line 6
-    y: 10 # nvim expects this on line 7
+    x: 5 # nvim expects this on line 6
+    y: 5 # nvim expects this on line 7
   dimensions:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
@@ -28,7 +28,7 @@ font:
   italic:
     family: SpaceMono Nerd Font Mono
     style: Italic
-  size: 17.0
+  size: 13.0
   offset:
     x: 0
     y: 0
@@ -40,6 +40,34 @@ draw_bold_text_with_bright_colors: false
 #191D25
 #22262e
 color_schemes:
+  # Nightfox Alacritty Colors
+  # Style: terafox
+  # Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/terafox/nightfox_alacritty.yml
+  terafox: &terafox # Default colors
+    primary:
+      background: "#0f1c1e"
+      foreground: "0xe6eaea"
+    # Normal colors
+    normal:
+      black: "0x2f3239"
+      red: "0xe85c51"
+      green: "0x7aa4a1"
+      yellow: "0xfda47f"
+      blue: "0x5a93aa"
+      magenta: "0xad5c7c"
+      cyan: "0xa1cdd8"
+      white: "0xebebeb"
+    # Bright colors
+    bright:
+      black: "0x4e5157"
+      red: "0xeb746b"
+      green: "0x8eb2af"
+      yellow: "0xfdb292"
+      blue: "0x73a3b7"
+      magenta: "0xb97490"
+      cyan: "0xafd4de"
+      white: "0xeeeeee"
+
   deep_nord: &deep_nord
     primary:
       background: "#191D25"
@@ -90,7 +118,11 @@ color_schemes:
       white: "#aeb3bb"
 
 colors:
-  *deep_nord
+  *terafox
+
+  # indexed_colors:
+  #   - { index: 16, color: '0xff8349' }
+  #   - { index: 17, color: '0xcb7985' }
 
   # @ref https://github.com/alacritty/alacritty/issues/62#issuecomment-347552058
 key_bindings:

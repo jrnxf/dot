@@ -15,7 +15,7 @@ local fmt = string.format
 
 local M = {}
 
-local function set_highlights(groups)
+function M.set_highlights(groups)
   local lines = {}
   for group, opts in pairs(groups) do
     if opts.link then
@@ -65,7 +65,13 @@ local function get_highlight(name)
   }
 end
 
-local function generate_pallet_from_colorscheme()
+function M.set_hl_from_table(hl_group)
+  for hl_name, opts in pairs(hl_group or {}) do
+    vim.api.nvim_set_hl(0, hl_name, opts)
+  end
+end
+
+function M.generate_pallet_from_colorscheme()
   -- stylua: ignore
   local color_map = {
     black   = { index = 0, default = "#393b44" },
@@ -102,71 +108,8 @@ local function generate_pallet_from_colorscheme()
   palette.sel = get_highlight('PmenuSel')
   palette.fill = get_highlight('TabLineFill')
 
+  _G.palette = vim.inspect(palette)
   return palette
 end
-
-function M.generate_user_config_highlights()
-  local pal = generate_pallet_from_colorscheme()
-
-  -- stylua: ignore
-  local sl_colors = {
-    Black   = { fg = pal.black, bg = pal.white },
-    Red     = { fg = pal.red, bg = pal.sl.bg },
-    Green   = { fg = pal.green, bg = pal.sl.bg },
-    Yellow  = { fg = pal.yellow, bg = pal.sl.bg },
-    Blue    = { fg = pal.blue, bg = pal.sl.bg },
-    Magenta = { fg = pal.magenta, bg = pal.sl.bg },
-    Cyan    = { fg = pal.cyan, bg = pal.sl.bg },
-    White   = { fg = pal.white, bg = pal.black },
-  }
-
-  local colors = {}
-  for name, value in pairs(sl_colors) do
-    colors['Jrnxf' .. name] = { fg = value.fg, bg = value.bg, style = 'bold' }
-    colors['JrnxfRv' .. name] = { fg = value.bg, bg = value.fg, style = 'bold' }
-  end
-
-  local status = vim.o.background == 'dark' and { fg = pal.black, bg = pal.white } or { fg = pal.white, bg = pal.black }
-
-  local groups = {
-    JrnxfSLHint = { fg = pal.sl.bg, bg = pal.hint, style = 'bold' },
-    JrnxfSLInfo = { fg = pal.sl.bg, bg = pal.info, style = 'bold' },
-    JrnxfSLWarn = { fg = pal.sl.bg, bg = pal.warn, style = 'bold' },
-    JrnxfSLError = { fg = pal.sl.bg, bg = pal.error, style = 'bold' },
-    JrnxfSLStatus = { fg = status.fg, bg = status.bg, style = 'bold' },
-
-    JrnxfSLFtHint = { fg = pal.bgalt, bg = pal.hint },
-    JrnxfSLHintInfo = { fg = pal.hint, bg = pal.info },
-    JrnxfSLInfoWarn = { fg = pal.info, bg = pal.warn },
-    JrnxfSLWarnError = { fg = pal.warn, bg = pal.error },
-    JrnxfSLErrorStatus = { fg = pal.error, bg = status.bg },
-    JrnxfSLStatusBg = { fg = status.bg, bg = pal.sl.bg },
-
-    JrnxfSLAlt = { fg = status.bg, bg = pal.bgalt },
-    JrnxfSLAltSep = { fg = pal.sl.bg, bg = pal.bgalt },
-    JrnxfSLGitBranch = { fg = pal.yellow, bg = pal.sl.bg },
-
-    -- tabline
-    JrnxfTLHead = { fg = pal.fill.bg, bg = pal.cyan },
-    JrnxfTLHeadSep = { fg = pal.cyan, bg = pal.fill.bg },
-    JrnxfTLActive = { fg = pal.sel.fg, bg = pal.sel.bg, style = 'bold' },
-    JrnxfTLActiveSep = { fg = pal.sel.bg, bg = pal.fill.bg },
-    JrnxfTLBoldLine = { fg = pal.tab.fg, bg = pal.tab.bg, style = 'bold' },
-    JrnxfTLLineSep = { fg = pal.tab.bg, bg = pal.fill.bg },
-  }
-
-  set_highlights(vim.tbl_extend('force', colors, groups))
-end
-
-M.generate_user_config_highlights()
-
--- Define autocmd that generates the highlight groups from the new colorscheme
--- Then reset the highlights for feline
-augroup('JrnxfUiColorschemeReload', {
-  event = { 'SessionLoadPost', 'ColorScheme' },
-  exec = function()
-    require('jrnxf.lib.colors').generate_user_config_highlights()
-  end,
-})
 
 return M

@@ -1,4 +1,3 @@
--- print('~~~~~ bootstrap ~~~~~')
 local M = {}
 
 M.define_globals = function()
@@ -9,7 +8,7 @@ M.define_globals = function()
   -- else as I use this throughout my config when debugging.
   _G.P = function(...)
     for _, v in ipairs({ ... }) do
-      print(vim.inspect(v))
+      vim.notify(vim.inspect(v))
     end
 
     return ... -- return the args as they were passed
