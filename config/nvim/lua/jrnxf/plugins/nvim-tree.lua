@@ -1,6 +1,9 @@
 local u = require('jrnxf.core.utils')
 
-require('nvim-tree').setup({
+local nt = require('nvim-tree')
+local api = require('nvim-tree.api')
+
+nt.setup({
   hijack_directories = {
     enable = false, -- don't auto open nvim_tree on directories
   },
@@ -17,7 +20,7 @@ require('nvim-tree').setup({
     },
   },
   view = {
-    hide_root_folder = true,
+    -- hide_root_folder = true,
     adaptive_size = true,
     -- NOTE:
     -- @ref https://github.com/nvim-tree/nvim-tree.lua/pull/1538#issuecomment-1223314278
@@ -61,8 +64,19 @@ require('nvim-tree').setup({
       list = {
         { key = '<C-c>', action = 'close' },
         -- { key = '<C-w>', action = 'close' },
-        { key = '<C-R>', action = 'refresh' },
-        { key = 'a', action = 'create' },
+        { key = '<C-r>', action = 'refresh' },
+        {
+          key = '<CR>',
+          action = 'cd_or_open', -- name not relevant, made up by me
+          action_cb = function(node)
+            -- if the node is the parent node (name == "..") or a directory
+            if node.name == '..' or node.fs_stat.type == 'directory' then
+              api.tree.change_root_to_node()
+            elseif node.fs_stat.type == 'file' then
+              api.node.open.edit()
+            end
+          end,
+        },
         { key = 'd', action = 'remove' },
         { key = 'h', action = 'close_node' },
         { key = 'I', action = 'toggle_ignored' },

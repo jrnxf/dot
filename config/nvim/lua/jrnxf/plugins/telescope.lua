@@ -136,12 +136,6 @@ local live_grep_in_folder = function(opts)
     :find()
 end
 
--- colors.set_hl_from_table({
---   -- TelescopeTitle = { bg = palette.bg0, fg = palette.green.base },
---   TelescopeNormal = { bg = '#132325' },
---   TelescopeBorder = { bg = '#132325' },
--- })
-
 -- MAPPINGS
 
 -- NOTE: the idea behind the 't' mapping is so that not every
@@ -160,9 +154,11 @@ end)
 nmap('<leader>cw', function()
   builtin.grep_string({ search = vim.fn.expand('<cword>') })
 end)
-nmap('<leader>co', builtin.commands) -- (com)mands
+nmap('<leader>col', builtin.colorscheme) -- (com)mands
+nmap('<leader>com', builtin.commands) -- (com)mands
 nmap('<leader>he', builtin.help_tags) -- (he)lp tags
 nmap('<leader>re', builtin.resume) -- (re)sume
 nmap('<leader>fw', builtin.live_grep) -- (f)ind in (w)orkspace
 nmap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
+nmap('<leader>oo', builtin.oldfiles) -- (o)pen (o)ld
 nmap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer

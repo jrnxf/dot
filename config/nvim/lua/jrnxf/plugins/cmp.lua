@@ -14,6 +14,16 @@ local has_words_before = function()
 end
 
 cmp.setup({
+  window = {
+    completion = { -- rounded border; thin-style scrollbar
+      border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+      winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
+    },
+    documentation = { -- no border; native-style scrollbar
+      border = 'rounded',
+      winhighlight = 'Normal:CmpPmenu,FloatBorder:CmpPmenuBorder,CursorLine:PmenuSel,Search:None',
+    },
+  },
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -24,10 +34,10 @@ cmp.setup({
       mode = 'symbol_text',
 
       menu = {
-        buffer = '[buf]',
-        luasnip = '[snp]',
         nvim_lsp = '[lsp]',
+        buffer = '[buf]',
         nvim_lua = '[lua]',
+        luasnip = '[snp]',
         path = '[path]',
       },
     }),
@@ -69,14 +79,36 @@ cmp.setup({
   },
   -- Sources order are actually their priority order
   sources = {
-    { name = 'luasnip' },
-    { name = 'nvim_lua' },
     { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'nvim_lua' },
+    { name = 'luasnip' },
     { name = 'treesitter' },
     { name = 'path' },
     { name = 'emoji' },
-    { name = 'buffer' },
   },
 })
 
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' },
+  },
+})
+
+-- `:` cmdline setup.
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    {
+      name = 'cmdline',
+      option = {
+        ignore_cmds = { 'Man', '!' },
+      },
+    },
+  }),
+})

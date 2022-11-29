@@ -2,6 +2,17 @@ local u = require('jrnxf.core.utils')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
 
+local lsp = vim.lsp
+
+local border_opts = { border = 'rounded', focusable = false, scope = 'line' }
+
+require('lspconfig.ui.windows').default_options = { border = 'rounded' } -- styles windows from nvim-lspconfig (e.g. :LSPInfo)
+
+vim.diagnostic.config({ virtual_text = false, float = border_opts })
+
+lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
+lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
+
 local nlsb = null_ls.builtins
 
 -- serves as a reusable autogroup for all lsp formatting commands

@@ -5,7 +5,6 @@ local u = require('jrnxf.core.utils')
 vim.g.mapleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.g.tundra_biome = 'arctic'
 
 nmap('<leader>', '<Nop>')
 u.map('x', '<leader>', '<Nop>')
@@ -61,6 +60,7 @@ nmap('k', 'gk')
 nmap('<F1>', ":lua require('jrnxf.core.utils').exec_file()<cr>") -- exec current file
 nmap('<F2>', ":lua require('jrnxf.core.utils').open_url_under_cursor()<cr>")
 nmap('<F3>', "<cmd>lua require('jrnxf.lib.reload').full_reload()<cr>", { noremap = true, silent = true })
+nmap('<leader>fr', "<cmd>lua require('jrnxf.lib.reload').full_reload()<cr>", { noremap = true, silent = true })
 
 -- open to gh location in browser
 nmap('<leader>gB', function()
