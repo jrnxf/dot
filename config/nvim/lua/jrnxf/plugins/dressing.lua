@@ -1,0 +1,10 @@
+-- require('dressing').setup({
+--   input = {
+--     -- enabled = false,
+--     -- use defaults
+--     relative = 'editor',
+--   },
+--   select = {
+--     telescope = require('telescope.themes').get_cursor(),
+--   },
+-- })

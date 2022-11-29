@@ -136,6 +136,12 @@ local live_grep_in_folder = function(opts)
     :find()
 end
 
+-- colors.set_hl_from_table({
+--   -- TelescopeTitle = { bg = palette.bg0, fg = palette.green.base },
+--   TelescopeNormal = { bg = '#132325' },
+--   TelescopeBorder = { bg = '#132325' },
+-- })
+
 -- MAPPINGS
 
 -- NOTE: the idea behind the 't' mapping is so that not every

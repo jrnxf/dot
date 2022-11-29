@@ -42,17 +42,23 @@ use('tpope/vim-commentary')
 
 use('tpope/vim-fugitive')
 
-use('stevearc/dressing.nvim')
+use({
+  'smjonas/inc-rename.nvim',
+  config = function()
+    require('inc_rename').setup({ preview_empty_name = true })
+  end,
+})
 
-use('rcarriga/nvim-notify')
+-- commenting out bc of noice
+-- use({ 'stevearc/dressing.nvim', after = 'telescope', conf = 'dressing' })
+-- use('rcarriga/nvim-notify')
+-- use({ 'MunifTanjim/nui.nvim', conf = 'nui' })
 
 use('folke/zen-mode.nvim')
 
 use({
   'nvim-treesitter/nvim-treesitter',
-  requires = {
-    'nvim-treesitter/playground', -- not required, but I like
-  },
+  requires = { 'nvim-treesitter/playground' }, -- not required, but I like
   run = function()
     local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
     ts_update()
@@ -73,9 +79,7 @@ use({ 'ggandor/leap.nvim', conf = 'leap' })
 use({
   'max397574/better-escape.nvim',
   config = function()
-    require('better_escape').setup({
-      mapping = { 'jk', 'kj' },
-    })
+    require('better_escape').setup({ mapping = { 'jk', 'kj' } })
   end,
 })
 
@@ -114,7 +118,7 @@ use({
   end,
 })
 
-use('rafamadriz/friendly-snippets')
+-- use('rafamadriz/friendly-snippets')
 
 -- Completion --------------------------------------------------
 use({
@@ -156,16 +160,16 @@ use({
 
 use({ 'ThePrimeagen/harpoon', conf = 'harpoon' })
 
-use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
-
 use({
   'nvim-telescope/telescope.nvim',
+  as = 'telescope',
   requires = {
-    'nvim-lua/plenary.nvim', -- sssential library
+    'nvim-lua/plenary.nvim', -- essential library
     'kyazdani42/nvim-web-devicons', -- file icons
     'xiyaowong/telescope-emoji.nvim', -- emoji picker
     'nvim-telescope/telescope-live-grep-args.nvim',
     { 'dhruvmanila/telescope-bookmarks.nvim', tag = '*' },
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
   },
   conf = 'telescope',
 })
@@ -178,23 +182,24 @@ use({
   end,
 })
 
-use({
-  'vigoux/notifier.nvim',
-  config = function()
-    require('notifier').setup({
-      notify = {
-        clear_time = 5000,
-        min_level = vim.log.levels.INFO,
-      },
-    })
-  end,
-})
-use({
-  'j-hui/fidget.nvim',
-  config = function()
-    require('fidget').setup()
-  end,
-})
+-- conflicts with noice
+-- use({
+--   'vigoux/notifier.nvim',
+--   config = function()
+--     require('notifier').setup({
+--       notify = {
+--         clear_time = 5000,
+--         min_level = vim.log.levels.INFO,
+--       },
+--     })
+--   end,
+-- })
+-- use({
+--   'j-hui/fidget.nvim',
+--   config = function()
+--     require('fidget').setup()
+--   end,
+-- })
 
 use({
   'williamboman/mason.nvim',
@@ -221,7 +226,7 @@ use({
   config = function()
     require('indent_blankline').setup({
       show_current_context = true,
-      show_current_context_start = true,
+      show_current_context_start = false, -- I don't like it underlining the top because I think it's an LSP warning
     })
   end,
 })
@@ -230,7 +235,8 @@ use({ 'jose-elias-alvarez/null-ls.nvim', requires = 'nvim-lua/plenary.nvim' })
 
 use('jose-elias-alvarez/typescript.nvim')
 
-use({ 'numtostr/BufOnly.nvim', cmd = 'BufOnly' })
+-- doesn't work with noice bc commandline is buffer itself I think lol
+-- use({ 'numtostr/BufOnly.nvim', cmd = 'BufOnly' })
 
 use({
   -- '~/Dev/trouble.nvim',
@@ -238,6 +244,19 @@ use({
   -- 'folke/trouble.nvim',
   requires = 'kyazdani42/nvim-web-devicons',
   conf = 'trouble',
+})
+
+use({
+  'folke/noice.nvim',
+  conf = 'noice',
+  requires = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    'MunifTanjim/nui.nvim',
+    -- OPTIONAL:
+    --   `nvim-notify` is only needed, if you want to use the notification view.
+    --   If not available, we use `mini` as the fallback
+    'rcarriga/nvim-notify',
+  },
 })
 
 -- TODO: Automatically set up your configuration after cloning packer.nvim

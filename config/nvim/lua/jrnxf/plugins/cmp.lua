@@ -91,12 +91,13 @@ cmp.setup({
 
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' },
-  },
-})
+-- this one drives me crazy lol
+-- cmp.setup.cmdline('/', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' },
+--   },
+-- })
 
 -- `:` cmdline setup.
 cmp.setup.cmdline(':', {
