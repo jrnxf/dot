@@ -23,9 +23,17 @@ local function generate_colors(args)
     local terafox = require('nightfox.palette').load('terafox')
     local terafox_groups = {
       -- general
+      DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice
       VertSplit = { fg = '#152528' },
       NormalFloat = { bg = terafox.bg0 },
       NormalFloatBorder = { fg = terafox.green.dim },
+      MasonHeader = { bg = terafox.green.dim },
+      MasonHeaderSecondary = { bg = terafox.green.dim },
+      MasonHighlightBlock = { bg = terafox.green.dim },
+      MasonHighlightBlockBold = { bg = terafox.green.dim },
+      Substitute = { bg = terafox.magenta.dim, fg = 'white' },
+      FloatBorder = { fg = terafox.green.dim },
+      TelescopeBorder = { fg = terafox.green.dim },
       PMenu = { bg = terafox.bg0 },
       PMenuBorder = { fg = terafox.green.dim },
       LspInfoBorder = { fg = terafox.green.dim },

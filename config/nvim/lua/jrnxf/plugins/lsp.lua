@@ -3,15 +3,13 @@ local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
 
 local lsp = vim.lsp
-
 local border_opts = { border = 'rounded', focusable = false, scope = 'line' }
 
 require('lspconfig.ui.windows').default_options = { border = 'rounded' } -- styles windows from nvim-lspconfig (e.g. :LSPInfo)
 
-vim.diagnostic.config({ virtual_text = false, float = border_opts })
-
-lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
-lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
+-- -- noice will do this for me
+-- lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
+-- lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 
 local nlsb = null_ls.builtins
 
@@ -38,14 +36,24 @@ end
 local base_on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
-  u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
+  -- u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
+  -- u.buf_map(bufnr, 'n', '<leader>rn', function()
+  --   return ':IncRename ' .. vim.fn.expand('<cword>')
+  -- end, { expr = true }) -- noice handles this. Note: the space and no <cr> is important
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
   u.buf_map(bufnr, 'n', '<leader>fo', ':LspFormatting<CR>')
 end
 
+-- TODO: make this a buffer match like above allow it to accept functions
+vim.keymap.set('n', '<leader>rn', function()
+  return ':IncRename ' .. vim.fn.expand('<cword>')
+end, { expr = true })
+
 local capabilities = require('cmp_nvim_lsp').default_capabilities() -- TODO: eval differences here between above
 
-nvim_lsp.prismals.setup({})
+nvim_lsp.prismals.setup({
+  -- must pass at least an empty table otherwise throws errors
+})
 
 nvim_lsp.eslint.setup({
   capabilities = capabilities,
@@ -70,6 +78,7 @@ nvim_lsp.tsserver.setup({
 nvim_lsp.sumneko_lua.setup({
   capabilities = capabilities,
   on_attach = function(client, bufnr)
+    vim.notify('sumneko attach')
     base_on_attach(client, bufnr)
     enable_format_on_save(bufnr)
   end,
@@ -147,7 +156,7 @@ null_ls.setup({
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = false, -- disables inline buffer lsp messages
+  virtual_text = true, -- disables inline buffer lsp messages
   severity_sort = true,
 })
 

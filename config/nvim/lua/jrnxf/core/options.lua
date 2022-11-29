@@ -21,7 +21,7 @@ o.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of
 }
 o.clipboard = 'unnamedplus'
--- o.cmdheight = 0
+o.cmdheight = 0 -- ty noice
 o.completeopt = 'menu,menuone,noselect'
 o.cursorline = true
 o.directory = swap
