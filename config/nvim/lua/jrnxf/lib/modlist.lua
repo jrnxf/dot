@@ -1,11 +1,11 @@
-local path = require("jrnxf.lib.path")
+local path = require('jrnxf.lib.path')
 local fmt = string.format
 local uv = vim.loop
 
 local M = {}
 
 local function get_filepath(modpath, runtimepath)
-  return path.join(runtimepath, unpack(vim.split(modpath, ".", true)))
+  return path.join(runtimepath, unpack(vim.split(modpath, '.', { plain = true })))
 end
 
 ---Get all the module names in the file directory
@@ -14,7 +14,7 @@ end
 ---@return table
 function M.getmodlist(modpath, opts)
   opts = opts or {}
-  local runtimepath = path.join(path.confighome, "lua")
+  local runtimepath = path.join(path.confighome, 'lua')
   if opts.runtimepath then
     runtimepath = opts.runtimepath
   end
@@ -29,12 +29,12 @@ function M.getmodlist(modpath, opts)
 
     local name, fstype = uv.fs_scandir_next(fs)
     while name ~= nil do
-      if fstype == "file" then
-        local filename = name:match("(.+).lua")
-        local pluginmod = fmt("%s.%s", mod, filename)
+      if fstype == 'file' then
+        local filename = name:match('(.+).lua')
+        local pluginmod = fmt('%s.%s', mod, filename)
         table.insert(list, pluginmod)
       elseif opts.recurse then
-        inner(fmt("%s.%s", mod, name), list)
+        inner(fmt('%s.%s', mod, name), list)
       end
       name, fstype = uv.fs_scandir_next(fs)
     end

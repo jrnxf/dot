@@ -39,8 +39,8 @@ telescope.setup({
     },
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
-    -- layout_strategy = 'vertical',
-    layout_strategy = 'horizontal',
+    layout_strategy = 'vertical',
+    -- layout_strategy = 'horizontal',
     layout_config = {
       vertical = { width = 0.9, height = 0.9, preview_height = 0.6 },
       horizontal = { width = 0.9, height = 0.9, preview_width = 0.6 },

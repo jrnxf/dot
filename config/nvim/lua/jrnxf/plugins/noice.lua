@@ -7,31 +7,18 @@ require('noice').setup({
       ['cmp.entry.get_documentation'] = true,
     },
   },
-  -- you can enable a preset for easier configuration
   presets = {
     bottom_search = true, -- use a classic bottom cmdline for search
     command_palette = false, -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
     inc_rename = true, -- enables an input dialog for inc-rename.nvim (which I don't use)
-    -- lsp_doc_border = true, -- add a border to hover docs and signature help
     lsp_doc_border = true, -- add a border to hover docs and signature help
   },
-  -- cmdline = {
-  --   view = 'cmdline',
-  -- },
-  notify = {
-    view = 'mini',
-  },
-  messages = {
-    view = 'mini',
-    view_search = false, --  "virtualtext", -- view for search count messages. Set to `false` to disable
-  },
+  notify = { view = 'mini' },
+  messages = { view = 'mini', view_error = 'mini', view_warn = 'mini', view_search = 'mini' },
   views = {
     cmdline_popup = {
-      position = {
-        row = '50%',
-        col = '50%',
-      },
+      position = { row = '50%', col = '50%' },
       win_options = {
         winhighlight = { Normal = 'Normal', FloatBorder = 'FloatBorder', NoiceCmdlinePopupBorder = 'FloatBorder' },
       },
@@ -39,32 +26,21 @@ require('noice').setup({
     popupmenu = {
       relative = 'editor',
       align = 'center',
-      position = {
-        row = '50%',
-        col = '50%',
-      },
-      size = {
-        width = 60,
-        height = 10,
-      },
-      border = {
-        style = 'rounded',
-        padding = { 0, 1 },
-      },
-      win_options = {
-        winhighlight = { Normal = 'Normal', FloatBorder = 'FloatBorder' },
-      },
+      position = { row = '50%', col = '50%' },
+      size = { width = 60, height = 10 },
+      border = { style = 'rounded', padding = { 0, 1 } },
+      win_options = { winhighlight = { Normal = 'Normal', FloatBorder = 'FloatBorder' } },
     },
     cmdline_output = {
       view = 'popup',
       enter = true,
-      close = {
-        keys = { '<C-c', 'esc' },
-      },
+      close = { keys = { '<C-c', 'esc' } },
     },
-    messages = {
+    messages = { view = 'popup', enter = true },
+  },
+  commands = {
+    history = {
       view = 'popup',
-      enter = true,
     },
   },
 })
