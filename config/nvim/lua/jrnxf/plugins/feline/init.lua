@@ -155,7 +155,7 @@ local active = {
     c.lsp_info,
     c.lsp_hint,
     c.file_type,
-    -- c.file_enc,
+    c.file_enc,
     c.cur_position,
     c.cur_percent,
   },

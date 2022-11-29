@@ -7,8 +7,6 @@ tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -19,6 +17,8 @@ brew "gettext"
 brew "harfbuzz"
 # Remove large files or passwords from Git history like git-filter-branch
 brew "bfg"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
 # Python code formatter
 brew "black", link: false
 # GNU File, Shell, and Text utilities
@@ -43,6 +43,8 @@ brew "gotop"
 brew "hasura-cli"
 # Kubernetes package manager
 brew "helm"
+# Command-line benchmarking tool
+brew "hyperfine"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Kubernetes command-line interface
@@ -56,7 +58,7 @@ brew "n"
 # Fast, highly customisable system info script
 brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 # Platform built on V8 to build network applications
 brew "node"
 # Manage multiple Node.js versions
@@ -99,6 +101,8 @@ brew "fsouza/prettierd/prettierd", link: false
 brew "garden-io/garden/garden-cli"
 # Command-line helper for the 1Password password manager
 cask "1password-cli"
+# GPU-accelerated terminal emulator
+cask "alacritty"
 # Cross platform SQL editor and database management app
 cask "beekeeper-studio"
 # Calendar for professionals and teams

@@ -20,11 +20,16 @@ local colors_lib = require('jrnxf.lib.colors')
 
 local function generate_colors(args)
   if args.match == 'terafox' then
+    local terafox = require('nightfox.palette').load('terafox')
     local terafox_groups = {
       -- general
       VertSplit = { fg = '#152528' },
-      NormalFloat = { bg = '#132325' },
-      PMenu = { bg = '#132325' },
+      NormalFloat = { bg = terafox.bg0 },
+      NormalFloatBorder = { fg = terafox.green.dim },
+      PMenu = { bg = terafox.bg0 },
+      PMenuBorder = { fg = terafox.green.dim },
+      LspInfoBorder = { fg = terafox.green.dim },
+      CmpPmenuBorder = { fg = terafox.green.dim },
       StatusLineNC = { bg = '#152528', fg = '#7aa4a1' }, -- status line none current
       StatusLine = { bg = '#152528' }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
     }

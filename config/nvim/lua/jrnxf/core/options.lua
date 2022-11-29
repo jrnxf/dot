@@ -48,15 +48,17 @@ o.formatoptions = o.formatoptions -- :help fo-table
   - '2' -- this is not grade school anymore
 o.ignorecase = true
 o.inccommand = 'nosplit'
-o.lazyredraw = true
 o.laststatus = 3
 o.list = true
 o.listchars = o.listchars
-  + 'nbsp:⦸' -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-  + 'tab:▷┅' -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
-  + 'extends:»' -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
-  + 'precedes:«' -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  + 'trail:•' -- BULLET (U+2022, UTF-8: E2 80 A2)
+  + 'nbsp:⦸' --
+  + 'tab:▷┅' --
+  + 'extends:»' --
+  + 'precedes:«' --
+  + 'trail:•' --
+-- + 'eol:↴' --
+-- + 'space:⋅' --
+
 o.mouse = 'a'
 o.number = true
 o.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent
