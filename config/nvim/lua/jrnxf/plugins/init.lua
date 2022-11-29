@@ -31,7 +31,6 @@ packer.init({
 packer.set_handler('conf', packer_handlers.conf)
 
 local use = packer.use
-
 use('wbthomason/packer.nvim')
 
 use('lewis6991/impatient.nvim')
@@ -50,7 +49,7 @@ use({
 })
 
 -- commenting out bc of noice
--- use({ 'stevearc/dressing.nvim', after = 'telescope', conf = 'dressing' })
+use({ 'stevearc/dressing.nvim', after = 'telescope', conf = 'dressing' })
 -- use('rcarriga/nvim-notify')
 -- use({ 'MunifTanjim/nui.nvim', conf = 'nui' })
 
@@ -194,26 +193,10 @@ use({
 --     })
 --   end,
 -- })
--- use({
---   'j-hui/fidget.nvim',
---   config = function()
---     require('fidget').setup()
---   end,
--- })
-
-use({
-  'williamboman/mason.nvim',
-  requires = {
-    'jose-elias-alvarez/null-ls.nvim',
-    'neovim/nvim-lspconfig',
-    'williamboman/mason-lspconfig.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
-  },
-  conf = 'mason',
-})
 
 use({
   'neovim/nvim-lspconfig',
+  as = 'lspconfig',
   requires = {
     'jose-elias-alvarez/null-ls.nvim',
     'hrsh7th/nvim-cmp',
@@ -221,6 +204,24 @@ use({
   conf = 'lsp',
 })
 
+use({
+  'williamboman/mason.nvim',
+  after = 'lspconfig',
+  requires = {
+    'jose-elias-alvarez/null-ls.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+  },
+  conf = 'mason',
+})
+
+use({
+  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  after = 'lspconfig',
+  config = function()
+    require('lsp_lines').setup()
+  end,
+})
 use({
   'lukas-reineke/indent-blankline.nvim',
   config = function()
@@ -249,14 +250,7 @@ use({
 use({
   'folke/noice.nvim',
   conf = 'noice',
-  requires = {
-    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-    'MunifTanjim/nui.nvim',
-    -- OPTIONAL:
-    --   `nvim-notify` is only needed, if you want to use the notification view.
-    --   If not available, we use `mini` as the fallback
-    'rcarriga/nvim-notify',
-  },
+  requires = { 'MunifTanjim/nui.nvim' },
 })
 
 -- TODO: Automatically set up your configuration after cloning packer.nvim

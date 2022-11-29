@@ -23,6 +23,8 @@ local function generate_colors(args)
     local terafox = require('nightfox.palette').load('terafox')
     local terafox_groups = {
       -- general
+      Search = { fg = 'white', bg = terafox.magenta.dim },
+      IncSearch = { fg = 'white', bg = terafox.yellow.dim },
       DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice
       VertSplit = { fg = '#152528' },
       NormalFloat = { bg = terafox.bg0 },

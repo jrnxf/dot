@@ -1,15 +1,14 @@
 local u = require('jrnxf.core.utils')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
-
 local lsp = vim.lsp
+
+-- border setup
 local border_opts = { border = 'rounded', focusable = false, scope = 'line' }
-
+vim.diagnostic.config({ float = border_opts })
+lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
+lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 require('lspconfig.ui.windows').default_options = { border = 'rounded' } -- styles windows from nvim-lspconfig (e.g. :LSPInfo)
-
--- -- noice will do this for me
--- lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
--- lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 
 local nlsb = null_ls.builtins
 
@@ -156,7 +155,7 @@ null_ls.setup({
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = true, -- disables inline buffer lsp messages
+  virtual_text = false, -- redundant with lsp_lines
   severity_sort = true,
 })
 
