@@ -17,7 +17,6 @@ nmap('<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<CR>')
 nmap('<leader>xd', '<cmd>TroubleToggle document_diagnostics<CR>')
 nmap('<leader>xq', '<cmd>TroubleToggle quickfix<CR>')
 nmap('<leader>xl', '<cmd>TroubleToggle loclist<CR>')
-nmap('gR', '<cmd>TroubleToggle lsp_references<CR>')
 nmap('<C-j>', function()
   if trouble.is_open() then
     trouble.next({ skip_groups = true, jump = true })
@@ -28,6 +27,8 @@ nmap('<C-k>', function()
     trouble.previous({ skip_groups = true, jump = true })
   end
 end)
+
+nmap('gR', '<cmd>TroubleToggle lsp_references<CR>')
 nmap('gd', '<cmd>Trouble lsp_definitions<CR>')
 nmap('gD', '<cmd>Trouble lsp_type_definitions<CR>')
 nmap('gr', '<cmd>Trouble lsp_references<CR>')

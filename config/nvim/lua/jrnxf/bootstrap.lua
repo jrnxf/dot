@@ -54,6 +54,9 @@ M.init = function()
 
   require('jrnxf.core')
   require('jrnxf.plugins')
+  -- NOTE: 'jrnxf.lsp' is loaded after 'neovim/nvim-lspconfig' is loaded inside
+  -- plugins/init.lua. 'neovim/nvim-lspconfig' in turn is loaded once all of its
+  -- dependencies are loaded
 end
 
 return M
