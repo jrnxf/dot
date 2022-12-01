@@ -21,11 +21,12 @@ local packer_handlers = {
 local packer = require('packer')
 
 packer.init({
-  display = {
-    open_fn = function()
-      return require('packer.util').float({ border = 'rounded' })
-    end,
-  },
+  -- if i want floats
+  -- display = {
+  --   open_fn = function()
+  --     return require('packer.util').float({ border = 'rounded' })
+  --   end,
+  -- },
 })
 
 packer.set_handler('conf', packer_handlers.conf)
@@ -71,9 +72,21 @@ use({ 'windwp/nvim-ts-autotag', ft = { 'typescript' } })
 -- makes jsx comments actually work
 use({ 'JoosepAlviste/nvim-ts-context-commentstring', ft = { 'typescript' } })
 
-use({ 'karb94/neoscroll.nvim', conf = 'neoscroll' })
+-- use({ 'karb94/neoscroll.nvim', conf = 'neoscroll' })
 
-use({ 'ggandor/leap.nvim', conf = 'leap' })
+-- use({
+--   'declancm/cinnamon.nvim',
+--   config = function()
+--     require('cinnamon').setup({
+--       -- extra_keymaps = true,
+--       hide_cursor = true,
+--       centered = true,
+--     })
+--   end,
+-- })
+
+use({ 'mrjones2014/legendary.nvim', conf = 'legendary' })
+-- use({ 'ggandor/leap.nvim', conf = 'leap' })
 
 use({
   'max397574/better-escape.nvim',
@@ -215,13 +228,13 @@ use({
   conf = 'mason',
 })
 
-use({
-  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  after = 'lspconfig',
-  config = function()
-    require('lsp_lines').setup()
-  end,
-})
+-- use({
+--   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+--   after = 'lspconfig',
+--   config = function()
+--     require('lsp_lines').setup()
+--   end,
+-- })
 use({
   'lukas-reineke/indent-blankline.nvim',
   config = function()
@@ -232,7 +245,10 @@ use({
   end,
 })
 
-use({ 'jose-elias-alvarez/null-ls.nvim', requires = 'nvim-lua/plenary.nvim' })
+use({
+  'jose-elias-alvarez/null-ls.nvim',
+  requires = 'nvim-lua/plenary.nvim',
+})
 
 use('jose-elias-alvarez/typescript.nvim')
 
@@ -241,11 +257,13 @@ use('jose-elias-alvarez/typescript.nvim')
 
 use({
   -- '~/Dev/trouble.nvim',
-  'thatvegandev/trouble.nvim',
   -- 'folke/trouble.nvim',
+  'thatvegandev/trouble.nvim',
   requires = 'kyazdani42/nvim-web-devicons',
   conf = 'trouble',
 })
+
+use({ 'RRethy/vim-illuminate', conf = 'illuminate' }) -- highlights and allows moving between variable references
 
 use({
   'folke/noice.nvim',
@@ -253,6 +271,7 @@ use({
   requires = { 'MunifTanjim/nui.nvim' },
 })
 
+-- use({ 'mg979/vim-visual-multi', branch = 'master' })
 -- TODO: Automatically set up your configuration after cloning packer.nvim
 -- Put this at the end after all plugins
 if packer_bootstrap then

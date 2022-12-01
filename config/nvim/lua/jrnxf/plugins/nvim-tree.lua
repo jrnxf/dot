@@ -1,5 +1,3 @@
-local u = require('jrnxf.core.utils')
-
 local nt = require('nvim-tree')
 local api = require('nvim-tree.api')
 
@@ -91,4 +89,4 @@ nt.setup({
   },
 })
 
-u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
+nmap('<C-n>', ':NvimTreeToggle<CR>', { silent = true })

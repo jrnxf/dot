@@ -1,13 +1,13 @@
 local u = require('jrnxf.core.utils')
 local nvim_lsp = require('lspconfig')
 local null_ls = require('null-ls')
-local lsp = vim.lsp
 
--- border setup
 local border_opts = { border = 'rounded', focusable = false, scope = 'line' }
+-- noice handles signatureHelp and hover for us
+-- local lsp = vim.lsp
+-- lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
+-- lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 vim.diagnostic.config({ float = border_opts })
-lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
-lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 require('lspconfig.ui.windows').default_options = { border = 'rounded' } -- styles windows from nvim-lspconfig (e.g. :LSPInfo)
 
 local nlsb = null_ls.builtins
@@ -28,19 +28,18 @@ local enable_format_on_save = function(bufnr, callback)
     buffer = bufnr,
     callback = callback,
   })
+  u.buf_map(bufnr, 'n', '<leader>fo', ':LspFormatting<CR>')
 end
 
 -- triggered when an lsp client attaches on a buffer
 ---@diagnostic disable-next-line: unused-local
 local base_on_attach = function(client, bufnr)
   u.buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
-  u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
-  -- u.buf_map(bufnr, 'n', '<leader>rn', ':LspRename<CR>')
+  -- u.buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   -- u.buf_map(bufnr, 'n', '<leader>rn', function()
   --   return ':IncRename ' .. vim.fn.expand('<cword>')
   -- end, { expr = true }) -- noice handles this. Note: the space and no <cr> is important
   u.buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
-  u.buf_map(bufnr, 'n', '<leader>fo', ':LspFormatting<CR>')
 end
 
 -- TODO: make this a buffer match like above allow it to accept functions
@@ -79,7 +78,6 @@ nvim_lsp.sumneko_lua.setup({
   on_attach = function(client, bufnr)
     vim.notify('sumneko attach')
     base_on_attach(client, bufnr)
-    enable_format_on_save(bufnr)
   end,
   settings = {
     Lua = {
@@ -87,11 +85,11 @@ nvim_lsp.sumneko_lua.setup({
         -- Get the language server to recognize the `vim` global
         globals = { 'vim' },
       },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file('', true),
-        checkThirdParty = false,
-      },
+      -- workspace = { -- TODO: ask Jose if this is necessary - it always bugs
+      -- me to make a luarc file
+      --   -- Make the server aware of Neovim runtime files
+      --   library = vim.api.nvim_get_runtime_file('', true),
+      -- },
     },
   },
 })
@@ -129,14 +127,28 @@ nvim_lsp.gopls.setup({
 })
 
 null_ls.setup({
+  border = 'rounded',
   debug = true,
   sources = {
     -- formatting
     nlsb.formatting.prettierd,
     nlsb.formatting.stylua,
+    nlsb.formatting.shfmt,
+    nlsb.formatting.trim_whitespace,
     -- code actions
+    nlsb.code_actions.shellcheck,
+    nlsb.code_actions.xo,
     nlsb.code_actions.gitsigns,
-    nlsb.code_actions.gitrebase,
+    -- -- diagnostics
+    -- nlsb.diagnostics.eslint_d.with({
+    --   -- ignore prettier warnings from eslint-plugin-prettier
+    --   filter = function(diagnostic)
+    --     return diagnostic.code ~= 'prettier/prettier'
+    --   end,
+    -- }),
+    -- hover
+    nlsb.hover.dictionary,
+    nlsb.hover.printenv,
   },
   on_attach = function(client, bufnr)
     if client.supports_method('textDocument/formatting') then
@@ -155,7 +167,7 @@ null_ls.setup({
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = false, -- redundant with lsp_lines
+  virtual_text = true, -- redundant with lsp_lines ( but sometimes lsp_lines is mega annoying )
   severity_sort = true,
 })
 

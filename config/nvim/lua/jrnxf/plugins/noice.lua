@@ -16,6 +16,19 @@ require('noice').setup({
   },
   notify = { view = 'mini' },
   messages = { view = 'mini', view_error = 'mini', view_warn = 'mini', view_search = 'mini' },
+  cmdline = {
+    -- view = 'cmdline',
+    format = {
+      conceal = false,
+      -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+      -- view: (default is cmdline view)
+      -- opts: any options passed to the view
+      -- icon_hl_group: optional hl_group for the icon
+      -- title: set to anything or empty string to hide
+      cmdline = { icon = ':' },
+    },
+  },
+
   views = {
     cmdline_popup = {
       position = { row = '50%', col = '50%' },
