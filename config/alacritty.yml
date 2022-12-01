@@ -3,13 +3,13 @@ env:
 
 window:
   padding:
-    x: 5 # nvim expects this on line 6
-    y: 5 # nvim expects this on line 7
+    x: 5
+    y: 5
   dimensions:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
   decorations: "buttonless"
-  # opacity: 0.95
+  opacity: 0.95
 
 scrolling:
   history: 10000

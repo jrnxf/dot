@@ -12,11 +12,11 @@ local get_diag = function(str)
 end
 
 local function vi_mode_hl()
-  return u.vi.colors[vim.fn.mode()] or 'JrnxfSLViBlack'
+  return u.vi.colors[vim.fn.mode()] or ""
 end
 
 local function vi_sep_hl()
-  return u.vi.sep[vim.fn.mode()] or 'JrnxfSLBlack'
+  return u.vi.sep[vim.fn.mode()] or ""
 end
 
 local function file_info()

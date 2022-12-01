@@ -13,7 +13,7 @@ M.smart_telescope_files = function()
   end
 end
 
-local default_map_options = { noremap = true, silent = true }
+local default_map_options = { silent = true }
 
 M.map = function(mode, key, cmd, opts)
   vim.api.nvim_set_keymap(mode, key, cmd, opts or default_map_options)

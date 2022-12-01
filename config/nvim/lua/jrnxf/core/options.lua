@@ -21,7 +21,8 @@ o.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of
 }
 o.clipboard = 'unnamedplus'
-o.cmdheight = 0 -- ty noice
+-- o.cmdheight = 0 -- ty noice
+o.cmdheight = 1 -- ty noice
 o.completeopt = 'menu,menuone,noselect'
 o.cursorline = true
 o.directory = swap
@@ -58,12 +59,11 @@ o.listchars = o.listchars
   + 'trail:•' --
 -- + 'eol:↴' --
 -- + 'space:⋅' --
-
 o.mouse = 'a'
 o.number = true
 o.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent
-o.pumheight = 10 -- p(op)u(p)m(enu) height
-o.pumwidth = 20 -- p(op)u(p)m(enu) height
+o.pumheight = 30 -- p(op)u(p)m(enu) height
+o.pumwidth = 60 -- p(op)u(p)m(enu) height
 o.relativenumber = true
 o.scrolloff = 3
 o.shiftwidth = 2

@@ -4,6 +4,6 @@ require('dressing').setup({
     -- relative = 'editor',
   },
   select = {
-    telescope = require('telescope.themes').get_cursor(), -- useful for code actions. i dont think noice has any ui for select (yet)
+    telescope = require('telescope.themes').get_dropdown(), -- useful for code actions. i dont think noice has any ui for select (yet)
   },
 })

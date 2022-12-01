@@ -6,12 +6,15 @@ M.define_globals = function()
 
   -- Debug printing with vim.inspect. This needs to be defined before anything
   -- else as I use this throughout my config when debugging.
-  _G.P = function(...)
-    for _, v in ipairs({ ... }) do
-      vim.notify(vim.inspect(v))
+  _G.put = function(...)
+    local objects = {}
+    for i = 1, select('#', ...) do
+      local v = select(i, ...)
+      table.insert(objects, vim.inspect(v))
     end
 
-    return ... -- return the args as they were passed
+    print(table.concat(objects, '\n'))
+    return ...
   end
 end
 

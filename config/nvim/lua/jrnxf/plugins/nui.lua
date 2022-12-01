@@ -39,7 +39,7 @@
 --     end)
 --     popup:map('n', '<C-c>', function()
 --       popup:unmount()
---     end, { noremap = true })
+--     end)
 --   end)
 -- end
 
