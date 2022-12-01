@@ -214,7 +214,10 @@ use({
     'jose-elias-alvarez/null-ls.nvim',
     'hrsh7th/nvim-cmp',
   },
-  conf = 'lsp',
+  config = function()
+    -- all LSP dependencies are loaded. Ready to setup...
+    return require('jrnxf.lsp')
+  end,
 })
 
 use({
@@ -252,9 +255,6 @@ use({
 
 use('jose-elias-alvarez/typescript.nvim')
 
--- doesn't work with noice bc commandline is buffer itself I think lol
--- use({ 'numtostr/BufOnly.nvim', cmd = 'BufOnly' })
-
 use({
   -- '~/Dev/trouble.nvim',
   -- 'folke/trouble.nvim',
@@ -270,7 +270,8 @@ use({
   conf = 'noice',
   requires = { 'MunifTanjim/nui.nvim' },
 })
-
+use('folke/neodev.nvim') -- better sumneko_lua settings
+use('b0o/schemastore.nvim') -- simple access to json-language-server schemae
 -- use({ 'mg979/vim-visual-multi', branch = 'master' })
 -- TODO: Automatically set up your configuration after cloning packer.nvim
 -- Put this at the end after all plugins
