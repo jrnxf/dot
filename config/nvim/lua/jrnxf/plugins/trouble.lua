@@ -18,14 +18,14 @@ nmap('<leader>xd', '<cmd>TroubleToggle document_diagnostics<CR>')
 nmap('<leader>xq', '<cmd>TroubleToggle quickfix<CR>')
 nmap('<leader>xl', '<cmd>TroubleToggle loclist<CR>')
 nmap('<C-j>', function()
-  if trouble.is_open() then
-    trouble.next({ skip_groups = true, jump = true })
-  end
+  -- if trouble.is_open() then
+  trouble.next({ skip_groups = true, jump = true })
+  -- end
 end)
 nmap('<C-k>', function()
-  if trouble.is_open() then
-    trouble.previous({ skip_groups = true, jump = true })
-  end
+  -- if trouble.is_open() then
+  trouble.previous({ skip_groups = true, jump = true })
+  -- end
 end)
 
 nmap('gR', '<cmd>TroubleToggle lsp_references<CR>')

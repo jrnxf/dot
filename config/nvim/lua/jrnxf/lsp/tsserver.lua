@@ -1,4 +1,4 @@
-local u = require('jrnxf.core.utils')
+local u = require('jrnxf.lib.utils')
 
 local api = vim.api
 
@@ -105,8 +105,8 @@ M.setup = function(on_attach, capabilities)
         -- u.buf_map(bufnr, "n", "gxx", ":CssToJs<CR>")
         -- u.buf_map(bufnr, "v", "gx", ":CssToJs<CR>")
 
-        -- override
-        u.buf_map(bufnr, 'n', 'gd', ':TypescriptGoToSourceDefinition<CR>')
+        -- override (doesn't work in pocus- typescript needs updating)
+        -- u.buf_map(bufnr, 'n', 'gd', ':TypescriptGoToSourceDefinition<CR>')
       end,
       capabilities = capabilities,
     },

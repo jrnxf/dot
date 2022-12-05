@@ -16,6 +16,7 @@
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/starship.toml: config/starship.toml
     ~/.config/alacritty/alacritty.yml: config/alacritty.yml
+    ~/.config/kitty/kitty.conf: config/kitty.conf
     ~/.config/nvim:
       glob: true
       path: config/nvim/*

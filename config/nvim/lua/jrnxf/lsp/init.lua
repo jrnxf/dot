@@ -4,7 +4,7 @@ if not ok then
   return
 end
 
-local u = require('jrnxf.core.utils')
+local u = require('jrnxf.lib.utils')
 
 local lsp = vim.lsp
 
@@ -40,7 +40,6 @@ local utils = {}
 local augroup_lsp_formatting = vim.api.nvim_create_augroup('LspFormatting', {})
 
 utils.enable_formatting = function(bufnr, cb)
-  put('enabling formatting for bufnr:' .. bufnr)
   cb = cb or function()
     vim.lsp.buf.format({ bufnr = bufnr })
   end
@@ -59,6 +58,39 @@ utils.enable_formatting = function(bufnr, cb)
   buf_map(bufnr, 'x', '<CR>', cb)
 end
 
+utils.enable_highlight_on_hold = function(client, bufnr, opts)
+  -- I prefer the illuminate plugin over the no-plugin way because of being able to jump
+  -- between references, regex/treesitter support, etc. But the alternative is a nice way
+  -- to do it using only the LSP.
+
+  if opts.prefer_illuminate then
+    require('illuminate').on_attach(client)
+  else
+    vim.opt.updatetime = 100 -- 100ms delay (used for CursorHold autocommand event)
+    -- Server capabilities spec:
+    -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#serverCapabilities
+    if client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = 'lsp_document_highlight' })
+      vim.api.nvim_create_autocmd('CursorHold', {
+        callback = vim.lsp.buf.document_highlight,
+        buffer = bufnr,
+        group = 'lsp_document_highlight',
+        desc = 'Document Highlight',
+      })
+      vim.api.nvim_create_autocmd('CursorMoved', {
+        callback = vim.lsp.buf.clear_references,
+        buffer = bufnr,
+        group = 'lsp_document_highlight',
+        desc = 'Clear All the References',
+      })
+    end
+  end
+end
+
+-- TODO figure out why this works but attaching on buffer below doesn't 🤔
+vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()')
+
 local on_attach = function(client, bufnr)
   -- commands
   u.buf_command(bufnr, 'LspHover', lsp.buf.hover)
@@ -66,7 +98,7 @@ local on_attach = function(client, bufnr)
   u.buf_command(bufnr, 'LspDiagNext', vim.diagnostic.goto_next)
   u.buf_command(bufnr, 'LspDiagFloat', vim.diagnostic.open_float)
   u.buf_command(bufnr, 'LspSignatureHelp', lsp.buf.signature_help)
-  u.buf_command(bufnr, 'LspCodeAction', lsp.buf.code_action)
+  -- u.buf_command(bufnr, 'LspCodeAction', lsp.buf.code_action)
 
   -- bindings
   buf_map(bufnr, 'n', '<leader>rn', function()
@@ -77,7 +109,7 @@ local on_attach = function(client, bufnr)
   buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
   buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
   buf_map(bufnr, 'i', '<C-x><C-x>', ':LspSignatureHelp<CR>')
-  buf_map(bufnr, 'n', 'ga', ':LspAct<CR>')
+  buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   buf_map(bufnr, 'x', 'ga', function()
     lsp.buf.code_action() -- range
   end)
@@ -96,7 +128,9 @@ local on_attach = function(client, bufnr)
     end)
   end
 
-  require('illuminate').on_attach(client)
+  utils.enable_highlight_on_hold(client, bufnr, {
+    prefer_illuminate = true,
+  })
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()

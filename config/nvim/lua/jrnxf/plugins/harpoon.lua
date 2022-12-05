@@ -1,17 +1,20 @@
 local ui = require('harpoon.ui')
 
 nmap('<leader>m', require('harpoon.mark').add_file)
-nmap('<leader>hh', ui.toggle_quick_menu)
+nmap('<leader>h', ui.toggle_quick_menu)
 
-nmap('<leader>1', function()
+nmap('<leader>j', function()
   ui.nav_file(1)
 end)
-nmap('<leader>2', function()
+
+nmap('<leader>k', function()
   ui.nav_file(2)
 end)
-nmap('<leader>3', function()
+
+nmap('<leader>l', function()
   ui.nav_file(3)
 end)
-nmap('<leader>4', function()
+
+nmap('<leader>;', function()
   ui.nav_file(4)
 end)

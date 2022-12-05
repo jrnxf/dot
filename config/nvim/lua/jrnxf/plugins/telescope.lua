@@ -1,4 +1,4 @@
-local u = require('jrnxf.core.utils')
+local u = require('jrnxf.lib.utils')
 local telescope = require('telescope')
 local conf = require('telescope.config').values
 local finders = require('telescope.finders')
@@ -64,11 +64,6 @@ telescope.setup({
     },
   },
   extensions = {
-    emoji = {
-      action = function(emoji)
-        vim.api.nvim_put({ emoji.value }, 'c', false, true) -- insert when picked
-      end,
-    },
     bookmarks = { selected_browser = 'chrome' },
     live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
@@ -91,9 +86,9 @@ telescope.setup({
 
 telescope.load_extension('fzf')
 telescope.load_extension('live_grep_args')
-telescope.load_extension('emoji')
 telescope.load_extension('bookmarks')
 telescope.load_extension('harpoon')
+-- telescope.load_extension('noice')
 
 -- custom pickers
 local live_grep_in_folder = function(opts)
@@ -160,11 +155,13 @@ end)
 nmap('<leader>cw', function()
   builtin.grep_string({ search = vim.fn.expand('<cword>') })
 end)
-nmap('<leader>col', builtin.colorscheme) -- (com)mands
+nmap('<leader>col', function()
+  builtin.colorscheme({ enable_preview = true })
+end) -- (col)orscheme
 nmap('<leader>com', builtin.commands) -- (com)mands
-nmap('<leader>he', builtin.help_tags) -- (he)lp tags
+-- nmap('<leader>he', builtin.help_tags) -- (he)lp tags --
 nmap('<leader>re', builtin.resume) -- (re)sume
 nmap('<leader>fw', builtin.live_grep) -- (f)ind in (w)orkspace
 nmap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
-nmap('<leader>oo', builtin.oldfiles) -- (o)pen (o)ld
+nmap('<leader>oo', builtin.oldfiles) -- (l)ast (f)iles
 nmap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer

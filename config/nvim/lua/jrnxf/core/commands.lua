@@ -1,11 +1,10 @@
+local group = vim.api.nvim_create_augroup('Jrnxf', { clear = true })
+
 -- vim.api.nvim_create_autocmd('VimEnter', {
---   callback = function(args)
---     -- this function detects if we're in
---     if vim.fn.isdirectory(args.file) ~= 0 then
---       vim.api.nvim_buf_delete(0, { force = true })
---       -- u.smart_telescope_files() -- i'd rather just press <C-p> if I want this
---     end
+--   callback = function()
+--     -- vim.notify('VimEnter ' .. os.clock())
 --   end,
+--   group = group,
 -- })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -13,6 +12,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank({ timeout = 200 })
   end,
 })
+-- vim.api.nvim_create_autocmd('User', {
+--   pattern = 'MasonToolsUpdateCompleted',
+--   callback = function()
+--     -- vim.schedule(function()
+--     print('mason-tool-installer has finished')
+--     -- end)
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd('DiagnosticChanged', {
   -- add buffer diagnostics to the location list

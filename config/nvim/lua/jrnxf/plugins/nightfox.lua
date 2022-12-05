@@ -4,6 +4,13 @@ local nightfox = require('nightfox.palette').load('nightfox')
 _G.colorscheme_palette = vim.inspect(terafox) -- for convenience (:lua print(palette))
 
 require('nightfox').setup({
+  options = {
+    styles = {
+      comments = 'italic',
+      keywords = 'italic,bold',
+      types = 'bold',
+    },
+  },
   palettes = {
     terafox = {
       bg1 = terafox.bg0, -- makes the same as bg1
