@@ -12,23 +12,22 @@ path.create_dir(swap)
 path.create_dir(undo)
 path.create_dir(view)
 
-o.autoindent = true
-o.backupdir = backup
-o.background = 'dark'
-o.belloff = 'all'
-o.breakindent = true
-o.breakindentopt = {
+vim.opt.autoindent = true
+vim.opt.backupdir = backup
+vim.opt.background = 'dark'
+vim.opt.belloff = 'all'
+vim.opt.breakindent = true
+vim.opt.breakindentopt = {
   shift = 2, -- wrapped line's beginning will be shifted by the given number of
 }
-o.clipboard = 'unnamedplus'
--- o.cmdheight = 0 -- ty noice
-o.cmdheight = 1 -- ty noice
-o.completeopt = 'menu,menuone,noselect'
-o.cursorline = true
-o.directory = swap
-o.expandtab = true
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.cmdheight = 1
+vim.opt.completeopt = 'menu,menuone,noselect'
+vim.opt.cursorline = true
+vim.opt.directory = swap
+vim.opt.expandtab = true
 -- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
-o.fillchars = {
+vim.opt.fillchars = {
   fold = '·', -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
   horiz = '━', -- BOX DRAWINGS HEAVY HORIZONTAL (U+2501, UTF-8: E2 94 81)
   horizdown = '┳', -- BOX DRAWINGS HEAVY DOWN AND HORIZONTAL (U+2533, UTF-8: E2 94 B3)
@@ -38,20 +37,14 @@ o.fillchars = {
   vertright = '┣', -- BOX DRAWINGS HEAVY VERTICAL AND RIGHT (U+2523, UTF-8: E2 94 A3)
   verthoriz = '╋', -- BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL (U+254B, UTF-8: E2 95 8B)
 }
-o.formatoptions = o.formatoptions -- :help fo-table
-  + 'c' -- auto wrap comments using textwith
-  + 'q' -- formmating of comments w/ `gq`
-  + 'l' -- long lines are not broken up
-  + 'j' -- remove comment leader when joning comments
-  + 'r' -- continue comment with enter
-  - 'o' -- but not w/ o and o, dont continue comments
-  + 'n' -- smart auto indenting inside numbered lists
-  - '2' -- this is not grade school anymore
-o.ignorecase = true
-o.inccommand = 'nosplit'
-o.laststatus = 3
-o.list = true
-o.listchars = o.listchars
+
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.inccommand = 'split' -- shows the effects of |:substitute|, |:smagic|, |:snomagic| and user commands with the |:command-preview| flag as you type.
+vim.opt.incsearch = true
+vim.opt.laststatus = 3
+vim.opt.list = true
+vim.opt.listchars = o.listchars
   + 'nbsp:⦸' --
   + 'tab:▷┅' --
   + 'extends:»' --
@@ -59,36 +52,29 @@ o.listchars = o.listchars
   + 'trail:•' --
 -- + 'eol:↴' --
 -- + 'space:⋅' --
-o.mouse = 'a'
-o.number = true
-o.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent
-o.pumheight = 30 -- p(op)u(p)m(enu) height
-o.pumwidth = 60 -- p(op)u(p)m(enu) height
-o.relativenumber = true
-o.scrolloff = 3
-o.shiftwidth = 2
-o.shortmess = o.shortmess
-  + 'A' -- ignore annoying swapfile messages
-  + 'T' -- truncate non-file messages in middle
-  + 'W' -- dont echo '[w]/[written]' when writing
-  + 'a' -- use abbreviations in message '[ro]' instead of '[readonly]'
-  + 'o' -- overwrite file-written mesage
-  + 't' -- truncate file messages at start
-  + 'c' -- dont show matching messages
-o.showbreak = '↳ '
-o.showmode = false
-o.sidescrolloff = 3
-o.signcolumn = 'yes' -- extra line to left of numbers for signs
-o.smartcase = true
-o.splitbelow = true -- :split   new window on bottom of current one
-o.splitright = true -- :vsplit  new window to right of current one
-o.tabstop = 2
-o.termguicolors = true
-o.textwidth = 80
-o.undodir = undo
-o.undofile = true
-o.viewdir = view
-o.wildignore = { '.git/*', 'node_modules/*' }
-o.wildignorecase = true
--- o.winbar = '%=%m %f' -- off to right, [+] if modified, file path
-o.wrap = false
+vim.opt.mouse = 'a'
+vim.opt.number = true
+vim.opt.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent
+vim.opt.pumheight = 30 -- p(op)u(p)m(enu) height
+vim.opt.pumwidth = 60 -- p(op)u(p)m(enu) height
+vim.opt.relativenumber = true
+vim.opt.scrolloff = 3
+vim.opt.shiftwidth = 2
+vim.opt.showbreak = '↳ '
+vim.opt.showmode = false
+vim.opt.sidescrolloff = 3
+vim.opt.signcolumn = 'yes' -- extra line to left of numbers for signs
+vim.opt.smartcase = true
+vim.opt.splitbelow = true -- :split   new window on bottom of current one
+vim.opt.splitright = true -- :vsplit  new window to right of current one
+vim.opt.tabstop = 2
+vim.opt.termguicolors = true
+vim.opt.textwidth = 80
+vim.opt.undodir = undo
+vim.opt.undofile = true
+vim.opt.viewdir = view
+vim.opt.wildignore = { '.git/*', 'node_modules/*' }
+vim.opt.wildignorecase = true
+-- configured be feline
+-- vim.opt.winbar = '%=%m %f' -- off to right, [+] if modified, file path --
+vim.opt.wrap = false

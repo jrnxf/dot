@@ -21,22 +21,22 @@ local get_map_options = function(custom_options)
   return options
 end
 
-M.map = function(mode, target, source, opts)
-  vim.keymap.set(mode, target, source, get_map_options(opts))
-end
+-- M.map = function(mode, target, source, opts)
+--   vim.keymap.set(mode, target, source, get_map_options(opts))
+-- end
 
-for _, mode in ipairs({ 'n', 'o', 'i', 'x', 't', 'c' }) do
-  M[mode .. 'map'] = function(...)
-    M.map(mode, ...)
-  end
-end
+-- for _, mode in ipairs({ 'n', 'o', 'i', 'x', 't', 'c' }) do
+--   M[mode .. 'map'] = function(...)
+--     M.map(mode, ...)
+--   end
+-- end
 
-M.buf_map = function(bufnr, mode, target, source, opts)
-  opts = opts or {}
-  opts.buffer = bufnr
+-- M.buf_map = function(bufnr, mode, target, source, opts)
+--   opts = opts or {}
+--   opts.buffer = bufnr
 
-  M.map(mode, target, source, get_map_options(opts))
-end
+--   M.map(mode, target, source, get_map_options(opts))
+-- end
 
 M.command = function(name, fn, opts)
   vim.api.nvim_create_user_command(name, fn, opts or {})
@@ -57,7 +57,7 @@ M.table = {
   end,
 }
 
-M.exec_file = function()
+M.exec_current_file = function()
   local ft = vim.api.nvim_buf_get_option(0, 'filetype')
   vim.cmd('silent! write')
 

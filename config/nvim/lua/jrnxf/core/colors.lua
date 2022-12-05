@@ -21,7 +21,7 @@ local colors_lib = require('jrnxf.lib.colors')
 local function generate_colors(args)
   if args.match == 'terafox' then
     local terafox = require('nightfox.palette').load('terafox')
-    local terafox_groups = {
+    local groups = {
       -- general
       -- Search = { fg = 'white', bg = terafox.magenta.dim },
       -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
@@ -46,8 +46,10 @@ local function generate_colors(args)
       StatusLine = { bg = '#152528' }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
     }
 
-    colors_lib.set_highlights(terafox_groups)
+    colors_lib.set_highlights(groups)
   end
+
+  -- 181825
   local pal = colors_lib.generate_pallet_from_colorscheme()
 
   -- stylua: ignore

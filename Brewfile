@@ -126,12 +126,16 @@ cask "iterm2"
 cask "karabiner-elements"
 # Open-source keystroke visualizer
 cask "keycastr"
+# GPU-based terminal emulator
+cask "kitty"
 # App to manage software development and track bugs
 cask "linear-linear"
 # Screen and video recording software
 cask "loom"
 # Minimal browser that protects privacy
 cask "min"
+# Neovim Client
+cask "neovide"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # VPN client for secure internet access and private browsing

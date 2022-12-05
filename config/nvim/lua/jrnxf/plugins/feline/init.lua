@@ -1,5 +1,8 @@
 require('jrnxf.lib.colors')
 local u = require('jrnxf.plugins.feline.util')
+-- local noice = require('noice.api.status')
+-- local ns = require('noice').api.status
+
 local fmt = string.format
 
 -- "┃", "█", "", "", "", "", "", "", "●"
@@ -12,11 +15,11 @@ local get_diag = function(str)
 end
 
 local function vi_mode_hl()
-  return u.vi.colors[vim.fn.mode()] or ""
+  return u.vi.colors[vim.fn.mode()] or ''
 end
 
 local function vi_sep_hl()
-  return u.vi.sep[vim.fn.mode()] or ""
+  return u.vi.sep[vim.fn.mode()] or ''
 end
 
 local function file_info()
@@ -26,7 +29,7 @@ local function file_info()
   end
 
   if vim.bo.modified then
-    table.insert(list, '●')
+    table.insert(list, '[+]')
   end
 
   table.insert(list, vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':~:.'))
@@ -63,6 +66,18 @@ local c = {
     left_sep = { str = ' ', hl = 'JrnxfSLAltSep' },
     right_sep = { str = ' ', hl = 'JrnxfSLAltSep' },
   },
+  -- makes everything super laggy :/
+  -- noice_mode = {
+  --   -- provider = require('noice').api.status.mode.get_hl,
+  --   provider = function()
+  --     -- vim.notify('here')
+  --     -- -- local foo = ns.mode.get
+  --     -- -- put(foo)
+  --     -- return 'noice'
+  --   end,
+  --   -- condition = true,
+  --   condition = require('noice').api.status.mode.has,
+  -- },
   file_enc = {
     provider = function()
       local os = u.icons[vim.bo.fileformat] or ''
@@ -137,7 +152,7 @@ local c = {
   },
   file_winbar = {
     provider = file_info,
-    hl = 'Comment',
+    hl = 'WinBar',
   },
 }
 
@@ -156,6 +171,7 @@ local active = {
     c.lsp_hint,
     c.file_type,
     c.file_enc,
+    -- c.noice_mode,
     c.cur_position,
     c.cur_percent,
   },
@@ -194,13 +210,13 @@ require('feline').setup({
   },
 })
 
--- require("feline").winbar.setup({
---   components = {
---     active = {
---       {},
---       {
---         c.file_winbar,
---       },
---     },
---   },
--- })
+require('feline').winbar.setup({
+  components = {
+    active = {
+      {},
+      {
+        c.file_winbar,
+      },
+    },
+  },
+})
