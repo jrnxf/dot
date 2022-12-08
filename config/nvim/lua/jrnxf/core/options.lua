@@ -36,6 +36,7 @@ vim.opt.fillchars = {
   vertleft = '┫', -- BOX DRAWINGS HEAVY VERTICAL AND LEFT (U+252B, UTF-8: E2 94 AB)
   vertright = '┣', -- BOX DRAWINGS HEAVY VERTICAL AND RIGHT (U+2523, UTF-8: E2 94 A3)
   verthoriz = '╋', -- BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL (U+254B, UTF-8: E2 95 8B)
+  diff = '╱',
 }
 
 vim.opt.hlsearch = true
@@ -50,8 +51,8 @@ vim.opt.listchars = o.listchars
   + 'extends:»' --
   + 'precedes:«' --
   + 'trail:•' --
--- + 'eol:↴' --
--- + 'space:⋅' --
+  + 'space:⋅' --
+  + 'eol:↴' --
 vim.opt.mouse = 'a'
 vim.opt.number = true
 vim.opt.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent

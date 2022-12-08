@@ -24,8 +24,8 @@ nmap('n', 'nzzzv') -- zv is fold related
 nmap('N', 'Nzzzv')
 
 -- half screen up/down keeping cursor centered
--- nmap('<C-d>', '<C-d>zz')
--- nmap('<C-u>', '<C-u>zz')
+nmap('<C-d>', '<C-d>zz')
+nmap('<C-u>', '<C-u>zz')
 
 -- <CR> acts as normal, but when things are activly highlighted <CR> will
 -- nohighlight as well
@@ -103,3 +103,9 @@ nmap('c.', [[:%s/\<<C-r><C-w>\>//g<Left><Left>]], { silent = false })
 -- Map <leader>o & <leader>O to newline without insert mode
 nmap('<leader>o', ':<C-u>call append(line("."), repeat([""], v:count1))<cr>')
 nmap('<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<cr>')
+
+nmap('[b', ':bprev<cr>')
+nmap(']b', ':bnext<cr>')
+nmap('[t', ':tabprev<cr>')
+nmap(']t', ':tabnext<cr>')
+nmap('<leader>tq', ':tabclose<cr>')

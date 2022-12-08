@@ -21,7 +21,8 @@ lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
   update_in_insert = false,
-  virtual_text = true, -- redundant with lsp_lines ( but sometimes lsp_lines is mega annoying )
+  -- virtual_text = true, -- redundant with lsp_lines ( but sometimes lsp_lines is mega annoying )
+  virtual_text = false,
   severity_sort = true,
 })
 
@@ -107,7 +108,7 @@ local on_attach = function(client, bufnr)
   buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
   buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
   buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
-  buf_map(bufnr, 'n', '<leader>e', ':LspDiagFloat<CR>')
+  buf_map(bufnr, 'n', '<leader>a', ':LspDiagFloat<CR>')
   buf_map(bufnr, 'i', '<C-x><C-x>', ':LspSignatureHelp<CR>')
   buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')
   buf_map(bufnr, 'x', 'ga', function()

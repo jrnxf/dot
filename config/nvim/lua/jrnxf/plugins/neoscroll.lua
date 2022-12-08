@@ -1,8 +1,6 @@
 require('neoscroll').setup({
   post_hook = function()
-    vim.notify('post_hook')
     vim.cmd([[normal zz]])
-    vim.cmd([[lua vim.notify("hi")]])
   end,
 })
 
