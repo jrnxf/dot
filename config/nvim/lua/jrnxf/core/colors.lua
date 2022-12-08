@@ -26,7 +26,10 @@ local function generate_colors(args)
       -- Search = { fg = 'white', bg = terafox.magenta.dim },
       -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
       CmpPmenuBorder = { fg = terafox.green.dim },
-      DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice
+      DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice asdf
+      DiffChange = { bg = '#0a291d' },
+      DiffText = { bg = '#0f3e2c' },
+      DiffAdd = { bg = '#0f3e2c' },
       DiffDelete = { bg = '#2d1c1c', fg = '#452c2b' },
       FloatBorder = { fg = terafox.green.dim },
       LspInfoBorder = { fg = terafox.green.dim },

@@ -246,12 +246,6 @@ local plugins = {
   ----   requires = { 'MunifTanjim/nui.nvim' },
   ---- },
   {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup()
-    end,
-  },
-  {
     'ibhagwan/fzf-lua',
     -- optional for icon support
     requires = { 'nvim-tree/nvim-web-devicons' },
@@ -267,6 +261,24 @@ local plugins = {
     tag = 'v3.*',
     conf = 'bufferline',
     requires = 'nvim-tree/nvim-web-devicons',
+  },
+
+  -- highlight colors
+  -- {
+  --   'brenoprata10/nvim-highlight-colors',
+  --   config = function()
+  --     require('nvim-highlight-colors').setup({
+  --       render = 'first_column', -- or 'foreground' or 'first_column'
+  --       enable_named_colors = true,
+  --       enable_tailwind = true,
+  --     })
+  --   end,
+  -- },
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end,
   },
 }
 
