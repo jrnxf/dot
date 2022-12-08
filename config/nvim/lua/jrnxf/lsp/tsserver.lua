@@ -94,13 +94,13 @@ M.setup = function(on_attach, capabilities)
       on_attach = function(client, bufnr)
         on_attach(client, bufnr)
 
-        u.buf_map(bufnr, 'n', 'go', ':TypescriptAddMissingImports<CR>')
-        u.buf_map(bufnr, 'n', 'gO', ':TypescriptOrganizeImports<CR>')
-        u.buf_map(bufnr, 'n', 'gI', ':TypescriptRenameFile<CR>')
+        buf_map(bufnr, 'n', 'go', ':TypescriptAddMissingImports<CR>')
+        buf_map(bufnr, 'n', 'gO', ':TypescriptOrganizeImports<CR>')
+        buf_map(bufnr, 'n', 'gI', ':TypescriptRenameFile<CR>')
 
-        u.buf_map(bufnr, 'i', '${', change_template_string_quotes, { nowait = true })
+        buf_map(bufnr, 'i', '${', change_template_string_quotes, { nowait = true })
 
-        u.buf_command(bufnr, 'CssToJs', css_to_js, { range = true })
+        -- buf_command(bufnr, 'CssToJs', css_to_js, { range = true })
         -- u.buf_map(bufnr, "n", "gx", ":set opfunc=v:lua.css_to_js<CR>g@")
         -- u.buf_map(bufnr, "n", "gxx", ":CssToJs<CR>")
         -- u.buf_map(bufnr, "v", "gx", ":CssToJs<CR>")

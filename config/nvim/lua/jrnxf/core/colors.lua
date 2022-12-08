@@ -25,25 +25,26 @@ local function generate_colors(args)
       -- general
       -- Search = { fg = 'white', bg = terafox.magenta.dim },
       -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
+      CmpPmenuBorder = { fg = terafox.green.dim },
       DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice
-      NullLsInfoBorder = { link = 'NormalFloatBorder' }, -- TODO pr this - it's weird that they used NormalFloat here and not NormalFloatBorder
-      NullLsInfoTitle = { link = 'Title' },
-      VertSplit = { fg = '#152528' },
-      NormalFloat = { bg = terafox.bg0 },
-      NormalFloatBorder = { fg = terafox.green.dim },
+      DiffDelete = { bg = '#2d1c1c', fg = '#452c2b' },
+      FloatBorder = { fg = terafox.green.dim },
+      LspInfoBorder = { fg = terafox.green.dim },
       MasonHeader = { bg = terafox.green.dim },
       MasonHeaderSecondary = { bg = terafox.green.dim },
       MasonHighlightBlock = { bg = terafox.green.dim },
       MasonHighlightBlockBold = { bg = terafox.green.dim },
-      Substitute = { bg = terafox.magenta.dim, fg = 'white' },
-      FloatBorder = { fg = terafox.green.dim },
-      TelescopeBorder = { fg = terafox.green.dim },
+      NormalFloat = { bg = terafox.bg0 },
+      NormalFloatBorder = { fg = terafox.green.dim },
+      NullLsInfoBorder = { link = 'NormalFloatBorder' }, -- TODO pr this - it's weird that they used NormalFloat here and not NormalFloatBorder
+      NullLsInfoTitle = { link = 'Title' },
       PMenu = { bg = terafox.bg0 },
       PMenuBorder = { fg = terafox.green.dim },
-      LspInfoBorder = { fg = terafox.green.dim },
-      CmpPmenuBorder = { fg = terafox.green.dim },
-      StatusLineNC = { bg = '#152528', fg = '#7aa4a1' }, -- status line none current
       StatusLine = { bg = '#152528' }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
+      StatusLineNC = { bg = '#152528', fg = '#7aa4a1' }, -- status line none current
+      Substitute = { bg = terafox.magenta.dim, fg = 'white' },
+      TelescopeBorder = { fg = terafox.green.dim },
+      -- VertSplit = { fg = '#152528' },
     }
 
     colors_lib.set_highlights(groups)

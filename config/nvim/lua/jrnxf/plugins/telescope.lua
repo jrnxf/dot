@@ -33,8 +33,9 @@ telescope.setup({
       '--with-filename',
       '--line-number',
       '--column',
-      '--smart-case',
+      -- '--smart-case', -- i prefer ignore case
       -- custom
+      '--ignore-case',
       '--fixed-strings',
     },
     prompt_prefix = '❯ ',

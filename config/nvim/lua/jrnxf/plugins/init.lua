@@ -54,7 +54,7 @@ local plugins = {
   { 'nvim-treesitter/playground' },
   { 'windwp/nvim-ts-autotag', ft = { 'typescript' } }, -- automatically close jsx tags
   { 'JoosepAlviste/nvim-ts-context-commentstring', ft = { 'typescript' } }, -- makes jsx comments actually work
-  -- { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
+  { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
   -- { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
   -- { 'mrjones2014/legendary.nvim', conf = 'legendary' },
   -- { 'ggandor/leap.nvim', conf = 'leap' },
@@ -70,8 +70,8 @@ local plugins = {
   { 'navarasu/onedark.nvim' },
   { 'catppuccin/nvim' },
   {
-    'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
+    'nvim-tree/nvim-tree.lua',
+    requires = 'nvim-tree/nvim-web-devicons',
     conf = 'nvim-tree',
   },
   {
@@ -250,6 +250,23 @@ local plugins = {
     config = function()
       require('colorizer').setup()
     end,
+  },
+  {
+    'ibhagwan/fzf-lua',
+    -- optional for icon support
+    requires = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'sindrets/diffview.nvim',
+    commit = 'bd6c0c2df6c00a72342f631a58e1ea28549b6ac8', -- bug with splits being horizontal by default rn
+    conf = 'diffview',
+    requires = 'nvim-lua/plenary.nvim',
+  },
+  {
+    'akinsho/bufferline.nvim',
+    tag = 'v3.*',
+    conf = 'bufferline',
+    requires = 'nvim-tree/nvim-web-devicons',
   },
 }
 

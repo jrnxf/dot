@@ -21,6 +21,7 @@ tools.setup({
     'shfmt',
     'stylua',
     'typescript-language-server',
+    'xo',
   },
 
   -- if set to true this will check each tool for updates. If updates
