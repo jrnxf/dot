@@ -1,6 +1,6 @@
 require('neoscroll').setup({
   post_hook = function()
-    vim.cmd([[normal zz]])
+    vim.cmd([[normal! zz]])
   end,
 })
 

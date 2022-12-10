@@ -10,8 +10,6 @@ local lsp = vim.lsp
 
 local border_opts = { border = 'rounded', focusable = false, scope = 'line' }
 -- noice handles signatureHelp and hover for us
--- lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, border_opts)
--- lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, border_opts)
 vim.diagnostic.config({ float = border_opts })
 require('lspconfig.ui.windows').default_options = { border = 'rounded' } -- styles windows from nvim-lspconfig (e.g. :LSPInfo)
 
@@ -106,8 +104,8 @@ local on_attach = function(client, bufnr)
     return ':IncRename ' .. vim.fn.expand('<cword>')
   end, { expr = true })
   buf_map(bufnr, 'n', 'K', ':LspHover<CR>')
-  buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>')
-  buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>')
+  buf_map(bufnr, 'n', '[a', ':LspDiagPrev<CR>zz')
+  buf_map(bufnr, 'n', ']a', ':LspDiagNext<CR>zz')
   buf_map(bufnr, 'n', '<leader>a', ':LspDiagFloat<CR>')
   buf_map(bufnr, 'i', '<C-x><C-x>', ':LspSignatureHelp<CR>')
   buf_map(bufnr, 'n', 'ga', ':LspCodeAction<CR>')

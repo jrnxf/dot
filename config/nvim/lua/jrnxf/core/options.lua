@@ -51,8 +51,8 @@ vim.opt.listchars = o.listchars
   + 'extends:»' --
   + 'precedes:«' --
   + 'trail:•' --
-  + 'space:⋅' --
-  + 'eol:↴' --
+-- + 'space:⋅' --
+-- + 'eol:↴' --
 vim.opt.mouse = 'a'
 vim.opt.number = true
 vim.opt.pumblend = 5 -- p(op)u(p)m(enu) transparency 0 = opaque, 100 = fully transparent

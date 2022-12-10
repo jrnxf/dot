@@ -21,13 +21,28 @@ local colors_lib = require('jrnxf.lib.colors')
 local function generate_colors(args)
   if args.match == 'terafox' then
     local terafox = require('nightfox.palette').load('terafox')
+
+    local colors = {
+      added_line = '#0e3929',
+      added_text = '#19674a',
+      deleted_line = '#2d1c1c',
+      deleted_text = '#4e3131',
+      off_white_text = '#cccccc',
+    }
+
     local groups = {
       -- general
       -- Search = { fg = 'white', bg = terafox.magenta.dim },
       -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
       CmpPmenuBorder = { fg = terafox.green.dim },
       DiagnosticSignInfo = { link = 'FloatBorder' }, -- used heavily by noice
-      DiffDelete = { bg = '#2d1c1c', fg = '#452c2b' },
+      DiffAdd = { bg = colors.added_line }, -- show added lines
+      DiffAddText = { bg = colors.added_text, fg = colors.off_white_text }, -- show added characters within added lines
+      DiffChange = { bg = colors.deleted_line }, -- fugitive (left side) to show what LINE text was changed on
+      DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text }, -- shows fully deleted blocks of code
+      DiffAddAsDelete = { bg = colors.deleted_line }, -- used in diffview (left panel) highlight line that changed
+      DiffDeleteText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- diffview (left panel) highlight word that changed
+      DiffText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- fugitive (left side) to show exact characters that deleted
       FloatBorder = { fg = terafox.green.dim },
       LspInfoBorder = { fg = terafox.green.dim },
       MasonHeader = { bg = terafox.green.dim },

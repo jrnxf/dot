@@ -21,8 +21,11 @@ local packer_handlers = {
 local packer = require('packer')
 
 packer.init({
-  -- if i want floats
-  -- display = { open_fn = function() return require('packer.util').float({ border = 'rounded' }) end, },
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'rounded' })
+    end,
+  },
 })
 
 packer.set_handler('conf', packer_handlers.conf)
@@ -54,8 +57,8 @@ local plugins = {
   { 'nvim-treesitter/playground' },
   { 'windwp/nvim-ts-autotag', ft = { 'typescript' } }, -- automatically close jsx tags
   { 'JoosepAlviste/nvim-ts-context-commentstring', ft = { 'typescript' } }, -- makes jsx comments actually work
-  { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
-  -- { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
+  -- { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
+  { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
   -- { 'mrjones2014/legendary.nvim', conf = 'legendary' },
   -- { 'ggandor/leap.nvim', conf = 'leap' },
   {
@@ -239,18 +242,12 @@ local plugins = {
   ----   -- after = 'noice',
   ----   conf = 'lualine',
   ---- },
-  ---- {
-  ----   'folke/noice.nvim',
-  ----   as = 'noice',
-  ----   conf = 'noice',
-  ----   requires = { 'MunifTanjim/nui.nvim' },
-  ---- },
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup()
-    end,
-  },
+  -- {
+  --   'folke/noice.nvim',
+  --   as = 'noice',
+  --   conf = 'noice',
+  --   requires = { 'MunifTanjim/nui.nvim' },
+  -- },
   {
     'ibhagwan/fzf-lua',
     -- optional for icon support
@@ -267,6 +264,24 @@ local plugins = {
     tag = 'v3.*',
     conf = 'bufferline',
     requires = 'nvim-tree/nvim-web-devicons',
+  },
+
+  -- highlight colors
+  -- {
+  --   'brenoprata10/nvim-highlight-colors',
+  --   config = function()
+  --     require('nvim-highlight-colors').setup({
+  --       render = 'first_column', -- or 'foreground' or 'first_column'
+  --       enable_named_colors = true,
+  --       enable_tailwind = true,
+  --     })
+  --   end,
+  -- },
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end,
   },
 }
 

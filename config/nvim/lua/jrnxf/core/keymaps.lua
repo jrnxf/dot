@@ -10,7 +10,6 @@ xmap('<leader>', '<Nop>')
 nmap('Q', '<Nop>')
 nmap('q:', '<Nop>')
 nmap('Y', 'y$')
--- nmap('<cr>', '{->v:hlsearch ? ":nohl\\<cr>" : "\\<cr>"}()', { expr = true })
 nmap('x', '"_x')
 nmap('X', '"_X')
 
@@ -19,32 +18,36 @@ nmap('X', '"_X')
 nmap('Y', 'y$')
 vmap('Y', '<Esc>y$gv')
 
+nmap('<leader>v', ':vsplit<CR>')
+nmap('<leader>s', ':split<CR>')
+
 -- Keep matches center screen when cycling with n|N
 nmap('n', 'nzzzv') -- zv is fold related
 nmap('N', 'Nzzzv')
 
--- half screen up/down keeping cursor centered
-nmap('<C-d>', '<C-d>zz')
-nmap('<C-u>', '<C-u>zz')
+-- half screen up/down keeping cursor centered / rn handled by cinnnamon
+-- nmap('<C-d>', '<C-d>zz')
+-- nmap('<C-u>', '<C-u>zz')
 
 -- <CR> acts as normal, but when things are activly highlighted <CR> will
 -- nohighlight as well
-nmap('<CR>', ':noh<CR><CR>')
+nmap('<Esc><Esc>', ':nohlsearch<CR>')
+nmap('<CR>', ':nohlsearch<CR><CR>')
 
 -- Window
-nmap('<Up>', ':wincmd 2+<cr>')
-nmap('<Down>', ':wincmd 2-<cr>')
-nmap('<Left>', ':wincmd 2><cr>')
-nmap('<Right>', ':wincmd 2<<cr>')
-nmap('<leader>=', ':wincmd =<cr>')
+nmap('<Up>', ':wincmd 2+<CR>')
+nmap('<Down>', ':wincmd 2-<CR>')
+nmap('<Left>', ':wincmd 2><CR>')
+nmap('<Right>', ':wincmd 2<<CR>')
+nmap('<leader>=', ':wincmd =<CR>')
 
 -- visual
 -- (un)indent lines
 vmap('<', '<gv')
 vmap('>', '>gv')
 -- shift lines up or down
-vmap('K', ":move '<-2<cr>gv-gv")
-vmap('J', ":move '>+1<cr>gv-gv")
+vmap('K', ":move '<-2<CR>gv-gv")
+vmap('J', ":move '>+1<CR>gv-gv")
 
 -- delete to void register (acts as a motion in normal mode)
 kmap({ 'n', 'v' }, '<leader>d', '"_d')
@@ -59,14 +62,14 @@ cmap('<C-h>', '<Left>', { silent = false })
 cmap('<C-j>', '<Down>', { silent = false })
 cmap('<C-k>', '<Up>', { silent = false })
 cmap('<C-l>', '<Right>', { silent = false })
-cmap('<C-f>', '<C-R>=expand("%:p")<cr>', { silent = false }) -- prints the current file path
+cmap('<C-f>', '<C-R>=expand("%:p")<CR>', { silent = false }) -- prints the current file path
 
 -- repect multilines
 nmap('j', 'gj')
 nmap('k', 'gk')
 
-nmap('<leader>w', ':wall!<cr>')
-nmap('<leader>q', ':qall!<cr>')
+nmap('<leader>w', ':wall!<CR>')
+nmap('<leader>q', ':qall!<CR>')
 
 nmap('<F1>', function()
   require('jrnxf.lib.utils').exec_current_file()
@@ -92,20 +95,27 @@ nmap('<leader>gB', function()
 end, { desc = 'Browse file' })
 
 -- Git
-nmap('gs', ':0G<cr>')
-nmap('gj', ':diffget //2<cr>') -- theirs
-nmap('gk', ':diffget //3<cr>') -- mine
+nmap('gs', ':0G<CR>')
+nmap('gj', ':diffget //2<CR>') -- theirs
+nmap('gk', ':diffget //3<CR>') -- mine
 
 -- Search and Replace
 -- 'c.' for word
 nmap('c.', [[:%s/\<<C-r><C-w>\>//g<Left><Left>]], { silent = false })
 
 -- Map <leader>o & <leader>O to newline without insert mode
-nmap('<leader>o', ':<C-u>call append(line("."), repeat([""], v:count1))<cr>')
-nmap('<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<cr>')
 
-nmap('[b', ':bprev<cr>')
-nmap(']b', ':bnext<cr>')
-nmap('[t', ':tabprev<cr>')
-nmap(']t', ':tabnext<cr>')
-nmap('<leader>tq', ':tabclose<cr>')
+nmap('<leader>o', ':<C-u>call append(line("."), repeat([""], v:count1))<CR>')
+nmap('<leader>O', ':<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>')
+
+nmap('[b', ':bprev<CR>')
+nmap(']b', ':bnext<CR>')
+nmap('<leader>bq', ':bdelete<CR>')
+nmap('[t', ':tabprev<CR>')
+nmap(']t', ':tabnext<CR>')
+nmap('<leader>tq', ':tabclose<CR>')
+
+nmap('<leader>gd', ':DiffviewOpen<CR>')
+nmap('<leader>gh', ':DiffviewFileHistory<CR>')
+nmap('<leader>gH', ':DiffviewFileHistory %<CR>')
+xmap('<leader>gh', "<Esc>:'<,'>DiffviewFileHistory<CR>")
