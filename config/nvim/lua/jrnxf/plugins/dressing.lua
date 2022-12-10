@@ -1,7 +1,7 @@
 require('dressing').setup({
   input = {
-    enabled = true,
-    -- enabled = false, -- dont conflict with noice
+    -- enabled = true,
+    enabled = false, -- dont conflict with noice
     -- relative = 'editor',
   },
   select = {

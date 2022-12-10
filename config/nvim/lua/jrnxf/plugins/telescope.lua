@@ -89,7 +89,7 @@ telescope.load_extension('fzf')
 telescope.load_extension('live_grep_args')
 telescope.load_extension('bookmarks')
 telescope.load_extension('harpoon')
--- telescope.load_extension('noice')
+telescope.load_extension('noice')
 
 -- custom pickers
 local live_grep_in_folder = function(opts)

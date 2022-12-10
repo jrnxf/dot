@@ -34,6 +34,7 @@ local plugins = {
   { 'tpope/vim-surround' },
   { 'tpope/vim-commentary' },
   { 'tpope/vim-fugitive' },
+  { 'numtostr/BufOnly.nvim', cmd = 'BufOnly' },
   {
     'smjonas/inc-rename.nvim',
     config = function()
@@ -54,8 +55,8 @@ local plugins = {
   { 'nvim-treesitter/playground' },
   { 'windwp/nvim-ts-autotag', ft = { 'typescript' } }, -- automatically close jsx tags
   { 'JoosepAlviste/nvim-ts-context-commentstring', ft = { 'typescript' } }, -- makes jsx comments actually work
-  { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
-  -- { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
+  -- { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
+  { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
   -- { 'mrjones2014/legendary.nvim', conf = 'legendary' },
   -- { 'ggandor/leap.nvim', conf = 'leap' },
   {
@@ -139,7 +140,7 @@ local plugins = {
     'nvim-telescope/telescope.nvim',
     as = 'telescope',
     after = {
-      -- 'noice',
+      'noice',
       'trouble',
     },
     requires = {
@@ -159,17 +160,17 @@ local plugins = {
     end,
   },
   ---- conflicts with noice
-  {
-    'vigoux/notifier.nvim',
-    config = function()
-      require('notifier').setup({
-        notify = {
-          clear_time = 5000,
-          min_level = vim.log.levels.INFO,
-        },
-      })
-    end,
-  },
+  -- {
+  --   'vigoux/notifier.nvim',
+  --   config = function()
+  --     require('notifier').setup({
+  --       notify = {
+  --         clear_time = 5000,
+  --         min_level = vim.log.levels.INFO,
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     'neovim/nvim-lspconfig',
     as = 'lspconfig',
@@ -239,12 +240,12 @@ local plugins = {
   ----   -- after = 'noice',
   ----   conf = 'lualine',
   ---- },
-  ---- {
-  ----   'folke/noice.nvim',
-  ----   as = 'noice',
-  ----   conf = 'noice',
-  ----   requires = { 'MunifTanjim/nui.nvim' },
-  ---- },
+  {
+    'folke/noice.nvim',
+    as = 'noice',
+    conf = 'noice',
+    requires = { 'MunifTanjim/nui.nvim' },
+  },
   {
     'ibhagwan/fzf-lua',
     -- optional for icon support

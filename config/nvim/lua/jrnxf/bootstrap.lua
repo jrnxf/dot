@@ -13,7 +13,7 @@ M.define_globals = function()
       table.insert(objects, vim.inspect(v))
     end
 
-    print(table.concat(objects, '\n'))
+    vim.notify(table.concat(objects, '\n'))
     return ...
   end
 end

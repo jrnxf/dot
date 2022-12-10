@@ -13,31 +13,6 @@ M.smart_telescope_files = function()
   end
 end
 
-local get_map_options = function(custom_options)
-  local options = { silent = true }
-  if custom_options then
-    options = vim.tbl_extend('force', options, custom_options)
-  end
-  return options
-end
-
--- M.map = function(mode, target, source, opts)
---   vim.keymap.set(mode, target, source, get_map_options(opts))
--- end
-
--- for _, mode in ipairs({ 'n', 'o', 'i', 'x', 't', 'c' }) do
---   M[mode .. 'map'] = function(...)
---     M.map(mode, ...)
---   end
--- end
-
--- M.buf_map = function(bufnr, mode, target, source, opts)
---   opts = opts or {}
---   opts.buffer = bufnr
-
---   M.map(mode, target, source, get_map_options(opts))
--- end
-
 M.command = function(name, fn, opts)
   vim.api.nvim_create_user_command(name, fn, opts or {})
 end
@@ -45,17 +20,6 @@ end
 M.buf_command = function(bufnr, name, fn, opts)
   vim.api.nvim_buf_create_user_command(bufnr, name, fn, opts or {})
 end
-
-M.table = {
-  some = function(tbl, cb)
-    for k, v in pairs(tbl) do
-      if cb(k, v) then
-        return true
-      end
-    end
-    return false
-  end,
-}
 
 M.exec_current_file = function()
   local ft = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -97,6 +61,82 @@ M.open_url_under_cursor = function()
   if string.match(url, [[.*/.*]]) then
     return M.open_url('https://github.com/' .. url)
   end
+end
+
+M.vec_union = function(...)
+  local result = {}
+  local seen = {}
+  local args = { ... }
+
+  for i = 1, #args do
+    if args[i] ~= nil and type(args[i]) ~= 'boolean' then
+      if type(args[i]) == 'table' then
+        for k, v in pairs(args[i]) do
+          if type(k) == 'number' and not seen[v] then
+            seen[v] = true
+            result[#result + 1] = v
+          end
+        end
+      else
+        if not seen[args[i]] then
+          seen[args[i]] = true
+          result[#result + 1] = args[i]
+        -- not a table - but have I seen the value?
+        else
+        end
+      end
+    end
+  end
+
+  return result
+end
+
+M.tbl_deep_clone = function(t)
+  local clone = {}
+
+  for k, v in pairs(t) do
+    if type(v) == 'table' then
+      clone[k] = M.tbl_deep_clone(v)
+    else
+      clone[k] = v
+    end
+  end
+
+  return clone
+end
+
+M.tbl_union_extend_overwrite = function(leftmost, ...)
+  local res = {}
+
+  local function recurse(base, next)
+    -- this will place all array-like values in both table
+    -- into one table. all values in the sub table after this
+    -- operation will have number types
+    local sub = M.vec_union(base, next)
+
+    for k, v in pairs(base) do
+      if type(k) ~= 'number' then
+        sub[k] = v
+      end
+    end
+
+    for k, v in pairs(next) do
+      if type(k) ~= 'number' then
+        if type(v) == 'table' then
+          sub[k] = recurse(sub[k], v)
+        else
+          sub[k] = v
+        end
+      end
+    end
+    return sub
+  end
+
+  for _, next in pairs({ ... }) do
+    res = recurse(M.tbl_deep_clone(leftmost), M.tbl_deep_clone(next))
+  end
+
+  return res
 end
 
 return M
