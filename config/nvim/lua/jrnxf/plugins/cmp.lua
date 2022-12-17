@@ -42,9 +42,10 @@ cmp.setup({
       },
     }),
   },
-  experimental = {
-    ghost_text = true,
-  },
+  -- this is actually kinda visually distracting
+  -- experimental = {
+  --   ghost_text = true,
+  -- },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-n>'] = cmp.mapping.select_next_item(),

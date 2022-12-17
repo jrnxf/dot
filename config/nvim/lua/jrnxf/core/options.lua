@@ -45,12 +45,13 @@ vim.opt.inccommand = 'split' -- shows the effects of |:substitute|, |:smagic|, |
 vim.opt.incsearch = true
 vim.opt.laststatus = 3
 vim.opt.list = true
-vim.opt.listchars = o.listchars
-  + 'nbsp:⦸' --
-  + 'tab:▷┅' --
-  + 'extends:»' --
-  + 'precedes:«' --
-  + 'trail:•' --
+-- vim.opt.listchars = o.listchars
+--   + 'nbsp:⦸' --
+--   + 'tab:▷┅' --
+--   + 'extends:»' --
+--   + 'precedes:«' --
+-- + 'trail:•' -- I like this, but it shows up when I start typing on a blank
+-- line
 -- + 'space:⋅' --
 -- + 'eol:↴' --
 vim.opt.mouse = 'a'

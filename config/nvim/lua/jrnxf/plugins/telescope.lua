@@ -162,7 +162,7 @@ end) -- (col)orscheme
 nmap('<leader>com', builtin.commands) -- (com)mands
 -- nmap('<leader>he', builtin.help_tags) -- (he)lp tags --
 nmap('<leader>re', builtin.resume) -- (re)sume
-nmap('<leader>fw', builtin.live_grep) -- (f)ind in (w)orkspace
+nmap('<leader>lg', builtin.live_grep) -- (find in (w)orkspace
 nmap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
 nmap('<leader>oo', builtin.oldfiles) -- (l)ast (f)iles
 nmap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer

@@ -35,7 +35,9 @@ local plugins = {
   { 'lewis6991/impatient.nvim' },
   { 'nvim-lua/plenary.nvim' },
   { 'tpope/vim-surround' },
-  { 'tpope/vim-commentary' },
+  -- { 'tpope/vim-commentary' },
+  { 'JoosepAlviste/nvim-ts-context-commentstring', as = 'ts-context-commentstring' }, -- makes jsx comments actually work
+  { 'numToStr/Comment.nvim', conf = 'comment', after = 'ts-context-commentstring' },
   { 'tpope/vim-fugitive' },
   {
     'smjonas/inc-rename.nvim',
@@ -56,7 +58,6 @@ local plugins = {
   },
   { 'nvim-treesitter/playground' },
   { 'windwp/nvim-ts-autotag', ft = { 'typescript' } }, -- automatically close jsx tags
-  { 'JoosepAlviste/nvim-ts-context-commentstring', ft = { 'typescript' } }, -- makes jsx comments actually work
   -- { 'karb94/neoscroll.nvim', conf = 'neoscroll' },
   { 'declancm/cinnamon.nvim', conf = 'cinnamon' },
   -- { 'mrjones2014/legendary.nvim', conf = 'legendary' },
