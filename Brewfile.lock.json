@@ -1008,7 +1008,7 @@
         }
       },
       "neovim": {
-        "version": "HEAD-adda751",
+        "version": "0.8.1",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
@@ -2311,12 +2311,12 @@
   "system": {
     "macos": {
       "monterey": {
-        "HOMEBREW_VERSION": "3.6.4",
+        "HOMEBREW_VERSION": "3.6.15",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "48717b12ad00f47a8b51b18bb79cbb69f5fadc7e",
-        "CLT": "14.0.0.0.1.1661618636",
-        "Xcode": "14.0",
-        "macOS": "12.6"
+        "Homebrew/homebrew-core": "3c05cf431d17fc7076157d772ad80eb4de1139ae",
+        "CLT": "14.2.0.0.1.1668646533",
+        "Xcode": "14.1",
+        "macOS": "12.6.2"
       },
       "ventura": {
         "HOMEBREW_VERSION": "3.6.14",

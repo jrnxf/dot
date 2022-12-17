@@ -59,6 +59,7 @@ local function generate_colors(args)
       StatusLineNC = { bg = '#152528', fg = '#7aa4a1' }, -- status line none current
       Substitute = { bg = terafox.magenta.dim, fg = 'white' },
       TelescopeBorder = { fg = terafox.green.dim },
+      Visual = { bg = terafox.blue.bright, fg = terafox.fg0 },
       -- VertSplit = { fg = '#152528' },
     }
 
