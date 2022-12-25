@@ -89,4 +89,4 @@ nt.setup({
   },
 })
 
-nmap('<C-n>', ':NvimTreeToggle<CR>', { silent = true })
+nmap('<leader>tt', ':NvimTreeToggle<CR>', { silent = true })

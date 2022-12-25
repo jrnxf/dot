@@ -52,13 +52,14 @@ telescope.setup({
       i = {
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
-        ['<C-p>'] = actions.close,
+        ['<C-n>'] = actions.move_selection_next,
+        ['<C-p>'] = actions.move_selection_previous,
         ['<C-t>'] = trouble.open_with_trouble,
       },
       n = {
         ['<C-c>'] = actions.close,
-        ['<C-p>'] = actions.close,
-        ['<C-d>'] = actions.delete_buffer,
+        ['<C-n>'] = actions.move_selection_next,
+        ['<C-p>'] = actions.move_selection_previous,
         ['<C-t>'] = trouble.open_with_trouble,
       },
     },
@@ -91,7 +92,7 @@ telescope.load_extension('harpoon')
 -- telescope.load_extension('noice')
 
 -- custom pickers
-local live_grep_in_folder = function(opts)
+local live_grep_in_dir = function(opts)
   opts = opts or {}
   local data = {}
   scan.scan_dir(vim.loop.cwd(), {
@@ -142,13 +143,13 @@ end
 -- NOTE: the idea behind the 't' mapping is so that not every
 -- builtin becomes yet another mapping. 't' and typing in the builtin
 -- is less memory overload, fast enough, and easier to maintain
-nmap('<leader>t', function()
+nmap('<leader>tb', function()
   builtin.builtin({ include_extensions = true })
 end)
 
 -- that being said, some super common builtins I'm fine with mapping
 -- mappings for
-nmap('<C-p>', u.smart_telescope_files)
+nmap('<leader>ff', u.smart_telescope_files)
 nmap('<leader>do', function()
   builtin.git_files({ prompt_title = 'Dotfiles', cwd = '$HOME/dotfiles', show_untracked = true })
 end)
@@ -161,7 +162,8 @@ end) -- (col)orscheme
 nmap('<leader>com', builtin.commands) -- (com)mands
 -- nmap('<leader>he', builtin.help_tags) -- (he)lp tags --
 nmap('<leader>re', builtin.resume) -- (re)sume
-nmap('<leader>lg', builtin.live_grep) -- (find in (w)orkspace
-nmap('<leader>ff', live_grep_in_folder) -- (f)ind in (w)folder
+nmap('<leader>gg', builtin.live_grep) -- (g)rep in files
+nmap('<leader>gd', live_grep_in_dir) -- (g)rep in (d)ir
+
 nmap('<leader>oo', builtin.oldfiles) -- (l)ast (f)iles
 nmap('<leader>fb', builtin.current_buffer_fuzzy_find) -- (f)ind in (b)uffer

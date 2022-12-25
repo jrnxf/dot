@@ -20,7 +20,7 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(lsp.diagnostic.on_pub
   underline = true,
   update_in_insert = false,
   -- virtual_text = true, -- redundant with lsp_lines ( but sometimes lsp_lines is mega annoying )
-  virtual_text = false,
+  virtual_text = { spacing = 4, prefix = '●' },
   severity_sort = true,
 })
 

@@ -221,6 +221,14 @@ local plugins = {
     end,
   },
   {
+    'dnlhc/glance.nvim',
+    config = function()
+      require('glance').setup({
+        -- your configuration
+      })
+    end,
+  },
+  {
     'j-hui/fidget.nvim',
     config = function()
       require('fidget').setup({})
@@ -274,6 +282,7 @@ local plugins = {
     -- '~/Dev/trouble.nvim',
     'jrnxf/trouble.nvim', -- has my looping feature
     -- 'folke/trouble.nvim',
+    commit = 'da61737d860ddc12f78e638152834487eabf0ee5',
     as = 'trouble',
     requires = 'kyazdani42/nvim-web-devicons',
     conf = 'trouble',
