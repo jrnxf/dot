@@ -142,7 +142,8 @@ for _, server in ipairs({
   'null_ls',
   'prismals',
   'pyright',
-  'rust_analyzer',
+  -- 'rust_analyzer',
+  'rust_tools',
   'sumneko_lua',
   'tsserver',
 }) do

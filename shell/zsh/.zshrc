@@ -1,4 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
+export POCUS_GARDEN_ENVIRONMENT="cloud"
+
 
 plugins=(git tmux zsh-autosuggestions)
 
