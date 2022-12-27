@@ -1,1 +1,1 @@
-require('jrnxf.bootstrap').init()
+require('jrnxf')

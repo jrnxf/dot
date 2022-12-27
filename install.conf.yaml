@@ -20,11 +20,12 @@
     ~/.config/nvim:
       glob: true
       path: config/nvim/*
+
 - shell:
-    - command: ./setup/mac.sh
-      description: Setting up Mac
-      stdout: true
-      stderr: true
+    # - command: ./setup/mac.sh
+    #   description: Setting up Mac
+    #   stdout: true
+    #   stderr: true
     - command: ./setup/neovim.sh
       description: Setup Neovim
       stdout: true
