@@ -20,10 +20,13 @@ disabled = true
 [golang]
 disabled = true
 
+[lua]
+disabled = true
+
 [git_status]
 disabled = true
 
-[kubernetes]
-format = '[$context \($namespace\)](dimmed blue) '
-disabled = false
-detect_folders = ["kubernetes"] # there is a kubernetes folder in pocus
+# [kubernetes]
+# format = '[$context \($namespace\)](dimmed blue) '
+# disabled = false
+# detect_folders = ["kubernetes"] # there is a kubernetes folder in pocus

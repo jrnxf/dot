@@ -1,4 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
+export POCUS_GARDEN_ENVIRONMENT="cloud"
+export GARDEN_LOGGER_TYPE="basic"
+export AWS_PROFILE="pocus-dev"
 
 plugins=(git tmux zsh-autosuggestions)
 
@@ -15,7 +18,7 @@ alias p="cd ~/Dev/pocus"
 alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
-alias clear="clear && printf '\e[3J'"
+alias clear='printf "\33c\e[3J"'
 alias skrrrt="cd ~/Dev/skrrrt"
 alias s="skrrrt"
 alias dot="cd ~/dotfiles"
@@ -40,7 +43,34 @@ alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
 # TODO EVAL (@ref https://github.com/emk/rust-musl-builder) alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
+# # fbr - checkout git branch
+# fbr() {
+#   local branches branch
+#   branches=$(git --no-pager branch -vv) &&
+#   branch=$(echo "$branches" | fzf +m) &&
+#   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+# }
+
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+    branch=$(echo "$branches" |
+      fzf-tmux -d $((2 + $(wc -l <<<"$branches"))) +m) &&
+    git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# # fbr - checkout git branch (including remote branches), sorted by most recent commit, limit 30 last branches
+# fbr() {
+#   local branches branch
+#   branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+#   branch=$(echo "$branches" |
+#            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+#   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+# }
+
 export FZF_DEFAULT_COMMAND='rg --files --hidden' # set rg as the default source for fzf instead of find
+# terafox
 export FZF_DEFAULT_OPTS='
  --color=fg:#6d7f8b,bg:#0f1c1e,hl:#7aa4a1
  --color=fg+:#8aa4a1,bg+:#0f1c1e,hl+:#7aa4a1
@@ -48,7 +78,12 @@ export FZF_DEFAULT_OPTS='
  --color=marker:#6d7f8b,spinner:#ad5c7c,header:#ad5c7c
  --height 60%'
 
-
+# tokyonight
+# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+# --color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64
+# --color=fg+:#c0caf5,bg+:#1a1b26,hl+:#ff9e64
+# --color=info:#7aa2f7,prompt:#7aa2f7,pointer:#db4b4b
+# --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a'
 # ansi theme will attempt to match terminal styles
 export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"
 
@@ -64,9 +99,9 @@ _fzf_comprun() {
   local command=$1
   shift
   case "$command" in
-    v|vim|nvim)           fzf "$@" --preview "$CUSTOM_FZF_PREVIEW_OPTS" ;;
-    ssh)                  fzf "$@" --preview 'dig {}' ;;
-    *)                    fzf "$@" ;;
+  v | vim | nvim) fzf "$@" --preview "$CUSTOM_FZF_PREVIEW_OPTS" ;;
+  ssh) fzf "$@" --preview 'dig {}' ;;
+  *) fzf "$@" ;;
   esac
 }
 
@@ -74,4 +109,3 @@ _fzf_comprun() {
 
 eval $(thefuck --alias)
 eval $(starship init zsh)
-

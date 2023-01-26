@@ -25,7 +25,3 @@
       description: Setting up Mac
       stdout: true
       stderr: true
-    - command: ./setup/neovim.sh
-      description: Setup Neovim
-      stdout: true
-      stderr: true

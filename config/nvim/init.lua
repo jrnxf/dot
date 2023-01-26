@@ -1,1 +1,2 @@
-require('jrnxf.bootstrap').init()
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")

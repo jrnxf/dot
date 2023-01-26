@@ -7,6 +7,7 @@ else
     echo "Updating Homebrew"
     brew update
 fi
+
 echo "Installing packages"
 brew bundle install
 
