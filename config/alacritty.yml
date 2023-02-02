@@ -9,7 +9,8 @@ window:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
   decorations: "buttonless"
-  opacity: 0.95
+  # opacity: 0.95
+  opacity: 1
 
 scrolling:
   history: 10000

@@ -9,10 +9,10 @@ plugins=(git tmux zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/Dev/pocus/development/scripts:$PATH
+export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:$PATH
 
 export EDITOR="nvim"
-
+export PYENV_ROOT=~/.pyenv
 alias dev="~/Dev"
 alias p="cd ~/Dev/pocus"
 alias reload="source ~/.zshrc"
@@ -28,6 +28,7 @@ alias tmux="tmux -2" # keep colorscheme in tmux
 alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="bat"
+alias vimdiff='nvim -d'
 
 alias v='nvim'
 alias vim="nvim"
@@ -41,6 +42,7 @@ alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
+
 # TODO EVAL (@ref https://github.com/emk/rust-musl-builder) alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 
 # # fbr - checkout git branch
@@ -109,3 +111,4 @@ _fzf_comprun() {
 
 eval $(thefuck --alias)
 eval $(starship init zsh)
+

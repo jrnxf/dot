@@ -27,7 +27,30 @@ return {
     },
   },
   { "norcalli/nvim-colorizer.lua" },
-  -- lsp symbol navigation for lualine
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+
+
+    opts = function(_, opts)
+      opts.sections.lualine_a = {
+        { "mode", separator = { left = "" },
+          -- padding = { right = 2 }
+        }
+      }
+      opts.sections.lualine_z = { {
+
+        function()
+          return " " .. os.date("%R")
+        end,
+        separator = { right = "" }
+      }
+
+      }
+      opts.options.section_separators = { left = "", right = "" }
+      opts.options.component_separators = { left = "", right = "" }
+    end,
+  },
   {
     "SmiteshP/nvim-navic",
     enabled = false,
