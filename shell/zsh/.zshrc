@@ -43,15 +43,6 @@ alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
 alias luamake=/home/colby/src/language-servers/lua/lua-language-server/3rd/luamake/luamake
 
-# TODO EVAL (@ref https://github.com/emk/rust-musl-builder) alias rust-musl-builder='docker run --platform linux/amd64 --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
-
-# # fbr - checkout git branch
-# fbr() {
-#   local branches branch
-#   branches=$(git --no-pager branch -vv) &&
-#   branch=$(echo "$branches" | fzf +m) &&
-#   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
-# }
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -62,15 +53,6 @@ fbr() {
     git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-# # fbr - checkout git branch (including remote branches), sorted by most recent commit, limit 30 last branches
-# fbr() {
-#   local branches branch
-#   branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
-#   branch=$(echo "$branches" |
-#            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-#   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-# }
-
 export FZF_DEFAULT_COMMAND='rg --files --hidden' # set rg as the default source for fzf instead of find
 # terafox
 export FZF_DEFAULT_OPTS='
@@ -78,14 +60,7 @@ export FZF_DEFAULT_OPTS='
  --color=fg+:#8aa4a1,bg+:#0f1c1e,hl+:#7aa4a1
  --color=info:#ad5c7c,prompt:#ad5c7c,pointer:#7aa4a1
  --color=marker:#6d7f8b,spinner:#ad5c7c,header:#ad5c7c
- --height 60%'
-
-# tokyonight
-# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-# --color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64
-# --color=fg+:#c0caf5,bg+:#1a1b26,hl+:#ff9e64
-# --color=info:#7aa2f7,prompt:#7aa2f7,pointer:#db4b4b
-# --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a'
+ --height=60% --layout=reverse'
 # ansi theme will attempt to match terminal styles
 export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"
 

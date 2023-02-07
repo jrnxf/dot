@@ -11,11 +11,13 @@ return {
       local cmp = require("cmp")
 
       opts.completion = {
-        completeopt = "menu,menuone,noselect",
+        completeopt = "menu,menuone,noselect,preview", -- @ref :h 'completeopt'
       }
 
+      opts.experimental = {}
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
-        -- ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()

@@ -48,6 +48,35 @@ return {
     },
   },
   {
+    "stevearc/aerial.nvim",
+    config = function()
+      require("aerial").setup({
+        -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+        on_attach = function(bufnr)
+          -- Jump forwards/backwards with '{' and '}'
+          vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+          vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+        end,
+      })
+    end,
+  },
+  {
+    "liangxianzhe/nap.nvim",
+    dependencies = { "stevearc/aerial.nvim", "lewis6991/gitsigns.nvim" },
+    lazy = false,
+    opts = {
+      next_prefix = "<C-n>",
+      prev_prefix = "<C-p>",
+      next_repeat = "<cr>",
+      prev_repeat = "<c-cr>",
+    },
+    config = function(_, opts)
+      require("nap").setup(opts)
+      require("nap").nap("h", "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")
+      require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")
+    end,
+  },
+  {
     "folke/trouble.nvim",
     opts = {
       -- auto_open = true, -- this is nice sometimes
@@ -127,13 +156,18 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, "folke/trouble.nvim" },
+    keys = {
+      { "<leader><leader>", false },
+    },
+    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, "folke/trouble.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
     -- apply the config and additionally load fzf-native
     config = function()
       local telescope = require("telescope")
       local builtin = require("telescope.builtin")
       local actions = require("telescope.actions")
       local trouble = require("trouble.providers.telescope")
+      local lga_actions = require("telescope-live-grep-args.actions")
+
       telescope.setup({
         defaults = {
           vimgrep_arguments = {
@@ -176,8 +210,25 @@ return {
             },
           },
         },
+        extensions = {
+          live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = { -- extend mappings
+              i = {
+                ["<C-k>"] = lga_actions.quote_prompt(),
+                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+              },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+          },
+        },
       })
       telescope.load_extension("fzf")
+      telescope.load_extension("live_grep_args")
     end,
   },
   {

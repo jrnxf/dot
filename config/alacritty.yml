@@ -8,7 +8,7 @@ window:
   dimensions:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
-  decorations: "buttonless"
+  # decorations: "buttonless"
   # opacity: 0.95
   opacity: 1
 
@@ -21,13 +21,13 @@ mouse:
 
 font:
   normal:
-    family: SpaceMono Nerd Font Mono
+    family: SauceCodePro Nerd Font
     style: Regular
   bold:
-    family: SpaceMono Nerd Font Mono
+    family: SauceCodePro Nerd Font
     style: Bold
   italic:
-    family: SpaceMono Nerd Font Mono
+    family: SauceCodePro Nerd Font
     style: Italic
   size: 13.0
   offset:
