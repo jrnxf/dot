@@ -5,7 +5,7 @@ export AWS_PROFILE="pocus-dev"
 
 plugins=(git tmux zsh-autosuggestions)
 
-# ZSH_TMUX_AUTOSTART=true # can be annoying 🙃
+ZSH_TMUX_AUTOSTART=true # can be annoying 🙃
 
 source $ZSH/oh-my-zsh.sh
 

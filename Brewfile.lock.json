@@ -1,7 +1,7 @@
 {
   "entries": {
     "tap": {
-      "aws/tap": {
+      aoeuaoeuaoeu"aws/tap": {
         "revision": "786ff2f47bbb2cb10ff3202d940b02e4a16894da"
       },
       "garden-io/garden": {
@@ -28,7 +28,9 @@
       "fsouza/prettierd": {
         "revision": "787bbf604cf8b65dde0c05e34dc15d48bc899f95"
       }
-    },
+    },co
+
+    aoeuaoeu
     "brew": {
       "python@3.10": {
         "version": "3.10.9",

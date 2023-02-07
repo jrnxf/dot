@@ -12,4 +12,5 @@ vim.opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
+
 require("util.status")
