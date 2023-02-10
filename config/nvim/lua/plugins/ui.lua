@@ -1,6 +1,8 @@
 return {
+  { "vimpostor/vim-tpipeline", lazy = false },
   {
     "folke/noice.nvim",
+    -- enabled = false,
     event = "VeryLazy",
     opts = {
       lsp = {
@@ -8,6 +10,14 @@ return {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
         },
+      },
+      cmdline = {
+        view = "cmdline",
+      },
+      messages = {
+        view = "mini",
+        view_error = "mini",
+        view_warn = "mini",
       },
       presets = {
         bottom_search = false,
@@ -102,36 +112,19 @@ return {
         blue = "#80A7EA",
       }
 
+      local terafox = require("nightfox.palette").load("terafox")
       local theme = {
         normal = {
-          a = { fg = colors.black, bg = colors.blue },
+          a = { fg = colors.black, bg = terafox.green.bright },
           b = { fg = colors.blue, bg = colors.white },
           c = { fg = colors.white, bg = colors.black },
           z = { fg = colors.white, bg = colors.black },
         },
         insert = { a = { fg = colors.black, bg = colors.orange } },
-        visual = { a = { fg = colors.black, bg = colors.green } },
+        visual = { a = { fg = colors.black, bg = terafox.magenta.bright } },
         replace = { a = { fg = colors.black, bg = colors.green } },
       }
-      local function getLspText()
-        -- local msg = "No Active LSPs"
-        local msg = ""
-        local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-        local clients = vim.lsp.get_active_clients()
-        if next(clients) == nil then
-          return msg
-        end
 
-        for _, client in ipairs(clients) do
-          local filetypes = client.config.filetypes
-          if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-            msg = msg .. client.name .. ","
-          end
-        end
-        return "  " .. msg
-      end
-
-      local terafox = require("nightfox.palette").load("terafox")
       --   bg0 = "#0f1c1e",
       --   bg1 = "#152528",
       --   bg2 = "#1d3337",
@@ -226,13 +219,6 @@ return {
       --     <metatable> = <table 1>
       --   }
       -- }
-      local vim_icons = {
-        function()
-          return " "
-        end,
-        separator = { left = "", right = "" },
-        color = { bg = "#313244", fg = "#80A7EA" },
-      }
 
       local space = {
         function()
@@ -255,13 +241,6 @@ return {
         separator = { left = "", right = "" },
       }
 
-      local filetype_tab = {
-        "filetype",
-        icon_only = true,
-        colored = true,
-        color = { bg = "#313244" },
-      }
-
       local buffer = {
         require("tabline").tabline_buffers,
         separator = { left = "", right = "" },
@@ -280,7 +259,7 @@ return {
 
       local encoding = {
         "encoding",
-        color = { bg = "#313244", fg = "#80A7EA" },
+        color = { bg = "#313244", fg = terafox.blue.bright },
         separator = { left = "", right = "" },
       }
 
@@ -298,10 +277,10 @@ return {
 
       local modes = {
         "mode",
-        fmt = function(str)
-          return str:sub(1, 1)
-        end,
-        color = { bg = "#fab387		", fg = "#0e1c1d" },
+        -- fmt = function(str)
+        --   return str:sub(1, 1)
+        -- end,
+        -- color = { bg = terafox.orange.bright, fg = "#0e1c1d" },
         separator = { left = "", right = "" },
       }
 
@@ -313,7 +292,22 @@ return {
 
       local lsp = {
         function()
-          return getLspText()
+          local msg = "No Active LSPs"
+          local servers = {}
+          local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+          local clients = vim.lsp.get_active_clients()
+          if next(clients) == nil then
+            return msg
+          end
+
+          for _, client in ipairs(clients) do
+            local filetypes = client.config.filetypes
+            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+              table.insert(servers, client.name)
+            end
+          end
+
+          return "  " .. (#servers > 0 and table.concat(servers, " / ") or msg)
         end,
         separator = { left = "", right = "" },
         color = { bg = terafox.magenta.bright, fg = "#0e1c1d" },
@@ -348,7 +342,6 @@ return {
             space,
           },
           lualine_c = {
-
             filename,
             filetype,
             space,
@@ -382,14 +375,13 @@ return {
           },
           lualine_b = {},
           lualine_c = {},
-          lualine_x = {},
+          lualine_x = { tabs },
           lualine_y = {},
-          lualine_z = {
-            tabs,
-          },
+          lualine_z = {},
         },
         winbar = {},
         inactive_winbar = {},
+        -- extensions = { "neo-tree" },
       })
     end,
   },

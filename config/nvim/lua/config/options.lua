@@ -12,5 +12,5 @@ vim.opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
-
+vim.opt.cmdheight = 0
 require("util.status")

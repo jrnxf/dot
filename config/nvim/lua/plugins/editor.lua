@@ -65,15 +65,29 @@ return {
     dependencies = { "stevearc/aerial.nvim", "lewis6991/gitsigns.nvim" },
     lazy = false,
     opts = {
-      next_prefix = "<C-n>",
-      prev_prefix = "<C-p>",
+      next_prefix = "<c-n>",
+      prev_prefix = "<c-p>",
       next_repeat = "<cr>",
-      prev_repeat = "<c-cr>",
+      prev_repeat = "<tab>",
+      -- next_prefix = "<leader>n",
+      -- prev_prefix = "<leader>p",
+      -- next_repeat = "<c-n>",
+      -- prev_repeat = "<c-p>",
     },
     config = function(_, opts)
+      vim.api.nvim_create_user_command("TroubleNext", function()
+        -- jump to the next item, skipping the groups
+        require("trouble").next({ skip_groups = true, jump = true })
+      end, {})
+
+      vim.api.nvim_create_user_command("TroublePrevious", function()
+        -- jump to the next item, skipping the groups
+        require("trouble").previous({ skip_groups = true, jump = true })
+      end, {})
       require("nap").setup(opts)
       require("nap").nap("h", "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")
       require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")
+      require("nap").nap("x", "TroubleNext", "TroublePrevious", "Next Trouble Item", "Previous Trouble Item")
     end,
   },
   {
