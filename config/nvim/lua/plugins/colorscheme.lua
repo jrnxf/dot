@@ -6,7 +6,7 @@ return {
   {
     "EdenEast/nightfox.nvim",
     lazy = false,
-    config = function()
+    opts = function()
       local terafox = require("nightfox.palette").load("terafox")
 
       local colors = {
@@ -50,7 +50,8 @@ return {
         TelescopeBorder = { link = "FloatBorder" },
         VertSplit = { fg = terafox.bg2 },
       }
-      require("nightfox").setup({
+
+      return {
         options = {
           styles = {
             comments = "italic",
@@ -61,8 +62,10 @@ return {
         groups = {
           terafox = groups,
         },
-      })
-
+      }
+    end,
+    config = function(_, opts)
+      require("nightfox").setup(opts)
       vim.cmd("colorscheme terafox")
     end,
   },

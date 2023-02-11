@@ -49,15 +49,15 @@ return {
   },
   {
     "stevearc/aerial.nvim",
-    config = function()
-      require("aerial").setup({
+    opts = function()
+      return {
         -- optionally use on_attach to set keymaps when aerial has attached to a buffer
         on_attach = function(bufnr)
           -- Jump forwards/backwards with '{' and '}'
           vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
           vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
         end,
-      })
+      }
     end,
   },
   {
@@ -65,15 +65,29 @@ return {
     dependencies = { "stevearc/aerial.nvim", "lewis6991/gitsigns.nvim" },
     lazy = false,
     opts = {
-      next_prefix = "<C-n>",
-      prev_prefix = "<C-p>",
+      next_prefix = "<c-n>",
+      prev_prefix = "<c-p>",
       next_repeat = "<cr>",
-      prev_repeat = "<c-cr>",
+      prev_repeat = "<tab>",
+      -- next_prefix = "<leader>n",
+      -- prev_prefix = "<leader>p",
+      -- next_repeat = "<c-n>",
+      -- prev_repeat = "<c-p>",
     },
     config = function(_, opts)
+      vim.api.nvim_create_user_command("TroubleNext", function()
+        -- jump to the next item, skipping the groups
+        require("trouble").next({ skip_groups = true, jump = true })
+      end, {})
+
+      vim.api.nvim_create_user_command("TroublePrevious", function()
+        -- jump to the next item, skipping the groups
+        require("trouble").previous({ skip_groups = true, jump = true })
+      end, {})
       require("nap").setup(opts)
       require("nap").nap("h", "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")
       require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")
+      require("nap").nap("x", "TroubleNext", "TroublePrevious", "Next Trouble Item", "Previous Trouble Item")
     end,
   },
   {
@@ -158,6 +172,7 @@ return {
     "nvim-telescope/telescope.nvim",
     keys = {
       { "<leader><leader>", false },
+      { "<leader>bl", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
     },
     dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, "folke/trouble.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
     -- apply the config and additionally load fzf-native
@@ -235,54 +250,55 @@ return {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
     keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diff Project" },
-      { "<leader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "aoeu" },
-      { "<leader>gH", "<cmd>DiffviewFileHistory %<cr>", desc = "aoeu" },
+      { "<leader>gdp", "<cmd>DiffviewOpen<cr>", desc = "Diff Project" },
+      { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>", desc = "Diff File" },
+      { "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
     },
+    opts = function()
+      return {
+        {
+          enhanced_diff_hl = true,
+          -- hooks = {
+          --   ---@param view StandardView
+          --   view_opened = function(view)
+          --     local function post_layout()
+          --       -- M.tbl_ensure(view, 'winopts.diff2.a')
+          --       -- M.tbl_ensure(view, 'winopts.diff2.b')
+          --       view.winopts.diff2.a = utils.tbl_union_extend_or_overwrite(view.winopts.diff2.a, {
+          --         winhl = {
+          --           'DiffChange:DiffAddAsDelete',
+          --           'DiffText:DiffDeleteText',
+          --         },
+          --       })
+          --       view.winopts.diff2.b = utils.tbl_union_extend_or_overwrite(view.winopts.diff2.b, {
+          --         winhl = {
+          --           'DiffChange:DiffAdd',
+          --           'DiffText:DiffAddText',
+          --         },
+          --       })
+          --     end
 
-    config = function()
-      require("diffview").setup({
-        enhanced_diff_hl = true,
-        -- hooks = {
-        --   ---@param view StandardView
-        --   view_opened = function(view)
-        --     local function post_layout()
-        --       -- M.tbl_ensure(view, 'winopts.diff2.a')
-        --       -- M.tbl_ensure(view, 'winopts.diff2.b')
-        --       view.winopts.diff2.a = utils.tbl_union_extend_or_overwrite(view.winopts.diff2.a, {
-        --         winhl = {
-        --           'DiffChange:DiffAddAsDelete',
-        --           'DiffText:DiffDeleteText',
-        --         },
-        --       })
-        --       view.winopts.diff2.b = utils.tbl_union_extend_or_overwrite(view.winopts.diff2.b, {
-        --         winhl = {
-        --           'DiffChange:DiffAdd',
-        --           'DiffText:DiffAddText',
-        --         },
-        --       })
-        --     end
-
-        --     view.emitter:on('post_layout', post_layout)
-        --     post_layout()
-        --   end,
-        -- },
-        keymaps = {
-          view = {
-            ["gf"] = require("diffview.actions").goto_file_edit,
-            ["-"] = require("diffview.actions").toggle_stage_entry,
-          },
-          file_panel = {
-            ["<cr>"] = require("diffview.actions").focus_entry,
-            ["s"] = require("diffview.actions").toggle_stage_entry,
-            ["gf"] = require("diffview.actions").goto_file_edit,
-          },
-          file_history_panel = {
-            ["<cr>"] = require("diffview.actions").focus_entry,
-            ["gf"] = require("diffview.actions").goto_file_edit,
+          --     view.emitter:on('post_layout', post_layout)
+          --     post_layout()
+          --   end,
+          -- },
+          keymaps = {
+            view = {
+              ["gf"] = require("diffview.actions").goto_file_edit,
+              ["-"] = require("diffview.actions").toggle_stage_entry,
+            },
+            file_panel = {
+              ["<cr>"] = require("diffview.actions").focus_entry,
+              ["s"] = require("diffview.actions").toggle_stage_entry,
+              ["gf"] = require("diffview.actions").goto_file_edit,
+            },
+            file_history_panel = {
+              ["<cr>"] = require("diffview.actions").focus_entry,
+              ["gf"] = require("diffview.actions").goto_file_edit,
+            },
           },
         },
-      })
+      }
     end,
   },
 }

@@ -150,7 +150,7 @@ cask "obs"
 cask "postman"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Move and resize windows using keyboard shortcuts or snap areas
+# Move and resize windows using keyboard shortcuts or sap areas
 cask "rectangle"
 # Team communication and collaboration software
 cask "slack"
