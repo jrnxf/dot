@@ -9,7 +9,9 @@ return {
         "codelldb",
         "cpptools",
         "editorconfig-checker",
+        "flake8",
         "gopls",
+        "graphql-language-service-cli",
         "html-lsp",
         "lua-language-server",
         "luacheck",
@@ -19,15 +21,14 @@ return {
         "rust-analyzer",
         "rustfmt",
         "shellcheck",
+        "shellcheck",
         "shfmt",
+        "shfmt",
+        "stylua",
         "stylua",
         "tailwindcss-language-server",
         "typescript-language-server",
         "xo",
-        "flake8",
-        "shellcheck",
-        "shfmt",
-        "stylua",
       },
     },
   },
@@ -36,10 +37,10 @@ return {
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- change a keymap
-      keys[#keys + 1] = { "gd", "<cmd>Trouble lsp_definitions<cr>" }
-      keys[#keys + 1] = { "gr", "<cmd>Trouble lsp_references<cr>" }
-      keys[#keys + 1] = { "gI", "<cmd>Trouble lsp_implementations<cr>" }
-      keys[#keys + 1] = { "gt", "<cmd>Trouble lsp_type_definitions<cr>" }
+      keys[#keys + 1] = { "gd", "<cmd>FzfLua lsp_definitions<cr>" }
+      keys[#keys + 1] = { "gr", "<cmd>FzfLua lsp_references<cr>" }
+      keys[#keys + 1] = { "gI", "<cmd>FzfLua lsp_implementations<cr>" }
+      keys[#keys + 1] = { "gt", "<cmd>FzfLua lsp_typedefs<cr>" }
       -- disable a keymap
       -- keys[#keys + 1] = { "K", false }
 
@@ -88,7 +89,7 @@ return {
       ---@type lspconfig.options
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
-        sumneko_lua = {
+        lua_ls = {
           settings = {
             Lua = {
               diagnostics = {

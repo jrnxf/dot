@@ -6,6 +6,7 @@ return {
   {
     "EdenEast/nightfox.nvim",
     lazy = false,
+    priority = 1000,
     opts = function()
       local terafox = require("nightfox.palette").load("terafox")
 
@@ -43,6 +44,7 @@ return {
         NullLsInfoBorder = { link = "FloatBorder" }, -- TODO pr this - it's weird that they used NormalFloat here and not NormalFloatBorder
         NullLsInfoTitle = { link = "Title" },
         Pmenu = { bg = terafox.bg1 },
+        -- FzfLuaBorder = { link = "FloatBorder" },
         PmenuBorder = { link = "FloatBorder" },
         StatusLine = { bg = "#152528" }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
         StatusLineNC = { bg = "#152528", fg = "#7aa4a1" }, -- status line none current
@@ -64,35 +66,5 @@ return {
         },
       }
     end,
-    config = function(_, opts)
-      require("nightfox").setup(opts)
-      vim.cmd("colorscheme terafox")
-    end,
   },
-  -- {
-  --   "rmehri01/onenord.nvim",
-  --   -- config = function()
-  --   --   local colors = {
-  --   --     -- primary = "#151a23",
-  --   --     primary = "#191f29",
-  --   --     secondary = "#191f29",
-  --   --     tertiary = "#1d242f",
-  --   --   }
-  --   --
-  --   --   -- paste in command mode to see available colors
-  --   --   -- lua print(vim.inspect(require("onenord.colors").load()))
-  --   --
-  --   --   -- require("onenord").setup({
-  --   --   --   custom_highlights = {
-  --   --   --     CursorLine = { -- this is really tough to see
-  --   --   --       bg = colors.tertiary,
-  --   --   --     },
-  --   --   --   },
-  --   --   --   custom_colors = {
-  --   --   --     bg = colors.secondary,
-  --   --   --     active = colors.secondary,
-  --   --   --   },
-  --   --   -- })
-  --   -- end,
-  -- },
 }

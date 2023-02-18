@@ -9,6 +9,7 @@ ZSH_TMUX_AUTOSTART=true # can be annoying 🙃
 
 source $ZSH/oh-my-zsh.sh
 
+     export MANPAGER='nvim +Man!'
 export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:$PATH
 
 export EDITOR="nvim"
@@ -60,6 +61,7 @@ export FZF_DEFAULT_OPTS='
  --color=fg+:#8aa4a1,bg+:#0f1c1e,hl+:#7aa4a1
  --color=info:#ad5c7c,prompt:#ad5c7c,pointer:#7aa4a1
  --color=marker:#6d7f8b,spinner:#ad5c7c,header:#ad5c7c
+ --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
  --height=60% --layout=reverse'
 # ansi theme will attempt to match terminal styles
 export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"

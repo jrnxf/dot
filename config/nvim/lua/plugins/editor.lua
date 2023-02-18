@@ -1,8 +1,17 @@
+-- local Util = require("lazyvim.util")
+
 return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
     opts = {
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+        delay = 0,
+        ignore_whitespace = false,
+      },
       signs = {
         add = { text = "│" },
         change = { text = "│" },
@@ -10,12 +19,6 @@ return {
         topdelete = { text = "│" },
         changedelete = { text = "│" },
         untracked = { text = "│" },
-        -- add = { text = "" },
-        -- change = { text = "│" },
-        -- delete = { text = "_" },
-        -- topdelete = { text = "‾" },
-        -- changedelete = { text = "~" },
-        -- untracked = { text = "┆" },
       },
     },
   },
@@ -69,25 +72,15 @@ return {
       prev_prefix = "<c-p>",
       next_repeat = "<cr>",
       prev_repeat = "<tab>",
-      -- next_prefix = "<leader>n",
-      -- prev_prefix = "<leader>p",
-      -- next_repeat = "<c-n>",
-      -- prev_repeat = "<c-p>",
     },
     config = function(_, opts)
-      vim.api.nvim_create_user_command("TroubleNext", function()
-        -- jump to the next item, skipping the groups
-        require("trouble").next({ skip_groups = true, jump = true })
-      end, {})
-
-      vim.api.nvim_create_user_command("TroublePrevious", function()
-        -- jump to the next item, skipping the groups
-        require("trouble").previous({ skip_groups = true, jump = true })
-      end, {})
-      require("nap").setup(opts)
-      require("nap").nap("h", "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")
-      require("nap").nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")
-      require("nap").nap("x", "TroubleNext", "TroublePrevious", "Next Trouble Item", "Previous Trouble Item")
+      local nap = require("nap")
+      nap.setup(opts)
+      nap.nap("h", "Gitsigns next_hunk", "Gitsigns prev_hunk", "Next diff", "Previous diff")
+      nap.nap("o", "AerialNext", "AerialPrev", "Next outline symbol", "Previous outline symbol")
+      nap.nap("x", "TroubleNext", "TroublePrevious", "Next Trouble Item", "Previous Trouble Item")
+      nap.nap("t", "tabnext", "tabprevious", "Next Tab", "Previous Tab")
+      nap.nap("b", "bnext", "bprevious", "Next Buffer", "Previous Buffer")
     end,
   },
   {
@@ -103,24 +96,37 @@ return {
         "col",
       },
     },
-  },
+    config = function(_, opts)
+      local trouble = require("trouble")
+      trouble.setup(opts)
 
+      vim.api.nvim_create_user_command("TroubleNext", function()
+        -- jump to the next item, skipping the groups
+        trouble.next({ skip_groups = true, jump = true })
+      end, {})
+
+      vim.api.nvim_create_user_command("TroublePrevious", function()
+        -- jump to the next item, skipping the groups
+        trouble.previous({ skip_groups = true, jump = true })
+      end, {})
+    end,
+  },
   {
     "ibhagwan/fzf-lua",
-    enabled = false,
     cmd = {
       "FzfLua",
     },
     keys = {
       { "<leader>,", "<cmd>lua require'fzf-lua'.buffers()<cr>", desc = "Switch Buffer" },
-      { "<leader>/", "<cmd>lua require'fzf-lua'.live_grep_native()<cr>", desc = "Find in Files (Grep)" },
+      { "<leader>/", "<cmd>lua require'fzf-lua'.live_grep_glob()<cr>", desc = "Find in Files (Grep)" },
       { "<leader>:", "<cmd>lua require'fzf-lua'.command_history()<cr>", desc = "Command History" },
+      { "<c-space><c-space>", "<cmd>lua require'fzf-lua'.builtin()<cr>", desc = "Find Files" },
       { "<leader><space>", "<cmd>lua require'fzf-lua'.files()<cr>", desc = "Find Files" },
       -- find
       -- { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       -- { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>fo", "<cmd>lua require'fzf-lua'.oldfiles()<cr>", desc = "Old Files" },
+      { "<leader>fr", "<cmd>lua require'fzf-lua'.oldfiles()<cr>", desc = "Recent Files" },
       -- lsp
       { "gd", "<cmd>lua require'fzf-lua'.lsp_definitions()<cr>", desc = "commits" },
       -- -- git
@@ -134,7 +140,7 @@ return {
       { "<leader>sd", "<cmd>lua require'fzf-lua'.diagnostics_document()<cr>", desc = "Diagnostics (Document)" },
       { "<leader>sD", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<cr>", desc = "Diagnostics (Workspace)" },
       -- { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      -- { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+      -- { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" }, f
       { "<leader>sh", "<cmd>lua require'fzf-lua'.help_tags()<cr>", desc = "Help Tags" },
       { "<leader>sH", "<cmd>lua require'fzf-lua'.highlights()<cr>", desc = "Search Highlight Groups" },
       { "<leader>sk", "<cmd>lua require'fzf-lua'.keymaps()<cr>", desc = "Key Maps" },
@@ -165,87 +171,319 @@ return {
       --   desc = "Goto Symbol",
       -- },
     },
+    opts = {
+      winopts = {
+        hl = { border = "FloatBorder" },
+        preview = {
+          vertical = "down:65%", -- up|down:size
+          horizontal = "right:60%", -- right|left:size
+          layout = "flex", -- horizontal|vertical|flex
+          delay = 0, -- delay(ms) displaying the preview, prevents lag on fast scrolling
+        },
+      },
+      fzf_colors = {
+        -- ["fg"] = { "fg", "CursorLine" },
+        -- ["bg"] = { "bg", "Normal" },
+        -- ["hl"] = { "fg", "Comment" },
+        -- ["fg+"] = { "fg", "Normal" },
+        -- ["bg+"] = { "bg", "CursorLine" },
+        -- ["hl+"] = { "fg", "Statement" },
+        -- ["info"] = { "fg", "PreProc" },
+        -- ["prompt"] = { "fg", "Conditional" },
+        -- ["pointer"] = { "fg", "Exception" },
+        -- ["marker"] = { "fg", "Keyword" },
+        -- ["spinner"] = { "fg", "Label" },
+        -- ["header"] = { "fg", "Comment" },
+        ["gutter"] = { "bg", "Normal" },
+      },
+      keymap = {
+        -- These override the default tables completely
+        -- no need to set to `false` to disable a bind
+        -- delete or modify is sufficient
+        --
+        builtin = {
+          ["<C-f>"] = "preview-page-down", -- Add this lines
+          ["<C-b>"] = "preview-page-up", -- Add this line
+        },
+        fzf = {
+          -- fzf '--bind=' options
+        },
+      },
+      previewers = {
+        bat = {
+          cmd = "bat",
+          args = "--style=numbers,changes --color always --line-range :500",
+          theme = "ansi", -- bat preview theme (bat --list-themes)
+        },
+      },
+
+      helptags = {
+        prompt = "",
+        winopts = {
+          preview = {
+            layout = "vertical",
+          },
+        },
+      },
+      manpages = {
+        prompt = "",
+        winopts = {
+          preview = {
+            layout = "vertical",
+          },
+        },
+      },
+
+      grep = {
+        prompt = "",
+        winopts = {
+          preview = {
+            layout = "vertical",
+          },
+        },
+      },
+
+      builtin = {
+        previewer = false,
+        prompt = "",
+        winopts = {
+          width = 0.40,
+          height = 0.3,
+        },
+      },
+      oldfiles = {
+        previewer = false,
+        prompt = "",
+        winopts = {
+          width = 0.40,
+          height = 0.3,
+        },
+
+        git_icons = false, -- show git icons?
+        file_icons = false, -- show file icons?
+        color_icons = false, -- colorize file|git icons
+      },
+      files = {
+        previewer = false,
+        winopts = {
+          width = 0.40,
+          height = 0.3,
+        },
+        git_icons = false, -- show git icons?
+        file_icons = false, -- show file icons?
+        color_icons = false, -- colorize file|git icons
+      },
+    },
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
+
   {
     "nvim-telescope/telescope.nvim",
-    keys = {
-      { "<leader><leader>", false },
-      { "<leader>bl", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
-    },
-    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, "folke/trouble.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
-    -- apply the config and additionally load fzf-native
-    config = function()
-      local telescope = require("telescope")
-      local builtin = require("telescope.builtin")
-      local actions = require("telescope.actions")
-      local trouble = require("trouble.providers.telescope")
-      local lga_actions = require("telescope-live-grep-args.actions")
-
-      telescope.setup({
-        defaults = {
-          vimgrep_arguments = {
-            "rg",
-            -- telescope defaults
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            -- '--smart-case', -- i prefer ignore case
-            -- custom
-            "--ignore-case",
-            "--fixed-strings",
-          },
-          prompt_prefix = "❯ ",
-          selection_caret = "❯ ",
-          -- layout_strategy = "vertical",
-          -- layout_strategy = "horizontal",
-          -- layout_config = {
-          --   vertical = { width = 0.9, height = 0.9, preview_height = 0.6 },
-          --   horizontal = { width = 0.9, height = 0.9, preview_width = 0.6, prompt_position = "top" },
-          -- },
-          layout_config = { prompt_position = "top" },
-          sorting_strategy = "ascending",
-          winblend = 5,
-          prompt_position = "top",
-          file_ignore_patterns = { "node_modules/.*" },
-          mappings = {
-            i = {
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
-              ["<C-d>"] = actions.delete_buffer,
-              ["<C-t>"] = trouble.open_with_trouble,
-            },
-            n = {
-              ["<C-c>"] = actions.close,
-              ["<C-d>"] = actions.delete_buffer,
-              ["<C-t>"] = trouble.open_with_trouble,
-            },
-          },
-        },
-        extensions = {
-          live_grep_args = {
-            auto_quoting = true, -- enable/disable auto-quoting
-            -- define mappings, e.g.
-            mappings = { -- extend mappings
-              i = {
-                ["<C-k>"] = lga_actions.quote_prompt(),
-                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-              },
-            },
-            -- ... also accepts theme settings, for example:
-            -- theme = "dropdown", -- use dropdown theme
-            -- theme = { }, -- use own theme spec
-            -- layout_config = { mirror=true }, -- mirror preview pane
-          },
-        },
-      })
-      telescope.load_extension("fzf")
-      telescope.load_extension("live_grep_args")
-    end,
+    enabled = false,
   },
+  -- {
+  --   "princejoogie/dir-telescope.nvim",
+  --   -- telescope.nvim is a required dependency
+  --   requires = { "telescope" },
+  --   lazy = false,
+  --   opts = {
+  --     hidden = true,
+  --     respect_gitignore = true,
+  --   },
+  -- },
+  -- {
+  --   dir = "~/Dev/telescope.nvimmm",
+  --   cmd = "Telescope",
+  --   enabled = false,
+  --   version = false, -- telescope did only one release, so use HEAD for now
+  --   keys = {
+  --     { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
+  --     { "<leader>/", Util.telescope("live_grep"), desc = "Find in Files (Grep)" },
+  --     { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+  --     { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
+  --     -- find
+  --     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+  --     { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
+  --     { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+  --     { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
+  --     -- git
+  --     { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
+  --     { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+  --     -- search
+  --     { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
+  --     { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+  --     { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+  --     { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
+  --     { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
+  --     { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+  --     { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+  --     { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
+  --     { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
+  --     { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
+  --     { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+  --     { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+  --     { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
+  --     { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
+  --     { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
+  --     { "<leader>uC", Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
+  --     {
+  --       "<leader>ss",
+  --       Util.telescope("lsp_document_symbols", {
+  --         symbols = {
+  --           "Class",
+  --           "Function",
+  --           "Method",
+  --           "Constructor",
+  --           "Interface",
+  --           "Module",
+  --           "Struct",
+  --           "Trait",
+  --           "Field",
+  --           "Property",
+  --         },
+  --       }),
+  --       desc = "Goto Symbol",
+  --     },
+  --   },
+  --   opts = {
+  --     defaults = {
+  --       prompt_prefix = " ",
+  --       selection_caret = " ",
+  --       mappings = {
+  --         i = {
+  --           ["<c-t>"] = function(...)
+  --             return require("trouble.providers.telescope").open_with_trouble(...)
+  --           end,
+  --           ["<a-i>"] = function()
+  --             Util.telescope("find_files", { no_ignore = true })()
+  --           end,
+  --           ["<a-h>"] = function()
+  --             Util.telescope("find_files", { hidden = true })()
+  --           end,
+  --           ["<C-Down>"] = function(...)
+  --             return require("telescope.actions").cycle_history_next(...)
+  --           end,
+  --           ["<C-Up>"] = function(...)
+  --             return require("telescope.actions").cycle_history_prev(...)
+  --           end,
+  --           ["<C-f>"] = function(...)
+  --             return require("telescope.actions").preview_scrolling_down(...)
+  --           end,
+  --           ["<C-b>"] = function(...)
+  --             return require("telescope.actions").preview_scrolling_up(...)
+  --           end,
+  --         },
+  --         n = {
+  --           ["q"] = function(...)
+  --             return require("telescope.actions").close(...)
+  --           end,
+  --         },
+  --       },
+  --     },
+  --   },
+  --   -- keys = {
+  --   --     { "<leader>bl", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
+  --   -- },
+  --   dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }, "folke/trouble.nvim", "nvim-telescope/telescope-live-grep-args.nvim" },
+  --   -- apply the config and additionally load fzf-native
+  --   config = function()
+  --     local telescope = require("telescope")
+  --     -- local builtin = require("telescope.builtin")
+  --     local actions = require("telescope.actions")
+  --     local trouble = require("trouble.providers.telescope")
+  --     local lga_actions = require("telescope-live-grep-args.actions")
+  --
+  --     local dropdown_opts = {
+  --       theme = "dropdown",
+  --       previewer = false,
+  --     }
+  --
+  --     local minimal = {
+  --       theme = "minimal",
+  --       layout_strategy = "horizontal",
+  --       layout_config = {
+  --         -- prompt_position = "bottom",
+  --         width = 200,
+  --         height = 35,
+  --         -- preview_height = 25,
+  --       },
+  --       prompt_title = "",
+  --       results_title = "",
+  --       preview_title = "",
+  --     }
+  --
+  --     telescope.setup({
+  --       defaults = {
+  --         vimgrep_arguments = {
+  --           "rg",
+  --           -- telescope defaults
+  --           "--color=never",
+  --           "--no-heading",
+  --           "--with-filename",
+  --           "--line-number",
+  --           "--column",
+  --           -- '--smart-case', -- i prefer ignore case
+  --           -- custom
+  --           -- "--ignore-case",
+  --           -- "--fixed-strings",
+  --         },
+  --         theme = minimal,
+  --         results_title = false,
+  --         -- layout_strategy = "vertical",
+  --         layout_strategy = "horizontal",
+  --         layout_config = {
+  --           vertical = { width = 0.9, height = 0.9, preview_height = 0.6, prompt_position = "top", preview_position = "bottom", mirror = true },
+  --           horizontal = { width = 0.9, height = 0.9, preview_width = 0.6, prompt_position = "top" },
+  --         },
+  --         -- layout_config = { prompt_position = "top" },
+  --         sorting_strategy = "ascending",
+  --         winblend = 5,
+  --         -- prompt_position = "top",
+  --         file_ignore_patterns = { "node_modules/.*" },
+  --         mappings = {
+  --           i = {
+  --             ["<C-j>"] = actions.move_selection_next,
+  --             ["<C-k>"] = actions.move_selection_previous,
+  --             ["<C-d>"] = actions.delete_buffer,
+  --             ["<C-t>"] = trouble.open_with_trouble,
+  --           },
+  --           n = {
+  --             ["<C-c>"] = actions.close,
+  --             ["<C-d>"] = actions.delete_buffer,
+  --             ["<C-t>"] = trouble.open_with_trouble,
+  --           },
+  --         },
+  --       },
+  --       pickers = {
+  --         git_files = minimal,
+  --         find_files = minimal,
+  --         live_grep = minimal,
+  --         help_tags = dropdown_opts,
+  --         oldfiles = dropdown_opts,
+  --       },
+  --       extensions = {
+  --         live_grep_args = {
+  --           auto_quoting = true, -- enable/disable auto-quoting
+  --           -- define mappings, e.g.
+  --           mappings = { -- extend mappings
+  --             i = {
+  --               ["<C-k>"] = lga_actions.quote_prompt(),
+  --               ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+  --             },
+  --           },
+  --           -- ... also accepts theme settings, for example:
+  --           -- theme = "dropdown", -- use dropdown theme
+  --           -- theme = { }, -- use own theme spec
+  --           -- layout_config = { mirror=true }, -- mirror preview pane
+  --         },
+  --       },
+  --     })
+  --     telescope.load_extension("fzf")
+  --     telescope.load_extension("live_grep_args")
+  --     -- telescope.load_extension("dir")
+  --   end,
+  -- },
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",

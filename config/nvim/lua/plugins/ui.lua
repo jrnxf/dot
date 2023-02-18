@@ -1,5 +1,9 @@
 return {
   {
+    "rcarriga/nvim-notify",
+    enabled = false,
+  },
+  {
     "folke/noice.nvim",
     -- enabled = false,
     event = "VeryLazy",
@@ -10,16 +14,16 @@ return {
           ["vim.lsp.util.stylize_markdown"] = true,
         },
       },
-      cmdline = {
-        view = "cmdline",
-      },
+      -- cmdline = {
+      --   view = "cmdline",
+      -- },
       messages = {
         view = "mini",
         view_error = "mini",
         view_warn = "mini",
       },
       presets = {
-        bottom_search = false,
+        bottom_search = true,
         command_palette = false,
         long_message_to_split = true,
         lsp_doc_border = true, -- add a border to hover docs and signature help
@@ -39,59 +43,22 @@ return {
     "akinsho/bufferline.nvim",
     enabled = false,
   },
-  { "norcalli/nvim-colorizer.lua" },
-  {
-    -- "kdheepak/tabline.nvim",
-    "keklleo/tabline.nvim",
-    branch = "change-show-tabs-always",
-    lazy = false,
-    opts = function()
-      vim.cmd([[
-        set guioptions-=e " Use showtabline in gui vim
-        set sessionoptions+=tabpages,globals " store tabpages and globals in session
-      ]])
-
-      return {
-        -- Defaults configuration options
-        enable = true,
-        options = {
-          -- If lualine is installed tabline will use separators configured in lualine by default.
-          -- These options can be used to override those settings.
-          component_separators = { "", "" },
-          section_separators = { "", "" },
-          max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-          show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
-          show_devicons = true, -- this shows devicons in buffer section
-          colored = true,
-          show_bufnr = false, -- this appends [bufnr] to buffer section,
-          tabline_show_last_separator = true,
-          show_filename_only = true, -- shows base filename only instead of relative path in filename
-          modified_icon = "+ ", -- change the default modified icon
-          modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
-          -- show_tabs_only = true, -- this shows only tabs instead of tabs + buffers
-          show_tabline_buffers = 2, -- this shows buffer names (the left section of the tabline) always, when there is more than one buffer, or never
-          show_tabline_tabs = 1, -- this shows tab names (the right section of the tabline) always, when there is more than one or a named tab, or never
-        },
-      }
-    end,
-  },
+  { "norcalli/nvim-colorizer.lua", lazy = false },
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "keklleo/tabline.nvim" },
     event = "VeryLazy",
     -- @credit https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
-    config = function()
+    opts = function()
       local terafox = require("nightfox.palette").load("terafox")
       local theme = {
         normal = {
-          a = { fg = terafox.white.dim, bg = terafox.bg3 },
-          b = { fg = terafox.white.dim, bg = terafox.bg2 },
-          c = { fg = terafox.white.base, bg = terafox.bg0 },
-          z = { fg = terafox.white.base, bg = terafox.bg0 },
+          a = { fg = terafox.bg2, bg = terafox.green.dim },
+          b = {},
+          c = {},
         },
         insert = { a = { fg = terafox.black.dim, bg = terafox.yellow.bright } },
-        visual = { a = { fg = terafox.black.dim, bg = "#986aa9" } },
-        replace = { a = { fg = terafox.black.dim, bg = terafox.blue.bright } },
+        visual = { a = { fg = terafox.black.dim, bg = "#835d98" } },
+        replace = { a = { fg = terafox.black.dim, bg = terafox.orange.bright } },
         command = { a = { fg = terafox.black.dim, bg = terafox.red.bright } },
       }
 
@@ -118,13 +85,32 @@ return {
       }
 
       local buffer = {
-        require("tabline").tabline_buffers,
-        color = { gui = "bold" },
+        "buffers",
+        buffers_color = {
+          active = { gui = "bold", bg = terafox.green.dim, fg = "#e6eaea" },
+          inactive = { gui = "bold", bg = terafox.bg3, fg = "#e6eaea" }, -- Color for inactive buffer.
+        },
         separator = { left = "", right = "" },
+        symbols = {
+          modified = " ●", -- Text to show when the buffer is modified
+          alternate_file = "# ", -- Text to show to identify the alternate file
+          directory = " ", -- Text to show when the buffer is a directory
+        },
+        filetype_names = {
+          ["neo-tree"] = "NeoTree",
+          lazy = "Lazy",
+          mason = "Mason",
+          lspinfo = "LspInfo",
+          ["null-ls-info"] = "NullLsInfo",
+        },
       }
 
       local tabs = {
-        require("tabline").tabline_tabs,
+        "tabs",
+        tabs_color = {
+          active = { gui = "bold", bg = terafox.green.dim, fg = "#e6eaea" },
+          inactive = { gui = "bold", bg = terafox.bg3, fg = "#e6eaea" }, -- Color for inactive buffer.
+        },
         separator = { left = "", right = "" },
       }
 
@@ -148,7 +134,7 @@ return {
 
       local location = {
         "location",
-        color = { gui = "bold", bg = terafox.magenta.bright, fg = terafox.bg2 },
+        color = { gui = "bold", bg = terafox.cyan.bright, fg = terafox.bg2 },
         separator = { left = "", right = "" },
       }
 
@@ -178,7 +164,7 @@ return {
         color = { gui = "bold", bg = terafox.green.dim, fg = "#0e1c1d" },
       }
 
-      require("lualine").setup({
+      return {
         options = {
           icons_enabled = true,
           theme = theme,
@@ -205,11 +191,11 @@ return {
             space,
           },
           lualine_c = {
-            branch,
-            diff,
-            space,
             filename,
             filetype,
+            space,
+            branch,
+            diff,
           },
           lualine_x = {},
           lualine_y = { location, space },
@@ -239,7 +225,7 @@ return {
         winbar = {},
         inactive_winbar = {},
         -- extensions = { "neo-tree" },
-      })
+      }
     end,
   },
   {

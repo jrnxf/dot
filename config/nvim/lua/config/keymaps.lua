@@ -15,9 +15,11 @@ vim.keymap.set("n", "<leader>fT", function()
   Util.float_term(nil, { border = "rounded" })
 end, { desc = "Terminal (cwd)" })
 
-vim.keymap.set("n", "<leader>/", function()
-  require("telescope").extensions.live_grep_args.live_grep_args()
-end, { desc = "Live Grep (Args)" })
+-- vim.keymap.set("n", "<leader>/", function()
+--   require("telescope").extensions.live_grep_args.live_grep_args()
+-- end, { desc = "Live Grep (Args)" })
 
 -- You probably also want to set a keymap to toggle aerial
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
