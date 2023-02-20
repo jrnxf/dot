@@ -5,7 +5,6 @@ return {
   },
   {
     "folke/noice.nvim",
-    -- enabled = false,
     event = "VeryLazy",
     opts = {
       lsp = {
@@ -14,15 +13,32 @@ return {
           ["vim.lsp.util.stylize_markdown"] = true,
         },
       },
+      routes = {
+        {
+          view = "vsplit",
+          filter = { event = "msg_show", min_height = 20 },
+        },
+      },
       -- cmdline = {
       --   view = "cmdline",
       -- },
+      views = {
+        split = {
+          enter = true,
+          position = "bottom",
+          size = "100%",
+        },
+        mini = {
+          timeout = 5000, -- 5 sec
+        },
+      },
       messages = {
         view = "mini",
         view_error = "mini",
         view_warn = "mini",
       },
       presets = {
+        -- cmdline_output_to_split = true, -- this is nice when I want to have a full split to browse on, but also it makes a split for just :w 💀
         bottom_search = true,
         command_palette = false,
         long_message_to_split = true,
@@ -93,7 +109,7 @@ return {
         separator = { left = "", right = "" },
         symbols = {
           modified = " ●", -- Text to show when the buffer is modified
-          alternate_file = "# ", -- Text to show to identify the alternate file
+          alternate_file = "", -- Text to show to identify the alternate file
           directory = " ", -- Text to show when the buffer is a directory
         },
         filetype_names = {

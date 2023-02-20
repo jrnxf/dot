@@ -2,8 +2,19 @@ return {
   { import = "lazyvim.plugins.extras.lang.typescript" },
   -- add any tools you want to have installed below
   {
+    "jose-elias-alvarez/null-ls.nvim",
+    opts = {
+      border = "rounded",
+    },
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
+      ui = {
+        border = "rounded",
+        width = 0.8,
+        height = 0.8,
+      },
       ensure_installed = {
         "bash-language-server",
         "codelldb",
@@ -21,10 +32,7 @@ return {
         "rust-analyzer",
         "rustfmt",
         "shellcheck",
-        "shellcheck",
         "shfmt",
-        "shfmt",
-        "stylua",
         "stylua",
         "tailwindcss-language-server",
         "typescript-language-server",
@@ -80,39 +88,24 @@ return {
       }
     end,
     ---@class PluginLspOpts
-    opts = {
-      diagnostics = {
-        float = {
-          border = "rounded",
+    opts = function(_, opts)
+      require("lspconfig.ui.windows").default_options.border = "rounded"
+
+      opts.diagnostics.float = {
+        border = "rounded",
+      }
+
+      opts.servers.lua_ls.settings.Lua.diagnostics = {
+        globals = {
+          "vim",
+          "use",
+          "describe",
+          "it",
+          "assert",
+          "before_each",
+          "after_each",
         },
-      },
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        lua_ls = {
-          settings = {
-            Lua = {
-              diagnostics = {
-                globals = {
-                  "vim",
-                  "use",
-                  "describe",
-                  "it",
-                  "assert",
-                  "before_each",
-                  "after_each",
-                },
-              },
-              workspace = {
-                checkThirdParty = false,
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-            },
-          },
-        },
-      },
-    },
+      }
+    end,
   },
 }

@@ -1,6 +1,11 @@
 -- local Util = require("lazyvim.util")
-
 return {
+  {
+    "ggandor/leap.nvim",
+    opts = function()
+      require("leap").opts.safe_labels = {}
+    end,
+  },
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
@@ -104,7 +109,6 @@ return {
         -- jump to the next item, skipping the groups
         trouble.next({ skip_groups = true, jump = true })
       end, {})
-
       vim.api.nvim_create_user_command("TroublePrevious", function()
         -- jump to the next item, skipping the groups
         trouble.previous({ skip_groups = true, jump = true })
@@ -118,102 +122,51 @@ return {
     },
     keys = {
       { "<leader>,", "<cmd>lua require'fzf-lua'.buffers()<cr>", desc = "Switch Buffer" },
-      { "<leader>/", "<cmd>lua require'fzf-lua'.live_grep_glob()<cr>", desc = "Find in Files (Grep)" },
       { "<leader>:", "<cmd>lua require'fzf-lua'.command_history()<cr>", desc = "Command History" },
-      { "<c-space><c-space>", "<cmd>lua require'fzf-lua'.builtin()<cr>", desc = "Find Files" },
-      { "<leader><space>", "<cmd>lua require'fzf-lua'.files()<cr>", desc = "Find Files" },
-      -- find
-      -- { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      -- { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      -- { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>fr", "<cmd>lua require'fzf-lua'.oldfiles()<cr>", desc = "Recent Files" },
-      -- lsp
-      { "gd", "<cmd>lua require'fzf-lua'.lsp_definitions()<cr>", desc = "commits" },
-      -- -- git
+      { "<c-space><c-space>", "<cmd>lua require'fzf-lua'.live_grep_glob()<cr>", desc = "Find in Files (Grep)" },
+      { "<a-space><a-space>", "<cmd>lua require'fzf-lua'.builtin()<cr>", desc = "Fzf Builtins" },
+      { "<leader><leader>", "<cmd>lua require'fzf-lua'.files()<cr>", desc = "Find Files" },
+      { "<leader>r", "<cmd>lua require'fzf-lua'.oldfiles()<cr>", desc = "Recent Files" },
       { "<leader>gc", "<cmd>lua require'fzf-lua'.git_commits()<cr>", desc = "commits" },
       { "<leader>gs", "<cmd>lua require'fzf-lua'.git_status()<cr>", desc = "status" },
-      -- -- search
-      -- { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      -- { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      -- { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<leader>sb", "<cmd>lua require'fzf-lua'.grep_curbuf()<cr>", desc = "Buffer" },
       { "<leader>sC", "<cmd>lua require'fzf-lua'.commands()<cr>", desc = "Commands" },
       { "<leader>sd", "<cmd>lua require'fzf-lua'.diagnostics_document()<cr>", desc = "Diagnostics (Document)" },
       { "<leader>sD", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<cr>", desc = "Diagnostics (Workspace)" },
-      -- { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      -- { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" }, f
       { "<leader>sh", "<cmd>lua require'fzf-lua'.help_tags()<cr>", desc = "Help Tags" },
       { "<leader>sH", "<cmd>lua require'fzf-lua'.highlights()<cr>", desc = "Search Highlight Groups" },
       { "<leader>sk", "<cmd>lua require'fzf-lua'.keymaps()<cr>", desc = "Key Maps" },
-      -- { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      -- { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      -- { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
       { "<leader>sw", "<cmd>lua require'fzf-lua'.grep_cword()<cr>", desc = "Word" },
-      -- { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
       { "<leader>uC", "<cmd>lua require'fzf-lua'.colorschemes()<cr>", desc = "Colorscheme with preview" },
       { "<leader>xx", "<cmd>lua require'fzf-lua'.diagnostics_document()<cr>", desc = "Document Diagnostics" },
       { "<leader>xX", "<cmd>lua require'fzf-lua'.diagnostics_workspace()<cr>", desc = "Workspace Diagnostics" },
-      -- {
-      --   "<leader>ss",
-      --   Util.telescope("lsp_document_symbols", {
-      --     symbols = {
-      --       "Class",
-      --       "Function",
-      --       "Method",
-      --       "Constructor",
-      --       "Interface",
-      --       "Module",
-      --       "Struct",
-      --       "Trait",
-      --       "Field",
-      --       "Property",
-      --     },
-      --   }),
-      --   desc = "Goto Symbol",
-      -- },
     },
     opts = {
       winopts = {
         hl = { border = "FloatBorder" },
         preview = {
-          vertical = "down:65%", -- up|down:size
+          vertical = "up:60%", -- up|down:size
           horizontal = "right:60%", -- right|left:size
           layout = "flex", -- horizontal|vertical|flex
           delay = 0, -- delay(ms) displaying the preview, prevents lag on fast scrolling
         },
       },
       fzf_colors = {
-        -- ["fg"] = { "fg", "CursorLine" },
-        -- ["bg"] = { "bg", "Normal" },
-        -- ["hl"] = { "fg", "Comment" },
-        -- ["fg+"] = { "fg", "Normal" },
-        -- ["bg+"] = { "bg", "CursorLine" },
-        -- ["hl+"] = { "fg", "Statement" },
-        -- ["info"] = { "fg", "PreProc" },
-        -- ["prompt"] = { "fg", "Conditional" },
-        -- ["pointer"] = { "fg", "Exception" },
-        -- ["marker"] = { "fg", "Keyword" },
-        -- ["spinner"] = { "fg", "Label" },
-        -- ["header"] = { "fg", "Comment" },
         ["gutter"] = { "bg", "Normal" },
       },
+
       keymap = {
-        -- These override the default tables completely
-        -- no need to set to `false` to disable a bind
-        -- delete or modify is sufficient
-        --
         builtin = {
           ["<C-f>"] = "preview-page-down", -- Add this lines
           ["<C-b>"] = "preview-page-up", -- Add this line
         },
-        fzf = {
-          -- fzf '--bind=' options
-        },
       },
+
       previewers = {
         bat = {
           cmd = "bat",
           args = "--style=numbers,changes --color always --line-range :500",
-          theme = "ansi", -- bat preview theme (bat --list-themes)
+          theme = "ansi",
         },
       },
 
@@ -225,6 +178,7 @@ return {
           },
         },
       },
+
       manpages = {
         prompt = "",
         winopts = {
@@ -235,28 +189,44 @@ return {
       },
 
       grep = {
-        prompt = "",
+        prompt = "Rg❯ ",
+        input_prompt = "Grep For❯ ",
+        -- prompt = "",
+        -- prompt = "",
         winopts = {
           preview = {
             layout = "vertical",
+            width = 0.60,
+            height = 0.4,
           },
         },
+        keymap = {
+          fzf = {
+            ["ctrl-h"] = "transform-query(echo '{q}-- ')",
+          },
+        },
+        actions = {
+          ["ctrl-g"] = false,
+        },
+        no_header = true, -- hide grep|cwd header?
+        no_header_i = true, -- hide interactive header?
       },
 
       builtin = {
         previewer = false,
         prompt = "",
         winopts = {
-          width = 0.40,
-          height = 0.3,
+          width = 0.60,
+          height = 0.4,
         },
       },
       oldfiles = {
+        cwd_only = true,
         previewer = false,
         prompt = "",
         winopts = {
-          width = 0.40,
-          height = 0.3,
+          width = 0.60,
+          height = 0.4,
         },
 
         git_icons = false, -- show git icons?
@@ -266,8 +236,8 @@ return {
       files = {
         previewer = false,
         winopts = {
-          width = 0.40,
-          height = 0.3,
+          width = 0.60,
+          height = 0.4,
         },
         git_icons = false, -- show git icons?
         file_icons = false, -- show file icons?
