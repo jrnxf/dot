@@ -149,6 +149,7 @@ return {
         StatusLineNC = { bg = "#152528", fg = "#7aa4a1" }, -- status line none current
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },
+        TelescopeResultsNormal = { link = "Comment" },
         VertSplit = { fg = terafox.bg2 },
       }
 

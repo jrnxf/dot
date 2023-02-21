@@ -6,6 +6,7 @@
 [alias]
 	s = status -s
 	ss = status
+  sq = commit -am 'squash'
 	l = log --stat
 	lo = log --oneline
 	d = diff
