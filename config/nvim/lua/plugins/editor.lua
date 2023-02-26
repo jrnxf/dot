@@ -14,7 +14,7 @@ return {
       current_line_blame = true,
       current_line_blame_opts = {
         virt_text = true,
-        virt_text_pos = "right_align", -- 'eol' | 'overlay' | 'right_align'
+        virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
         delay = 0,
         ignore_whitespace = false,
       },
@@ -30,6 +30,10 @@ return {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
+    keys = {
+      { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
+      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+    },
     opts = {
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       filesystem = {
@@ -116,15 +120,8 @@ return {
     },
   },
   {
-    "declancm/cinnamon.nvim",
-    opts = {
-      hide_cursor = true,
-      centered = true, -- keep lines centered
-      default_delay = 4, -- 4ms between each line (a bit faster than default of 7)
-    },
-  },
-  {
     "stevearc/aerial.nvim",
+    enabled = false,
     lazy = false,
     opts = function()
       return {
@@ -354,10 +351,10 @@ return {
   --   dependencies = { "nvim-tree/nvim-web-devicons" },
   -- },
 
-  {
-    "nvim-telescope/telescope.nvim",
-    enabled = false,
-  },
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   enabled = false,
+  -- },
   -- {
   --   "princejoogie/dir-telescope.nvim",
   --   -- telescope.nvim is a required dependency
@@ -371,7 +368,9 @@ return {
 
   { "molecule-man/telescope-menufacture", lazy = false },
   {
-    dir = "~/Dev/telescope.nvimmm",
+
+    "nvim-telescope/telescope.nvim",
+    -- dir = "~/Dev/telescope.nvimmm",
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
@@ -435,6 +434,7 @@ return {
     },
     opts = {
       defaults = {
+        path_display = { "smart" },
         prompt_prefix = " ",
         selection_caret = " ",
         mappings = {
@@ -486,21 +486,21 @@ return {
         previewer = false,
       }
 
-      local minimal = {
-        theme = "minimal",
-        layout_strategy = "horizontal",
-        layout_config = {
-          -- prompt_position = "bottom",
-          width = 200,
-          height = 35,
-          -- preview_height = 25,
-        },
+      -- local minimal = {
+      --   theme = "minimal",
+      --   layout_strategy = "horizontal",
+      --   layout_config = {
+      --     -- prompt_position = "bottom",
+      --     width = 200,
+      --     height = 35,
+      --     -- preview_height = 25,
+      --   },
 
-        disable_devicons = true,
-        prompt_title = "",
-        results_title = "",
-        preview_title = "",
-      }
+      --   disable_devicons = true,
+      --   prompt_title = "",
+      --   results_title = "",
+      --   preview_title = "",
+      -- }
 
       telescope.setup({
         defaults = {
@@ -518,7 +518,22 @@ return {
             "--fixed-strings",
             "--sort=path",
           },
-          theme = minimal,
+          -- theme = minimal,
+          --
+          path_display = function(_, path)
+            local tail = require("telescope.utils").path_tail(path)
+            path = path:sub(1, (#tail + 1) * -1)
+
+            if path:sub(-1) == "/" then
+              path = path:sub(1, -2)
+            end
+
+            if #path > 0 then
+              path = string.format(" (%s)", path)
+            end
+
+            return string.format("%s%s", tail, path)
+          end,
           results_title = false,
           -- layout_strategy = "vertical",
           layout_strategy = "horizontal",
@@ -546,9 +561,9 @@ return {
           },
         },
         pickers = {
-          git_files = minimal,
-          find_files = minimal,
-          live_grep = minimal,
+          -- git_files = minimal,
+          -- find_files = minimal,
+          -- live_grep = minimal,
           help_tags = dropdown_opts,
           oldfiles = dropdown_opts,
         },

@@ -1,9 +1,9 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
+# ZSH_TMUX_AUTOSTART=true
+# ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
 
-plugins=(fzf-tab zsh-autosuggestions aws git tmux gh fzf docker)
+plugins=(fzf-tab zsh-autosuggestions aws tmux gh fzf docker git forgit)
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -85,6 +85,9 @@ alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="bat"
 alias vimdiff='nvim -d'
+
+
+alias sc="git commit -am 'squash'"
 
 alias v='nvim'
 alias vim="nvim"
