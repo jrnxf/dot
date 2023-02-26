@@ -351,10 +351,10 @@ return {
   --   dependencies = { "nvim-tree/nvim-web-devicons" },
   -- },
 
-  -- {
-  --   "nvim-telescope/telescope.nvim",
-  --   enabled = false,
-  -- },
+  {
+    "nvim-telescope/telescope.nvim",
+    enabled = false,
+  },
   -- {
   --   "princejoogie/dir-telescope.nvim",
   --   -- telescope.nvim is a required dependency
@@ -369,8 +369,7 @@ return {
   { "molecule-man/telescope-menufacture", lazy = false },
   {
 
-    "nvim-telescope/telescope.nvim",
-    -- dir = "~/Dev/telescope.nvimmm",
+    dir = "~/Dev/telescope.nvimmm",
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
@@ -385,7 +384,9 @@ return {
       {
         "<leader><leader>",
         function()
-          require("telescope").extensions.menufacture.find_files()
+          require("telescope").extensions.menufacture.find_files({
+            hidden = true,
+          })
         end,
         desc = "Find Files (root dir)",
       },
@@ -432,43 +433,6 @@ return {
         desc = "Goto Symbol",
       },
     },
-    opts = {
-      defaults = {
-        path_display = { "smart" },
-        prompt_prefix = " ",
-        selection_caret = " ",
-        mappings = {
-          i = {
-            ["<c-t>"] = function(...)
-              return require("trouble.providers.telescope").open_with_trouble(...)
-            end,
-            ["<a-i>"] = function()
-              Util.telescope("find_files", { no_ignore = true })()
-            end,
-            ["<a-h>"] = function()
-              Util.telescope("find_files", { hidden = true })()
-            end,
-            ["<C-Down>"] = function(...)
-              return require("telescope.actions").cycle_history_next(...)
-            end,
-            ["<C-Up>"] = function(...)
-              return require("telescope.actions").cycle_history_prev(...)
-            end,
-            ["<C-f>"] = function(...)
-              return require("telescope.actions").preview_scrolling_down(...)
-            end,
-            ["<C-b>"] = function(...)
-              return require("telescope.actions").preview_scrolling_up(...)
-            end,
-          },
-          n = {
-            ["q"] = function(...)
-              return require("telescope.actions").close(...)
-            end,
-          },
-        },
-      },
-    },
     -- keys = {
     --     { "<leader>bl", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
     -- },
@@ -486,21 +450,21 @@ return {
         previewer = false,
       }
 
-      -- local minimal = {
-      --   theme = "minimal",
-      --   layout_strategy = "horizontal",
-      --   layout_config = {
-      --     -- prompt_position = "bottom",
-      --     width = 200,
-      --     height = 35,
-      --     -- preview_height = 25,
-      --   },
+      local minimal = {
+        theme = "minimal",
+        layout_strategy = "horizontal",
+        layout_config = {
+          -- prompt_position = "bottom",
+          width = 200,
+          height = 35,
+          -- preview_height = 25,
+        },
 
-      --   disable_devicons = true,
-      --   prompt_title = "",
-      --   results_title = "",
-      --   preview_title = "",
-      -- }
+        disable_devicons = true,
+        prompt_title = "",
+        results_title = "",
+        preview_title = "",
+      }
 
       telescope.setup({
         defaults = {
@@ -518,8 +482,7 @@ return {
             "--fixed-strings",
             "--sort=path",
           },
-          -- theme = minimal,
-          --
+          theme = minimal,
           path_display = function(_, path)
             local tail = require("telescope.utils").path_tail(path)
             path = path:sub(1, (#tail + 1) * -1)
@@ -551,6 +514,8 @@ return {
               ["<C-j>"] = actions.move_selection_next,
               ["<C-k>"] = actions.move_selection_previous,
               ["<C-d>"] = actions.delete_buffer,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
               ["<C-t>"] = trouble.open_with_trouble,
             },
             n = {
@@ -561,9 +526,9 @@ return {
           },
         },
         pickers = {
-          -- git_files = minimal,
-          -- find_files = minimal,
-          -- live_grep = minimal,
+          git_files = minimal,
+          find_files = minimal,
+          live_grep = minimal,
           help_tags = dropdown_opts,
           oldfiles = dropdown_opts,
         },
