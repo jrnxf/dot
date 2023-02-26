@@ -150,6 +150,7 @@ return {
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },
         TelescopeResultsNormal = { link = "Comment" },
+        TelescopeMatching = { fg = terafox.cyan.bright },
         VertSplit = { fg = terafox.bg2 },
       }
 

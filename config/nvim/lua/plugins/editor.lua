@@ -30,17 +30,30 @@ return {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
+    enabled = false,
     keys = {
       { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
       { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     opts = {
+      padding = { right = 50 },
+      window = {
+        auto_expand_width = true, -- default: false
+      },
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       filesystem = {
         follow_current_file = true, -- This will find and focus the file in the active buffer every
         -- time the current file is changed while the tree is open.
         group_empty_dirs = true, -- when true, empty folders will be grouped together
       },
+    },
+  },
+  {
+    "declancm/cinnamon.nvim",
+    opts = {
+      hide_cursor = true,
+      centered = true, -- keep lines centered
+      default_delay = 4, -- 4ms between each line (a bit faster than default of 7)
     },
   },
   {
@@ -395,7 +408,7 @@ return {
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
       { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>r", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
+      { "<leader>r", "<cmd>Telescope oldfiles cwd_only=true<cr>", desc = "Recent" },
       { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
       { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
@@ -483,20 +496,21 @@ return {
             "--sort=path",
           },
           theme = minimal,
-          path_display = function(_, path)
-            local tail = require("telescope.utils").path_tail(path)
-            path = path:sub(1, (#tail + 1) * -1)
-
-            if path:sub(-1) == "/" then
-              path = path:sub(1, -2)
-            end
-
-            if #path > 0 then
-              path = string.format(" (%s)", path)
-            end
-
-            return string.format("%s%s", tail, path)
-          end,
+          path_display = { "truncate" },
+          -- path_display = function(_, path)
+          --   local tail = require("telescope.utils").path_tail(path)
+          --   path = path:sub(1, (#tail + 1) * -1)
+          --
+          --   if path:sub(-1) == "/" then
+          --     path = path:sub(1, -2)
+          --   end
+          --
+          --   if #path > 0 then
+          --     path = string.format(" (%s)", path)
+          --   end
+          --
+          --   return string.format("%s%s", tail, path)
+          -- end,
           results_title = false,
           -- layout_strategy = "vertical",
           layout_strategy = "horizontal",

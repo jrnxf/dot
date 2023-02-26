@@ -106,6 +106,34 @@ return {
           "after_each",
         },
       }
+
+      local util = require("lspconfig.util")
+
+      -- @credit https://github.com/letieu/nvim-config/blob/master/lua/plugins/lsp/bun.lua
+      local bun_servers = { "eslint", "tsserver", "html", "cssls", "tailwindcss" }
+
+      local function is_bun_server(name)
+        for _, server in ipairs(bun_servers) do
+          if server == name then
+            return true
+          end
+        end
+        return false
+      end
+
+      local function is_bun_available()
+        local bunx = vim.fn.executable("bunx")
+        if bunx == 0 then
+          return false
+        end
+        return true
+      end
+
+      util.on_setup = util.add_hook_before(util.on_setup, function(config, _)
+        if config.cmd and is_bun_available() and is_bun_server(config.name) then
+          config.cmd = vim.list_extend({ "bunx" }, config.cmd)
+        end
+      end)
     end,
   },
 }
