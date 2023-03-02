@@ -152,6 +152,7 @@ return {
         TelescopeResultsNormal = { link = "Comment" },
         TelescopeMatching = { fg = terafox.cyan.bright },
         VertSplit = { fg = terafox.bg2 },
+        MatchParen = { bg = terafox.blue.dim, fg = colors.off_white_text },
       }
 
       return {

@@ -13,4 +13,6 @@ vim.opt.fillchars = {
   eob = " ",
 }
 vim.opt.cmdheight = 0
+vim.opt.showmatch = true
+vim.opt.matchtime = 3
 require("util.status")

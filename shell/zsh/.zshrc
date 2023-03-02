@@ -1,7 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-# ZSH_TMUX_AUTOSTART=true
-# ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
 
 plugins=(fzf-tab zsh-autosuggestions aws tmux gh fzf docker git forgit)
 
@@ -12,6 +12,25 @@ fbr() {
     branch=$(echo "$branches" |
       fzf-tmux -d $((2 + $(wc -l <<<"$branches"))) +m) &&
     git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+kp() {
+  kubectl get po 
+}
+
+# @source (modified) https://gist.github.com/terinjokes/7d2a2f85bc7e89541c8cecabacec50b4
+kpl() {
+  pod="$(kubectl get po | tail -n+2 | fzf -n1 --reverse --tac | awk '{print $1}')"
+  if [[ -n $pod ]]; then
+    kubectl logs --tail=500 --all-containers=true $pod -f
+  fi
+}
+
+kplp() {
+  pod="$(kubectl get po | tail -n+2 | fzf-tmux -n1 --reverse -r 75% --tac --preview='kubectl logs --tail=20 --all-containers=true {1}' --preview-window=right:50% |awk '{print $1}')"
+  if [[ -n $pod ]]; then
+    kubectl logs --tail=500 --all-containers=true $pod -f
+  fi
 }
 
 export FZF_BASE=/opt/homebrew/bin/fzf
@@ -69,6 +88,7 @@ export MANPAGER='nvim +Man!'
 export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
 
+alias k=kubectl
 alias dev="~/Dev"
 alias p="cd ~/Dev/pocus"
 alias reload="source ~/.zshrc"
@@ -100,6 +120,32 @@ alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
 alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
+echo '[[ $commands[kubectl] ]] && source <(kubectl completion zsh)' >> ~/.zshrc # add autocomplete permanently to your zsh shell
+
 eval $(thefuck --alias)
 eval $(starship init zsh)
 
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)

@@ -5,6 +5,7 @@ return {
   },
   {
     "folke/noice.nvim",
+    enabled = false,
     event = "VeryLazy",
     opts = {
       lsp = {
@@ -47,13 +48,35 @@ return {
     },
   },
   {
+    "andymass/vim-matchup",
+    lazy = false,
+    init = function()
+      -- may set any options here
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
     opts = {
       char = "▏",
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "NvimTree" },
       show_trailing_blankline_indent = false,
       show_current_context = false,
     },
+  },
+  {
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = { "BufReadPre", "BufNewFile" },
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "NvimTree" },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+      require("mini.indentscope").setup(opts)
+    end,
   },
   {
     "akinsho/bufferline.nvim",
