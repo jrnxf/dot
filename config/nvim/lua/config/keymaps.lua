@@ -1,7 +1,7 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
---
+
 local Util = require("lazyvim.util")
 
 vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { silent = true })
@@ -23,3 +23,17 @@ end, { desc = "Terminal (cwd)" })
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+vim.keymap.set("n", "<c-space>p", "<cmd>Telescope command_palette<cr>")
+vim.keymap.set("t", "<c-c>", "<c-\\><c-n>")
+-- i give up lol
+--
+-- vim.keymap.set({ "i", "n" }, "<C-x><C-x>",
+--   function()
+--     vim.cmd("silent! xa")
+--     vim.cmd("qa")
+--   end,
+--   -- "<cmd>silent!xa<cr><cmd>qa<cr>",
+--   { desc = "Bye Buffers (Save all and quit)" })
+--
+-- vim.keymap.set({ "i", "n" }, "<C-c><C-c>", "<cmd>silent! xa<cr><cmd>qa<cr>", { desc = "Bye Buffers (Save all and quit)" })

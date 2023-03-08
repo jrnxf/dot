@@ -5,7 +5,6 @@ return {
   },
   {
     "folke/noice.nvim",
-    enabled = false,
     event = "VeryLazy",
     opts = {
       lsp = {
@@ -125,9 +124,10 @@ return {
 
       local buffer = {
         "buffers",
+        show_filename_only = true, -- Shows shortened relative path when set to false.
         buffers_color = {
-          active = { gui = "bold", bg = terafox.green.dim, fg = "#e6eaea" },
-          inactive = { gui = "bold", bg = terafox.bg3, fg = "#e6eaea" }, -- Color for inactive buffer.
+          active = { gui = "bold", bg = "#2a4750", fg = "#e6eaea" },
+          inactive = { gui = "bold", bg = "#1c3035", fg = "#e6eaea" }, -- Color for inactive buffer.
         },
         separator = { left = "", right = "" },
         symbols = {
@@ -205,8 +205,8 @@ return {
 
       return {
         options = {
-          icons_enabled = true,
           theme = theme,
+          icons_enabled = true,
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
           disabled_filetypes = {

@@ -1,6 +1,7 @@
 return {
   {
     "folke/tokyonight.nvim",
+    lazy = false,
     opts = { style = "night" },
   },
   {
@@ -118,14 +119,14 @@ return {
         -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
         CmpPmenuBorder = { link = "NormalFloatBorder" },
         CursorLine = { bg = terafox.bg1 },
-        DiagnosticSignInfo = { link = "FloatBorder" }, -- used heavily by noice
-        DiffAdd = { bg = colors.added_line }, -- show added lines
-        DiffAddAsDelete = { bg = colors.deleted_line }, -- used in diffview (left panel) highlight line that changed
-        DiffAddText = { bg = colors.added_text, fg = colors.off_white_text }, -- show added characters within added lines
-        DiffChange = { bg = colors.deleted_line }, -- fugitive (left side) to show what LINE text was changed on
-        DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text }, -- shows fully deleted blocks of code
+        DiagnosticSignInfo = { link = "FloatBorder" },                             -- used heavily by noice
+        DiffAdd = { bg = colors.added_line },                                      -- show added lines
+        DiffAddAsDelete = { bg = colors.deleted_line },                            -- used in diffview (left panel) highlight line that changed
+        DiffAddText = { bg = colors.added_text, fg = colors.off_white_text },      -- show added characters within added lines
+        DiffChange = { bg = colors.deleted_line },                                 -- fugitive (left side) to show what LINE text was changed on
+        DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text },       -- shows fully deleted blocks of code
         DiffDeleteText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- diffview (left panel) highlight word that changed
-        DiffText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- fugitive (left side) to show exact characters that deleted
+        DiffText = { bg = colors.deleted_text, fg = colors.off_white_text },       -- fugitive (left side) to show exact characters that deleted
         FloatBorder = { fg = terafox.bg3 },
         LeapBackdrop = { link = "Comment" },
         LeapMatch = { bg = terafox.magenta.dim, fg = colors.off_white_text },
@@ -145,7 +146,7 @@ return {
         Pmenu = { bg = terafox.bg1 },
         -- FzfLuaBorder = { link = "FloatBorder" },
         PmenuBorder = { link = "FloatBorder" },
-        StatusLine = { bg = "#152528" }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
+        StatusLine = { bg = "#152528" },                   -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
         StatusLineNC = { bg = "#152528", fg = "#7aa4a1" }, -- status line none current
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },

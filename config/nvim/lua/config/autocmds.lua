@@ -6,6 +6,11 @@ local function augroup(name, opts)
   return vim.api.nvim_create_augroup("jrnxf_" .. name, opts or { clear = false })
 end
 
+vim.api.nvim_create_user_command("XX", function()
+  vim.cmd("silent! xa")
+  vim.cmd("qa")
+end, {})
+
 -- close some filetypes with <c-c>
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("close_with_ctrl_c"),
@@ -55,13 +60,5 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   pattern = { "*.*" },
   callback = function()
     vim.cmd.loadview({ mods = { emsg_silent = true } })
-  end,
-})
-
-vim.api.nvim_create_autocmd("ExitPre", {
-  group = remember_folds_group,
-  pattern = { "*" },
-  callback = function(event)
-    vim.notify(vim.inspect(event))
   end,
 })

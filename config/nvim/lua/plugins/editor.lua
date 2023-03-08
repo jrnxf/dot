@@ -110,15 +110,15 @@ return {
             --     end
             --   end,
             -- },
-            { key = "d", action = "remove" },
-            { key = "h", action = "close_node" },
-            { key = "I", action = "toggle_ignored" },
-            { key = "l", action = "edit" },
-            { key = "r", action = "rename" },
-            { key = "s", action = "split" },
-            { key = "v", action = "vsplit" },
-            { key = "Y", action = "copy_path" },
-            { key = "y", action = "copy_name" },
+            { key = "d",     action = "remove" },
+            { key = "h",     action = "close_node" },
+            { key = "I",     action = "toggle_ignored" },
+            { key = "l",     action = "edit" },
+            { key = "r",     action = "rename" },
+            { key = "s",     action = "split" },
+            { key = "v",     action = "vsplit" },
+            { key = "Y",     action = "copy_path" },
+            { key = "y",     action = "copy_name" },
           },
         },
       },
@@ -129,18 +129,18 @@ return {
     enabled = false,
     keys = {
       { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
     },
     opts = {
       padding = { right = 50 },
       window = {
-        auto_expand_width = true, -- default: false
+        auto_expand_width = true,   -- default: false
       },
-      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true,  -- Close Neo-tree if it is the last window left in the tab
       filesystem = {
         follow_current_file = true, -- This will find and focus the file in the active buffer every
         -- time the current file is changed while the tree is open.
-        group_empty_dirs = true, -- when true, empty folders will be grouped together
+        group_empty_dirs = true,    -- when true, empty folders will be grouped together
       },
     },
   },
@@ -148,7 +148,7 @@ return {
     "declancm/cinnamon.nvim",
     opts = {
       hide_cursor = true,
-      centered = true, -- keep lines centered
+      centered = true,   -- keep lines centered
       default_delay = 1, -- 4ms between each line (a bit faster than default of 7)
     },
   },
@@ -180,7 +180,8 @@ return {
       auto_unfold_hover = true,
       fold_markers = { "", "" },
       wrap = false,
-      keymaps = { -- These keymaps can be a string or a table for multiple keys
+      keymaps = {
+        -- These keymaps can be a string or a table for multiple keys
         close = { "<Esc>", "q" },
         goto_location = "<Cr>",
         focus_location = "o",
@@ -234,7 +235,6 @@ return {
     lazy = false,
     opts = function()
       return {
-
         backends = { "lsp", "treesitter", "markdown", "man" },
         filter_kind = false,
         -- -- Use symbol tree for folding. Set to true or false to enable/disable
@@ -265,9 +265,7 @@ return {
           min_width = 40,
           placement = "edge",
         },
-
         post_jump_cmd = "normal! zz",
-
         attach_mod = "global",
         update_events = "TextChanged,InsertLeave",
         -- Options for opening aerial in a floating win
@@ -474,15 +472,12 @@ return {
   --     respect_gitignore = true,
   --   },
   -- },
-
-  { "molecule-man/telescope-menufacture", lazy = false },
   {
-
     dir = "~/Dev/telescope.nvimmm",
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
-      { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
+      { "<leader>,",          "<cmd>Telescope buffers show_all_buffers=true<cr>",       desc = "Switch Buffer" },
       {
         "<c-space><c-space>",
         function()
@@ -499,30 +494,30 @@ return {
         end,
         desc = "Find Files (root dir)",
       },
-      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<a-space><a-space>", "<cmd>Telescope builtin<cr>", desc = "Telescope Builtins" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>r", "<cmd>Telescope oldfiles cwd_only=true<cr>", desc = "Recent" },
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
-      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
-      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-      { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-      { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
-      { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
-      { "<leader>uC", Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
+      { "<leader>:",          "<cmd>Telescope command_history<cr>",                     desc = "Command History" },
+      { "<a-space><a-space>", "<cmd>Telescope builtin<cr>",                             desc = "Telescope Builtins" },
+      { "<leader>fb",         "<cmd>Telescope buffers<cr>",                             desc = "Buffers" },
+      { "<leader>ff",         Util.telescope("files"),                                  desc = "Find Files (root dir)" },
+      { "<leader>fF",         Util.telescope("files", { cwd = false }),                 desc = "Find Files (cwd)" },
+      { "<leader>r",          "<cmd>Telescope oldfiles cwd_only=true<cr>",              desc = "Recent" },
+      { "<leader>gc",         "<cmd>Telescope git_commits<CR>",                         desc = "commits" },
+      { "<leader>gs",         "<cmd>Telescope git_status<CR>",                          desc = "status" },
+      { "<leader>sa",         "<cmd>Telescope autocommands<cr>",                        desc = "Auto Commands" },
+      { "<leader>sb",         "<cmd>Telescope current_buffer_fuzzy_find<cr>",           desc = "Buffer" },
+      { "<leader>sc",         "<cmd>Telescope command_history<cr>",                     desc = "Command History" },
+      { "<leader>sC",         "<cmd>Telescope commands<cr>",                            desc = "Commands" },
+      { "<leader>sd",         "<cmd>Telescope diagnostics<cr>",                         desc = "Diagnostics" },
+      { "<leader>sg",         Util.telescope("live_grep"),                              desc = "Grep (root dir)" },
+      { "<leader>sG",         Util.telescope("live_grep", { cwd = false }),             desc = "Grep (cwd)" },
+      { "<leader>sh",         "<cmd>Telescope help_tags<cr>",                           desc = "Help Pages" },
+      { "<leader>sH",         "<cmd>Telescope highlights<cr>",                          desc = "Search Highlight Groups" },
+      { "<leader>sk",         "<cmd>Telescope keymaps<cr>",                             desc = "Key Maps" },
+      { "<leader>sM",         "<cmd>Telescope man_pages<cr>",                           desc = "Man Pages" },
+      { "<leader>sm",         "<cmd>Telescope marks<cr>",                               desc = "Jump to Mark" },
+      { "<leader>so",         "<cmd>Telescope vim_options<cr>",                         desc = "Options" },
+      { "<leader>sw",         Util.telescope("grep_string"),                            desc = "Word (root dir)" },
+      { "<leader>sW",         Util.telescope("grep_string", { cwd = false }),           desc = "Word (cwd)" },
+      { "<leader>uC",         Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
       {
         "<leader>ss",
         Util.telescope("lsp_document_symbols", {
@@ -549,6 +544,7 @@ return {
       -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
       "natecraddock/telescope-zf-native.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
+      "LinArcX/telescope-command-palette.nvim",
       "molecule-man/telescope-menufacture",
       "folke/trouble.nvim",
     },
@@ -574,7 +570,6 @@ return {
           height = 35,
           -- preview_height = 25,
         },
-
         disable_devicons = true,
         prompt_title = "",
         results_title = "",
@@ -617,7 +612,14 @@ return {
           -- layout_strategy = "vertical",
           layout_strategy = "horizontal",
           layout_config = {
-            vertical = { width = 0.9, height = 0.9, preview_height = 0.6, prompt_position = "top", preview_position = "bottom", mirror = true },
+            vertical = {
+              width = 0.9,
+              height = 0.9,
+              preview_height = 0.6,
+              prompt_position = "top",
+              preview_position = "bottom",
+              mirror = true
+            },
             horizontal = { width = 0.9, height = 0.9, preview_width = 0.6, prompt_position = "top" },
           },
           -- layout_config = { prompt_position = "top" },
@@ -627,17 +629,17 @@ return {
           file_ignore_patterns = { "node_modules/.*" },
           mappings = {
             i = {
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
-              ["<C-d>"] = actions.delete_buffer,
-              ["<C-f>"] = actions.preview_scrolling_down,
-              ["<C-b>"] = actions.preview_scrolling_up,
-              ["<C-t>"] = trouble.open_with_trouble,
+                  ["<C-j>"] = actions.move_selection_next,
+                  ["<C-k>"] = actions.move_selection_previous,
+                  ["<C-d>"] = actions.delete_buffer,
+                  ["<C-f>"] = actions.preview_scrolling_down,
+                  ["<C-b>"] = actions.preview_scrolling_up,
+                  ["<C-t>"] = trouble.open_with_trouble,
             },
             n = {
-              ["<C-c>"] = actions.close,
-              ["<C-d>"] = actions.delete_buffer,
-              ["<C-t>"] = trouble.open_with_trouble,
+                  ["<C-c>"] = actions.close,
+                  ["<C-d>"] = actions.delete_buffer,
+                  ["<C-t>"] = trouble.open_with_trouble,
             },
           },
         },
@@ -649,6 +651,13 @@ return {
           oldfiles = dropdown_opts,
         },
         extensions = {
+          command_palette = {
+            { "Jest",
+              { "Run last test(s)",                 ':lua require"jester".run_last()' },
+              { "Run current file",                 ':lua require"jester".run_file()' },
+              { "Run nearest test(s) under cursor", ':lua require"jester".run()' },
+            },
+          },
           menufacture = {
             mappings = {
               main_menu = { [{ "i", "n" }] = "<C-h>" },
@@ -657,10 +666,11 @@ return {
           live_grep_args = {
             auto_quoting = true, -- enable/disable auto-quoting
             -- define mappings, e.g.
-            mappings = { -- extend mappings
+            mappings = {
+              -- extend mappings
               i = {
-                ["<C-k>"] = lga_actions.quote_prompt(),
-                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                    ["<C-k>"] = lga_actions.quote_prompt(),
+                    ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
               },
             },
             -- ... also accepts theme settings, for example:
@@ -675,6 +685,7 @@ return {
       telescope.load_extension("zf-native")
       telescope.load_extension("live_grep_args")
       telescope.load_extension("menufacture")
+      telescope.load_extension('command_palette')
       -- telescope.load_extension("dir")
     end,
   },
@@ -683,8 +694,8 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
-      { "<leader>gdp", "<cmd>DiffviewOpen<cr>", desc = "Diff Project" },
-      { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>", desc = "Diff File" },
+      { "<leader>gdp", "<cmd>DiffviewOpen<cr>",          desc = "Diff Project" },
+      { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>",   desc = "Diff File" },
       { "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
     },
     opts = function()
@@ -717,17 +728,17 @@ return {
           -- },
           keymaps = {
             view = {
-              ["gf"] = require("diffview.actions").goto_file_edit,
-              ["-"] = require("diffview.actions").toggle_stage_entry,
+                  ["gf"] = require("diffview.actions").goto_file_edit,
+                  ["-"] = require("diffview.actions").toggle_stage_entry,
             },
             file_panel = {
-              ["<cr>"] = require("diffview.actions").focus_entry,
-              ["s"] = require("diffview.actions").toggle_stage_entry,
-              ["gf"] = require("diffview.actions").goto_file_edit,
+                  ["<cr>"] = require("diffview.actions").focus_entry,
+                  ["s"] = require("diffview.actions").toggle_stage_entry,
+                  ["gf"] = require("diffview.actions").goto_file_edit,
             },
             file_history_panel = {
-              ["<cr>"] = require("diffview.actions").focus_entry,
-              ["gf"] = require("diffview.actions").goto_file_edit,
+                  ["<cr>"] = require("diffview.actions").focus_entry,
+                  ["gf"] = require("diffview.actions").goto_file_edit,
             },
           },
         },
