@@ -5,6 +5,10 @@ return {
     opts = { style = "night" },
   },
   {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+  },
+  {
     "EdenEast/nightfox.nvim",
     lazy = false,
     priority = 1000,

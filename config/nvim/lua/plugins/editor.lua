@@ -657,6 +657,9 @@ return {
               { "Run current file",                 ':lua require"jester".run_file()' },
               { "Run nearest test(s) under cursor", ':lua require"jester".run()' },
             },
+            { "Telescope",
+              { "Builtins", 'Telescope builtin' },
+            },
           },
           menufacture = {
             mappings = {

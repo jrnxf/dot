@@ -9,9 +9,12 @@ require("lazy.view.config").keys.abort = "<F6>"
 require("lazy.view.config").keys.close = "<c-c>"
 require("lazy").setup({
   spec = {
-    { "LazyVim/LazyVim",                                import = "lazyvim.plugins", opts = { colorscheme = "terafox" } },
+    {
+      "LazyVim/LazyVim",
+      import = "lazyvim.plugins",
+      opts = { colorscheme = "terafox" }
+    },
     { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
     { import = "plugins" },
   },
   defaults = { lazy = false, version = false },
@@ -21,8 +24,8 @@ require("lazy").setup({
     rtp = {
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
+        "matchit",
+        "matchparen",
         "netrwPlugin",
         "tarPlugin",
         "tohtml",

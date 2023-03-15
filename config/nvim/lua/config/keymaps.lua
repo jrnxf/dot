@@ -24,7 +24,7 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.keymap.set("n", "<c-space>p", "<cmd>Telescope command_palette<cr>")
+vim.keymap.set("n", "<c-space><c-p>", "<cmd>Telescope command_palette<cr>", { desc = "Command Palette" })
 vim.keymap.set("t", "<c-c>", "<c-\\><c-n>")
 -- i give up lol
 --

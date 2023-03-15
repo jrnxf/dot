@@ -17,7 +17,8 @@
 	co = checkout
 	g = grep
 	rs = reset
-	p = pull
+	pl = pull
+	ps = push
 	b = branch
 [init]
 	defaultBranch = main
