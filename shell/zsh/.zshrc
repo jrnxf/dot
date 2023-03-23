@@ -22,6 +22,8 @@ kp() {
 kpl() {
   pod="$(kubectl get po | tail -n+2 | fzf -n1 --reverse --tac | awk '{print $1}')"
   if [[ -n $pod ]]; then
+    # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r '[.level, .timestamp, .message] | join(" | ")'
+    # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r 'del(.req)'
     kubectl logs --tail=500 --all-containers=true $pod -f
   fi
 }
