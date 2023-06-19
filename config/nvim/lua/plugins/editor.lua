@@ -149,7 +149,7 @@ return {
     opts = {
       hide_cursor = true,
       centered = true,   -- keep lines centered
-      default_delay = 4, -- 4ms between each line ()
+      default_delay = 2, -- 4ms between each line (a bit faster than default of 7)
     },
   },
   {
@@ -473,27 +473,14 @@ return {
   --   },
   -- },
   {
+    -- "nvim-telescope/telescope.nvim",
     dir = "~/Dev/telescope.nvimmm",
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
       { "<leader>,",          "<cmd>Telescope buffers show_all_buffers=true<cr>",       desc = "Switch Buffer" },
-      {
-        "<c-space><c-space>",
-        function()
-          require("telescope").extensions.menufacture.live_grep()
-        end,
-        desc = "Find in Files (Grep)",
-      },
-      {
-        "<leader><leader>",
-        function()
-          require("telescope").extensions.menufacture.find_files({
-            hidden = true,
-          })
-        end,
-        desc = "Find Files (root dir)",
-      },
+      { "<c-space><c-space>", "<cmd>Telescope live_grep<cr>",                           desc = "Find in Files (Grep)", },
+      { "<leader><leader>",   "<cmd>Telescope find_files<cr>",                          desc = "Find Files (root dir)" },
       { "<leader>:",          "<cmd>Telescope command_history<cr>",                     desc = "Command History" },
       { "<a-space><a-space>", "<cmd>Telescope builtin<cr>",                             desc = "Telescope Builtins" },
       { "<leader>fb",         "<cmd>Telescope buffers<cr>",                             desc = "Buffers" },
@@ -537,21 +524,18 @@ return {
         desc = "Goto Symbol",
       },
     },
-    -- keys = {
-    --     { "<leader>bl", "<cmd>Telescope buffers<cr>", desc = "List Buffers" },
-    -- },
     dependencies = {
-      -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      "natecraddock/telescope-zf-native.nvim",
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build =
+        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+      },
       "nvim-telescope/telescope-live-grep-args.nvim",
       "LinArcX/telescope-command-palette.nvim",
-      "molecule-man/telescope-menufacture",
       "folke/trouble.nvim",
     },
-    -- apply the config and additionally load fzf-native
     config = function()
       local telescope = require("telescope")
-      -- local builtin = require("telescope.builtin")
       local actions = require("telescope.actions")
       local trouble = require("trouble.providers.telescope")
       local lga_actions = require("telescope-live-grep-args.actions")
@@ -559,6 +543,15 @@ return {
       local dropdown_opts = {
         theme = "dropdown",
         previewer = false,
+        -- find_command = {
+        --   'fd',
+        --   '--type',
+        --   'f',
+        --   '--no-ignore-vcs',
+        --   '--color=never',
+        --   '--hidden',
+        --   '--follow',
+        -- }
       }
 
       local minimal = {
@@ -574,6 +567,12 @@ return {
         prompt_title = "",
         results_title = "",
         preview_title = "",
+        find_command = {
+          'fd',
+          '--type',
+          'f',
+          '--hidden',
+        }
       }
 
       telescope.setup({
@@ -594,22 +593,7 @@ return {
           },
           theme = minimal,
           path_display = { "truncate" },
-          -- path_display = function(_, path)
-          --   local tail = require("telescope.utils").path_tail(path)
-          --   path = path:sub(1, (#tail + 1) * -1)
-          --
-          --   if path:sub(-1) == "/" then
-          --     path = path:sub(1, -2)
-          --   end
-          --
-          --   if #path > 0 then
-          --     path = string.format(" (%s)", path)
-          --   end
-          --
-          --   return string.format("%s%s", tail, path)
-          -- end,
           results_title = false,
-          -- layout_strategy = "vertical",
           layout_strategy = "horizontal",
           layout_config = {
             vertical = {
@@ -622,30 +606,27 @@ return {
             },
             horizontal = { width = 0.9, height = 0.9, preview_width = 0.6, prompt_position = "top" },
           },
-          -- layout_config = { prompt_position = "top" },
           sorting_strategy = "ascending",
-          winblend = 5,
-          -- prompt_position = "top",
           file_ignore_patterns = { "node_modules/.*" },
           mappings = {
             i = {
-                  ["<C-j>"] = actions.move_selection_next,
-                  ["<C-k>"] = actions.move_selection_previous,
-                  ["<C-d>"] = actions.delete_buffer,
-                  ["<C-f>"] = actions.preview_scrolling_down,
-                  ["<C-b>"] = actions.preview_scrolling_up,
-                  ["<C-t>"] = trouble.open_with_trouble,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-d>"] = actions.delete_buffer,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
+              ["<C-t>"] = trouble.open_with_trouble,
             },
             n = {
-                  ["<C-c>"] = actions.close,
-                  ["<C-d>"] = actions.delete_buffer,
-                  ["<C-t>"] = trouble.open_with_trouble,
+              ["<C-c>"] = actions.close,
+              ["<C-d>"] = actions.delete_buffer,
+              ["<C-t>"] = trouble.open_with_trouble,
             },
           },
         },
         pickers = {
-          git_files = minimal,
-          find_files = minimal,
+          git_files = dropdown_opts,
+          find_files = dropdown_opts,
           live_grep = minimal,
           help_tags = dropdown_opts,
           oldfiles = dropdown_opts,
@@ -661,19 +642,14 @@ return {
               { "Builtins", 'Telescope builtin' },
             },
           },
-          menufacture = {
-            mappings = {
-              main_menu = { [{ "i", "n" }] = "<C-h>" },
-            },
-          },
           live_grep_args = {
             auto_quoting = true, -- enable/disable auto-quoting
             -- define mappings, e.g.
             mappings = {
               -- extend mappings
               i = {
-                    ["<C-k>"] = lga_actions.quote_prompt(),
-                    ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                ["<C-k>"] = lga_actions.quote_prompt(),
+                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
               },
             },
             -- ... also accepts theme settings, for example:
@@ -681,15 +657,17 @@ return {
             -- theme = { }, -- use own theme spec
             -- layout_config = { mirror=true }, -- mirror preview pane
           },
-          {},
+          fzf = {
+            fuzzy = true,                   -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+          }
         },
       })
-      -- telescope.load_extension("fzf")
-      telescope.load_extension("zf-native")
+      telescope.load_extension("fzf")
       telescope.load_extension("live_grep_args")
-      telescope.load_extension("menufacture")
       telescope.load_extension('command_palette')
-      -- telescope.load_extension("dir")
     end,
   },
   {
@@ -731,17 +709,17 @@ return {
           -- },
           keymaps = {
             view = {
-                  ["gf"] = require("diffview.actions").goto_file_edit,
-                  ["-"] = require("diffview.actions").toggle_stage_entry,
+              ["gf"] = require("diffview.actions").goto_file_edit,
+              ["-"] = require("diffview.actions").toggle_stage_entry,
             },
             file_panel = {
-                  ["<cr>"] = require("diffview.actions").focus_entry,
-                  ["s"] = require("diffview.actions").toggle_stage_entry,
-                  ["gf"] = require("diffview.actions").goto_file_edit,
+              ["<cr>"] = require("diffview.actions").focus_entry,
+              ["s"] = require("diffview.actions").toggle_stage_entry,
+              ["gf"] = require("diffview.actions").goto_file_edit,
             },
             file_history_panel = {
-                  ["<cr>"] = require("diffview.actions").focus_entry,
-                  ["gf"] = require("diffview.actions").goto_file_edit,
+              ["<cr>"] = require("diffview.actions").focus_entry,
+              ["gf"] = require("diffview.actions").goto_file_edit,
             },
           },
         },

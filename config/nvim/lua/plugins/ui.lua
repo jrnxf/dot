@@ -104,7 +104,7 @@ return {
         function()
           return " "
         end,
-        color = { bg = terafox.bg0, fg = terafox.bg0 },
+        color = { bg = "none", fg = "none" },
       }
 
       local filename = {
@@ -131,9 +131,9 @@ return {
         },
         separator = { left = "", right = "" },
         symbols = {
-          modified = " ●", -- Text to show when the buffer is modified
+          modified = " ●",   -- Text to show when the buffer is modified
           alternate_file = "", -- Text to show to identify the alternate file
-          directory = " ", -- Text to show when the buffer is a directory
+          directory = " ",  -- Text to show when the buffer is a directory
         },
         filetype_names = {
           ["neo-tree"] = "NeoTree",
@@ -200,7 +200,7 @@ return {
           return "  " .. (#servers > 0 and table.concat(servers, " / ") or empty)
         end,
         separator = { left = "", right = "" },
-        color = { gui = "bold", bg = terafox.green.dim, fg = "#0e1c1d" },
+        color = { gui = "bold", bg = terafox.green.dim, fg = terafox.bg0 },
       }
 
       return {

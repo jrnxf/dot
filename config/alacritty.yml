@@ -8,9 +8,8 @@ window:
   dimensions:
     columns: 200 # should be at least fullscreen
     lines: 100 # should be at least fullscreen
-  # decorations: "buttonless"
-  # opacity: 0.95
-  opacity: 1
+  decorations: "buttonless"
+  opacity: 0.8
 
 scrolling:
   history: 10000

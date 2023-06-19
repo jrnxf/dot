@@ -1,4 +1,5 @@
 export ZSH="$HOME/.oh-my-zsh"
+export AWS_PAGER=""
 
 # ZSH_TMUX_AUTOSTART=true
 # ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
@@ -15,7 +16,7 @@ fbr() {
 }
 
 kp() {
-  kubectl get po 
+  kubectl get po
 }
 
 # @source (modified) https://gist.github.com/terinjokes/7d2a2f85bc7e89541c8cecabacec50b4
@@ -24,15 +25,31 @@ kpl() {
   if [[ -n $pod ]]; then
     # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r '[.level, .timestamp, .message] | join(" | ")'
     # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r 'del(.req)'
-    kubectl logs --tail=500 --all-containers=true $pod -f
+    kubectl logs --tail=3000 --all-containers=true $pod -f
   fi
 }
 
 kplp() {
-  pod="$(kubectl get po | tail -n+2 | fzf-tmux -n1 --reverse -r 75% --tac --preview='kubectl logs --tail=20 --all-containers=true {1}' --preview-window=right:50% |awk '{print $1}')"
+  pod="$(kubectl get po | tail -n+2 | fzf-tmux -n1 --reverse -r 75% --tac --preview='kubectl logs --tail=20 --all-containers=true {1}' --preview-window=right:50% | awk '{print $1}')"
   if [[ -n $pod ]]; then
     kubectl logs --tail=500 --all-containers=true $pod -f
   fi
+}
+
+ppr() {
+  cd ~/Dev/pocus/
+  AWS_PROFILE=pocus-dev aws --profile pocus-dev sso login
+  garden generate-env-file cloud -l verbose
+  pnpm --dir frontend i &&
+    pnpm --dir backend i &&
+    pnpm --dir action-processor i &&
+    pnpm --dir data-collector i &&
+    pnpm --dir cube i
+  garden codegen
+}
+
+kj() {
+  kill -9 $(jobs -l | awk '{print $3}')
 }
 
 export FZF_BASE=/opt/homebrew/bin/fzf
@@ -46,6 +63,9 @@ export FZF_DEFAULT_OPTS='
  --color=border:#6d7f8b,info:#6d7f8b
  --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
  --height=60% --layout=reverse'
+# export FZF_DEFAULT_OPTS='
+#  --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
+#  --height=60% --layout=reverse'
 # ansi theme will attempt to match terminal styles
 export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"
 
@@ -74,7 +94,7 @@ bindkey "^H" fzf-tab-complete # TODO what are the differences between these two
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'bat --color=always $realpath'
-zstyle ':fzf-tab:complete:*' popup-pad 30 0 # set a bigger width to the popup win
+zstyle ':fzf-tab:complete:*' popup-pad 30 0 fzf-completion-opts --multi # set a bigger width to the popup win
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -84,14 +104,14 @@ source $ZSH/oh-my-zsh.sh
 export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:$PATH
 
 export POCUS_GARDEN_ENVIRONMENT="cloud"
-export GARDEN_LOGGER_TYPE="basic"
 export AWS_PROFILE="pocus-dev"
 export MANPAGER='nvim +Man!'
 export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
 
-alias p="cd ~/Dev/pocus"
-alias pps="p && AWS_PROFILE=pocus-dev aws --profile pocus-dev sso login && garden generate-env-file cloud -l verbose"
+alias pp="cd ~/Dev/pocus"
+
+alias curltime="curl -w \"@$HOME/.curl-format.txt\" -o /dev/null -s "
 
 alias k=kubectl
 alias dev="~/Dev"
@@ -110,7 +130,6 @@ alias ls="exa"
 alias cat="bat"
 alias vimdiff='nvim -d'
 
-
 alias sc="git commit -am 'squash'"
 
 alias v='nvim'
@@ -128,3 +147,8 @@ eval $(thefuck --alias)
 eval $(starship init zsh)
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# pnpm
+export PNPM_HOME="/Users/colby/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end

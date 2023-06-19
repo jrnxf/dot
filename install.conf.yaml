@@ -10,9 +10,11 @@
       recursive: true
 
 - link:
-    ~/.zshrc: shell/zsh/.zshrc
+    ~/.zshrc: shell/zsh/zshrc
     ~/.gitconfig: git/gitconfig
-    ~/.gitignore: git/gitignore
+    ~/.rgignore: ignore/rgignore
+    ~/.fdignore: ignore/fdignore
+    ~/.gitignore: ignore/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/starship.toml: config/starship.toml
     ~/.config/alacritty/alacritty.yml: config/alacritty.yml

@@ -11,6 +11,7 @@
 	lo = log --oneline
 	d = diff
 	c = commit
+	cp = cherry-pick
 	a = add
 	f = fetch
 	rb = rebase
@@ -30,3 +31,10 @@
 	prompt = false
 [push]
 	autoSetupRemote = true
+[pager]
+	stash = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

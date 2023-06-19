@@ -122,7 +122,7 @@ return {
         -- Search = { fg = 'white', bg = terafox.magenta.dim },
         -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
         CmpPmenuBorder = { link = "NormalFloatBorder" },
-        CursorLine = { bg = terafox.bg1 },
+        CursorLine = { bg = terafox.bg2 },
         DiagnosticSignInfo = { link = "FloatBorder" },                             -- used heavily by noice
         DiffAdd = { bg = colors.added_line },                                      -- show added lines
         DiffAddAsDelete = { bg = colors.deleted_line },                            -- used in diffview (left panel) highlight line that changed
@@ -131,7 +131,7 @@ return {
         DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text },       -- shows fully deleted blocks of code
         DiffDeleteText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- diffview (left panel) highlight word that changed
         DiffText = { bg = colors.deleted_text, fg = colors.off_white_text },       -- fugitive (left side) to show exact characters that deleted
-        FloatBorder = { fg = terafox.bg3 },
+        FloatBorder = { fg = terafox.green.dim },
         LeapBackdrop = { link = "Comment" },
         LeapMatch = { bg = terafox.magenta.dim, fg = colors.off_white_text },
         LeapLabelPrimary = { bg = terafox.sel0, fg = colors.off_white_text },
@@ -141,23 +141,26 @@ return {
         MasonHeaderSecondary = { bg = terafox.green.dim },
         MasonHighlightBlock = { bg = terafox.green.dim },
         MasonHighlightBlockBold = { bg = terafox.green.dim },
-        Normal = { bg = terafox.bg0 },
-        NormalFloat = { bg = terafox.bg0 },
+        NeoTreeNormal = { bg = "none" },
+        NvimTreeNormal = { bg = "none" },
+        -- Normal = { bg = 'none' },
+        NormalFloat = { bg = 'none' },
         NormalFloatBorder = { link = "FloatBorder" },
-        NormalNC = { bg = terafox.bg0 },
+        NormalNC = { bg = 'none' },
         NullLsInfoBorder = { link = "FloatBorder" }, -- TODO pr this - it's weird that they used NormalFloat here and not NormalFloatBorder
         NullLsInfoTitle = { link = "Title" },
         Pmenu = { bg = terafox.bg1 },
         -- FzfLuaBorder = { link = "FloatBorder" },
         PmenuBorder = { link = "FloatBorder" },
-        StatusLine = { bg = "#152528" },                   -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
-        StatusLineNC = { bg = "#152528", fg = "#7aa4a1" }, -- status line none current
+        StatusLine = { bg = "none" },                   -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
+        TabLineFill = { bg = "none" },
+        StatusLineNC = { bg = "none", fg = "#7aa4a1" }, -- status line none current
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },
-        TelescopeResultsNormal = { link = "Comment" },
         TelescopeMatching = { fg = terafox.cyan.bright },
         VertSplit = { fg = terafox.bg2 },
         MatchParen = { bg = terafox.blue.dim, fg = colors.off_white_text },
+        WhichKeyFloat = { link = "NormalyFloat" },
       }
 
       return {
@@ -167,6 +170,7 @@ return {
             keywords = "bold",
             types = "italic,bold",
           },
+          transparent = true,
         },
         groups = {
           terafox = groups,
