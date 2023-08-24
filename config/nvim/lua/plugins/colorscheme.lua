@@ -157,7 +157,9 @@ return {
         StatusLineNC = { bg = "none", fg = "#7aa4a1" }, -- status line none current
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },
-        TelescopeMatching = { fg = terafox.cyan.bright },
+        TelescopeMatching = { fg = terafox.orange.base },
+        TelescopeSelection = { fg = '#ffffff', bg = terafox.bg2 },
+        TelescopeResultsNormal = { fg = terafox.comment },
         VertSplit = { fg = terafox.bg2 },
         MatchParen = { bg = terafox.blue.dim, fg = colors.off_white_text },
         WhichKeyFloat = { link = "NormalyFloat" },
@@ -166,7 +168,7 @@ return {
       return {
         options = {
           styles = {
-            comments = "italic",
+            -- comments = "italic",
             keywords = "bold",
             types = "italic,bold",
           },

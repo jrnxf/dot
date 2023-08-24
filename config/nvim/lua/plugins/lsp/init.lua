@@ -23,6 +23,11 @@ return {
     end,
   },
   {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
       ui = {
@@ -35,6 +40,8 @@ return {
         "codelldb",
         "cpptools",
         "editorconfig-checker",
+        "eslint_d",
+        "eslint-lsp",
         "flake8",
         "gopls",
         "graphql-language-service-cli",
@@ -126,7 +133,7 @@ return {
 
 
       -- BUN
-      
+
       -- TODO come back to this. bun is having issues recognizing dependecies
       -- [ERROR][2023-05-26 16:00:18] .../vim/lsp/rpc.lua:734	"rpc"	"bunx"	"stderr"	"error: unrecognised dependency format: @/Users/colby/.local/share/nvim/mason/bin/typescript-language-server\n"
       -- @credit https://github.com/letieu/nvim-config/blob/master/lua/plugins/lsp/bun.lua

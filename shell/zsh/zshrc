@@ -54,18 +54,10 @@ kj() {
 
 export FZF_BASE=/opt/homebrew/bin/fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden' # set rg as the default source for fzf instead of find
-# terafox
 export FZF_DEFAULT_OPTS='
- --color=fg:#6d7f8b,bg:#0f1c1e,hl:#7aa4a1
- --color=fg+:#8aa4a1,bg+:#0f1c1e,hl+:#7aa4a1
- --color=info:#ad5c7c,prompt:#ad5c7c,pointer:#7aa4a1
- --color=marker:#6d7f8b,spinner:#ad5c7c,header:#ad5c7c
- --color=border:#6d7f8b,info:#6d7f8b
  --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
  --height=60% --layout=reverse'
-# export FZF_DEFAULT_OPTS='
-#  --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
-#  --height=60% --layout=reverse'
+
 # ansi theme will attempt to match terminal styles
 export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"
 
@@ -91,6 +83,11 @@ bindkey "^H" fzf-tab-complete # TODO what are the differences between these two
 # bindkey "^I" expand-or-complete
 
 # fzf-tab
+# 
+#
+#   NOTE: for some reason to multi-select with ctrl-h tab complete use ctrl-space
+#
+#
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'bat --color=always $realpath'
@@ -101,9 +98,10 @@ zstyle ':fzf-tab:*' switch-group ',' '.'
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:$PATH
+export PATH=~/bin:~/bin/garden:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:$PATH
 
 export POCUS_GARDEN_ENVIRONMENT="cloud"
+export GARDEN_LOGGER_TYPE="basic"
 export AWS_PROFILE="pocus-dev"
 export MANPAGER='nvim +Man!'
 export EDITOR="nvim"
@@ -130,7 +128,7 @@ alias ls="exa"
 alias cat="bat"
 alias vimdiff='nvim -d'
 
-alias sc="git commit -am 'squash'"
+alias sc="git commit -am 'squash [skip-ci]'"
 
 alias v='nvim'
 alias vim="nvim"
@@ -152,3 +150,5 @@ eval $(starship init zsh)
 export PNPM_HOME="/Users/colby/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+export PATH="/opt/homebrew/opt/postgresql@11/bin:$PATH"
+

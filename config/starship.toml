@@ -26,6 +26,9 @@ disabled = true
 [git_status]
 disabled = true
 
+[docker_context]
+disabled = true
+
 # [kubernetes]
 # format = '[$context \($namespace\)](dimmed blue) '
 # disabled = false

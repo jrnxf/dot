@@ -14,7 +14,7 @@ return {
       current_line_blame = true,
       current_line_blame_opts = {
         virt_text = true,
-        virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+        virt_text_pos = "right_align", -- 'eol' | 'overlay' | 'right_align'
         delay = 0,
         ignore_whitespace = false,
       },
@@ -49,6 +49,9 @@ return {
           resize_window = true,
         },
       },
+      -- git = {
+      --   ignore = false
+      -- },
       renderer = {
         group_empty = true,
       },
@@ -68,7 +71,7 @@ return {
         --   open_win_config = function()
         --     local screen_w = vim.opt.columns:get()
         --     local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-        --     local _width = screen_w * 0.3
+        --     local _w/idth = screen_w * 0.3
         --     local _height = screen_h * 0.8
         --     local width = math.floor(_width)
         --     local height = math.floor(_height)
@@ -145,12 +148,29 @@ return {
     },
   },
   {
-    "declancm/cinnamon.nvim",
+    'karb94/neoscroll.nvim',
+    lazy = false,
     opts = {
-      hide_cursor = true,
-      centered = true,   -- keep lines centered
-      default_delay = 2, -- 4ms between each line (a bit faster than default of 7)
+      post_hook = function(info)
+        vim.cmd("normal! zz")
+      end,
     },
+    config = function(_, opts)
+      require('neoscroll').setup(opts)
+      local t = {}
+      -- Syntax: t[keys] = {function, {function arguments}}
+      t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '200' } }
+      t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '200' } }
+      t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '400' } }
+      t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '400' } }
+      t['<C-y>'] = { 'scroll', { '-0.10', 'false', '100' } }
+      t['<C-e>'] = { 'scroll', { '0.10', 'false', '100' } }
+      t['zt'] = { 'zt', { '125' } }
+      t['zz'] = { 'zz', { '125' } }
+      t['zb'] = { 'zb', { '125' } }
+
+      require('neoscroll.config').set_mappings(t)
+    end,
   },
   {
     "folke/which-key.nvim",
@@ -161,74 +181,74 @@ return {
       },
     },
   },
-  {
-    "simrat39/symbols-outline.nvim",
-    lazy = false,
-    opts = {
-      highlight_hovered_item = true,
-      show_guides = true,
-      auto_preview = false,
-      position = "right",
-      relative_width = true,
-      width = 25,
-      auto_close = false,
-      show_numbers = false,
-      show_relative_numbers = false,
-      show_symbol_details = true,
-      preview_bg_highlight = "Pmenu",
-      autofold_depth = nil,
-      auto_unfold_hover = true,
-      fold_markers = { "", "" },
-      wrap = false,
-      keymaps = {
-        -- These keymaps can be a string or a table for multiple keys
-        close = { "<Esc>", "q" },
-        goto_location = "<Cr>",
-        focus_location = "o",
-        hover_symbol = "<C-space>",
-        toggle_preview = "K",
-        rename_symbol = "r",
-        code_actions = "a",
-        fold = "h",
-        unfold = "l",
-        fold_all = "W",
-        unfold_all = "E",
-        fold_reset = "R",
-      },
-      lsp_blacklist = {},
-      symbol_blacklist = {},
-      symbols = {
-        File = { icon = "", hl = "@text.uri" },
-        Module = { icon = "", hl = "@namespace" },
-        Namespace = { icon = "", hl = "@namespace" },
-        Package = { icon = "", hl = "@namespace" },
-        Class = { icon = "𝓒", hl = "@type" },
-        Method = { icon = "ƒ", hl = "@method" },
-        Property = { icon = "", hl = "@method" },
-        Field = { icon = "", hl = "@field" },
-        Constructor = { icon = "", hl = "@constructor" },
-        Enum = { icon = "ℰ", hl = "@type" },
-        Interface = { icon = "ﰮ", hl = "@type" },
-        Function = { icon = "", hl = "@function" },
-        Variable = { icon = "", hl = "@constant" },
-        Constant = { icon = "", hl = "@constant" },
-        String = { icon = "𝓐", hl = "@string" },
-        Number = { icon = "#", hl = "@number" },
-        Boolean = { icon = "⊨", hl = "@boolean" },
-        Array = { icon = "", hl = "@constant" },
-        Object = { icon = "⦿", hl = "@type" },
-        Key = { icon = "🔐", hl = "@type" },
-        Null = { icon = "NULL", hl = "@type" },
-        EnumMember = { icon = "", hl = "@field" },
-        Struct = { icon = "𝓢", hl = "@type" },
-        Event = { icon = "🗲", hl = "@type" },
-        Operator = { icon = "+", hl = "@operator" },
-        TypeParameter = { icon = "𝙏", hl = "@parameter" },
-        Component = { icon = "", hl = "@function" },
-        Fragment = { icon = "", hl = "@constant" },
-      },
-    },
-  },
+  -- {
+  --   "simrat39/symbols-outline.nvim",
+  --   lazy = false,
+  --   opts = {
+  --     highlight_hovered_item = true,
+  --     show_guides = true,
+  --     auto_preview = false,
+  --     position = "right",
+  --     relative_width = true,
+  --     width = 25,
+  --     auto_close = false,
+  --     show_numbers = false,
+  --     show_relative_numbers = false,
+  --     show_symbol_details = true,
+  --     preview_bg_highlight = "Pmenu",
+  --     autofold_depth = nil,
+  --     auto_unfold_hover = true,
+  --     fold_markers = { "", "" },
+  --     wrap = false,
+  --     keymaps = {
+  --       -- These keymaps can be a string or a table for multiple keys
+  --       close = { "<Esc>", "q" },
+  --       goto_location = "<Cr>",
+  --       focus_location = "o",
+  --       hover_symbol = "<C-space>",
+  --       toggle_preview = "K",
+  --       rename_symbol = "r",
+  --       code_actions = "a",
+  --       fold = "h",
+  --       unfold = "l",
+  --       fold_all = "W",
+  --       unfold_all = "E",
+  --       fold_reset = "R",
+  --     },
+  --     lsp_blacklist = {},
+  --     symbol_blacklist = {},
+  --     symbols = {
+  --       File = { icon = "", hl = "@text.uri" },
+  --       Module = { icon = "", hl = "@namespace" },
+  --       Namespace = { icon = "", hl = "@namespace" },
+  --       Package = { icon = "", hl = "@namespace" },
+  --       Class = { icon = "𝓒", hl = "@type" },
+  --       Method = { icon = "ƒ", hl = "@method" },
+  --       Property = { icon = "", hl = "@method" },
+  --       Field = { icon = "", hl = "@field" },
+  --       Constructor = { icon = "", hl = "@constructor" },
+  --       Enum = { icon = "ℰ", hl = "@type" },
+  --       Interface = { icon = "ﰮ", hl = "@type" },
+  --       Function = { icon = "", hl = "@function" },
+  --       Variable = { icon = "", hl = "@constant" },
+  --       Constant = { icon = "", hl = "@constant" },
+  --       String = { icon = "𝓐", hl = "@string" },
+  --       Number = { icon = "#", hl = "@number" },
+  --       Boolean = { icon = "⊨", hl = "@boolean" },
+  --       Array = { icon = "", hl = "@constant" },
+  --       Object = { icon = "⦿", hl = "@type" },
+  --       Key = { icon = "🔐", hl = "@type" },
+  --       Null = { icon = "NULL", hl = "@type" },
+  --       EnumMember = { icon = "", hl = "@field" },
+  --       Struct = { icon = "𝓢", hl = "@type" },
+  --       Event = { icon = "🗲", hl = "@type" },
+  --       Operator = { icon = "+", hl = "@operator" },
+  --       TypeParameter = { icon = "𝙏", hl = "@parameter" },
+  --       Component = { icon = "", hl = "@function" },
+  --       Fragment = { icon = "", hl = "@constant" },
+  --     },
+  --   },
+  -- },
   {
     "stevearc/aerial.nvim",
     enabled = false,
@@ -458,10 +478,6 @@ return {
   --   dependencies = { "nvim-tree/nvim-web-devicons" },
   -- },
 
-  {
-    "nvim-telescope/telescope.nvim",
-    enabled = false,
-  },
   -- {
   --   "princejoogie/dir-telescope.nvim",
   --   -- telescope.nvim is a required dependency
@@ -472,9 +488,13 @@ return {
   --     respect_gitignore = true,
   --   },
   -- },
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   enabled = false,
+  -- },
   {
-    -- "nvim-telescope/telescope.nvim",
-    dir = "~/Dev/telescope.nvimmm",
+    "nvim-telescope/telescope.nvim",
+    -- dir = "~/Dev/telescope.nvimmm",
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
@@ -534,15 +554,64 @@ return {
       "LinArcX/telescope-command-palette.nvim",
       "folke/trouble.nvim",
     },
-    config = function()
+    config = function(_, opts)
       local telescope = require("telescope")
       local actions = require("telescope.actions")
       local trouble = require("trouble.providers.telescope")
       local lga_actions = require("telescope-live-grep-args.actions")
 
+      local make_entry = require('telescope.make_entry')
+      local strings = require('plenary.strings')
+      local utils = require('telescope.utils')
+      local entry_display = require('telescope.pickers.entry_display')
+      local devicons = require('nvim-web-devicons')
+      local def_icon = devicons.get_icon('fname', { default = true })
+      local iconwidth = strings.strdisplaywidth(def_icon)
+
+      local entry_make = make_entry.gen_from_file(opts)
+
+      local get_path_and_tail = function(filename)
+        local bufname_tail = utils.path_tail(filename)
+        local path_without_tail = require('plenary.strings').truncate(filename, #filename - #bufname_tail, '')
+        local path_to_display = utils.transform_path({
+          path_display = { 'truncate' },
+        }, path_without_tail)
+
+        return bufname_tail, path_to_display
+      end
+
+      -- make the file name display first, followed by the path styled as a comment
+      -- @source https://github.com/nvim-telescope/telescope.nvim/issues/2014#issuecomment-1541423345
+      local filename_then_path_entry_maker = function(line)
+        local entry = entry_make(line)
+        local displayer = entry_display.create({
+          separator = ' ',
+          items = {
+            { width = iconwidth },
+            { width = nil },
+            { remaining = true },
+          },
+        })
+        entry.display = function(et)
+          -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/make_entry.lua
+          local tail_raw, path_to_display = get_path_and_tail(et.value)
+          local tail = tail_raw .. ' '
+          local icon, iconhl = utils.get_devicons(tail_raw)
+
+          return displayer({
+            { icon,            iconhl },
+            tail,
+            { path_to_display, 'TelescopeResultsComment' },
+          })
+        end
+        return entry
+      end
+
+
       local dropdown_opts = {
         theme = "dropdown",
         previewer = false,
+        -- entry_maker = filename_then_path_entry_maker,
         -- find_command = {
         --   'fd',
         --   '--type',
@@ -554,26 +623,28 @@ return {
         -- }
       }
 
-      local minimal = {
-        theme = "minimal",
-        layout_strategy = "horizontal",
-        layout_config = {
-          -- prompt_position = "bottom",
-          width = 200,
-          height = 35,
-          -- preview_height = 25,
-        },
-        disable_devicons = true,
-        prompt_title = "",
-        results_title = "",
-        preview_title = "",
-        find_command = {
-          'fd',
-          '--type',
-          'f',
-          '--hidden',
-        }
-      }
+      -- local minimal = {
+      --   theme = "minimal",
+      --   layout_strategy = "horizontal",
+      --   layout_config = {
+      --     -- prompt_position = "bottom",
+      --     width = 200,
+      --     height = 35,
+      --     -- preview_height = 25,
+      --   },
+      --   disable_devicons = true,
+      --   prompt_title = "",
+      --   results_title = "",
+      --   preview_title = "",
+      --   -- entry_maker = filename_then_path_entry_maker,
+      --   find_command = {
+      --     'fd',
+      --     '--type',
+      --     'f',
+      --     '--hidden',
+      --   }
+      -- }
+
 
       telescope.setup({
         defaults = {
@@ -591,8 +662,17 @@ return {
             "--fixed-strings",
             "--sort=path",
           },
-          theme = minimal,
-          path_display = { "truncate" },
+          -- theme = minimal,
+          -- path_display = {
+          --   "truncate",
+          -- },
+          path_display = function(_opts, path)
+            local tail = require("telescope.utils").path_tail(path)
+            return string.format("%s  %s", tail, path), { { { 1, #tail }, "Constant" } }
+          end,
+          -- path_display = function(opts, path)
+          --   return get_path_and_tail(path)
+          -- end,
           results_title = false,
           layout_strategy = "horizontal",
           layout_config = {
@@ -625,9 +705,9 @@ return {
           },
         },
         pickers = {
-          git_files = dropdown_opts,
-          find_files = dropdown_opts,
-          live_grep = minimal,
+          git_files = dropdown_opts,  -- minimal,
+          find_files = dropdown_opts, -- minimal,
+          -- live_grep = minimal,
           help_tags = dropdown_opts,
           oldfiles = dropdown_opts,
         },

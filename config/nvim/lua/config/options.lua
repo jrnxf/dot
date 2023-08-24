@@ -18,4 +18,5 @@ vim.opt.fillchars = {
 vim.opt.cmdheight = 0
 vim.opt.showmatch = true
 vim.opt.matchtime = 3
+vim.opt.scrolloff = 16
 require("util.status")

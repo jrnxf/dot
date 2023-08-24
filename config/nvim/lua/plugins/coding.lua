@@ -20,14 +20,16 @@ return {
       }
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
-            ["<CR>"] = cmp.mapping.confirm({ select = false }),
-            ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
-            ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            -- they way you will only jump inside the snippet region
-          elseif luasnip.expand_or_jumpable() then
+        ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<S-CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          -- gonna try out using tab only for snippets, since I'm so used to ctrl-n and ctrl-p for nav
+          -- if cmp.visible() then
+          --   cmp.select_next_item()
+          --   -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+          --   -- they way you will only jump inside the snippet region
+          -- else
+          if luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
             -- elseif has_words_before() then
             --   cmp.complete()
@@ -35,10 +37,11 @@ return {
             fallback()
           end
         end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          -- if cmp.visible() then
+          --   cmp.select_prev_item()
+          -- else
+          if luasnip.jumpable(-1) then
             luasnip.jump(-1)
           else
             fallback()

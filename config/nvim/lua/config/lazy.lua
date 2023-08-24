@@ -15,6 +15,8 @@ require("lazy").setup({
       opts = { colorscheme = "terafox" }
     },
     { import = "lazyvim.plugins.extras.lang.typescript" },
+    { import = "lazyvim.plugins.extras.editor.flash" },
+    { import = "lazyvim.plugins.extras.linting.eslint" },
     { import = "plugins" },
   },
   defaults = { lazy = false, version = false },
