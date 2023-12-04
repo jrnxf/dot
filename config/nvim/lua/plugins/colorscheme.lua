@@ -123,14 +123,14 @@ return {
         -- IncSearch = { fg = 'white', bg = terafox.yellow.dim },
         CmpPmenuBorder = { link = "NormalFloatBorder" },
         CursorLine = { bg = terafox.bg2 },
-        DiagnosticSignInfo = { link = "FloatBorder" },                             -- used heavily by noice
-        DiffAdd = { bg = colors.added_line },                                      -- show added lines
-        DiffAddAsDelete = { bg = colors.deleted_line },                            -- used in diffview (left panel) highlight line that changed
-        DiffAddText = { bg = colors.added_text, fg = colors.off_white_text },      -- show added characters within added lines
-        DiffChange = { bg = colors.deleted_line },                                 -- fugitive (left side) to show what LINE text was changed on
-        DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text },       -- shows fully deleted blocks of code
+        DiagnosticSignInfo = { link = "FloatBorder" }, -- used heavily by noice
+        DiffAdd = { bg = colors.added_line }, -- show added lines
+        DiffAddAsDelete = { bg = colors.deleted_line }, -- used in diffview (left panel) highlight line that changed
+        DiffAddText = { bg = colors.added_text, fg = colors.off_white_text }, -- show added characters within added lines
+        DiffChange = { bg = colors.deleted_line }, -- fugitive (left side) to show what LINE text was changed on
+        DiffDelete = { bg = colors.deleted_line, fg = colors.deleted_text }, -- shows fully deleted blocks of code
         DiffDeleteText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- diffview (left panel) highlight word that changed
-        DiffText = { bg = colors.deleted_text, fg = colors.off_white_text },       -- fugitive (left side) to show exact characters that deleted
+        DiffText = { bg = colors.deleted_text, fg = colors.off_white_text }, -- fugitive (left side) to show exact characters that deleted
         FloatBorder = { fg = terafox.green.dim },
         LeapBackdrop = { link = "Comment" },
         LeapMatch = { bg = terafox.magenta.dim, fg = colors.off_white_text },
@@ -143,22 +143,20 @@ return {
         MasonHighlightBlockBold = { bg = terafox.green.dim },
         NeoTreeNormal = { bg = "none" },
         NvimTreeNormal = { bg = "none" },
-        -- Normal = { bg = 'none' },
-        NormalFloat = { bg = 'none' },
+        Normal = { bg = "none" },
+        NormalFloat = { bg = "none" },
         NormalFloatBorder = { link = "FloatBorder" },
-        NormalNC = { bg = 'none' },
-        NullLsInfoBorder = { link = "FloatBorder" }, -- TODO pr this - it's weird that they used NormalFloat here and not NormalFloatBorder
-        NullLsInfoTitle = { link = "Title" },
+        NormalNC = { bg = "none" },
         Pmenu = { bg = terafox.bg1 },
         -- FzfLuaBorder = { link = "FloatBorder" },
         PmenuBorder = { link = "FloatBorder" },
-        StatusLine = { bg = "none" },                   -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
+        StatusLine = { bg = "none" }, -- this must be style different that NC otherwise vim will use ^^^^^^ to differentiate
         TabLineFill = { bg = "none" },
         StatusLineNC = { bg = "none", fg = "#7aa4a1" }, -- status line none current
         Substitute = { bg = terafox.magenta.dim, fg = "white" },
         TelescopeBorder = { link = "FloatBorder" },
         TelescopeMatching = { fg = terafox.orange.base },
-        TelescopeSelection = { fg = '#ffffff', bg = terafox.bg2 },
+        TelescopeSelection = { fg = "#ffffff", bg = terafox.bg2 },
         TelescopeResultsNormal = { fg = terafox.comment },
         VertSplit = { fg = terafox.bg2 },
         MatchParen = { bg = terafox.blue.dim, fg = colors.off_white_text },

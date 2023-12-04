@@ -757,7 +757,7 @@ return {
     keys = {
       { "<leader>gdp", "<cmd>DiffviewOpen<cr>",          desc = "Diff Project" },
       { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>",   desc = "Diff File" },
-      { "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
+{ "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
     },
     opts = function()
       return {

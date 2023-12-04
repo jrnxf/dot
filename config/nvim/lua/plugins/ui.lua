@@ -1,6 +1,10 @@
 return {
   {
     "rcarriga/nvim-notify",
+    -- enabled = false,
+  },
+  {
+    "nvimdev/dashboard-nvim",
     enabled = false,
   },
   {
@@ -126,14 +130,14 @@ return {
         "buffers",
         show_filename_only = true, -- Shows shortened relative path when set to false.
         buffers_color = {
-          active = { gui = "bold", bg = "#2a4750", fg = "#e6eaea" },
+          active = { gui = "bold", bg = "#3a4750", fg = "#e6eaea" },
           inactive = { gui = "bold", bg = "#1c3035", fg = "#e6eaea" }, -- Color for inactive buffer.
         },
         separator = { left = "", right = "" },
         symbols = {
-          modified = " ●",   -- Text to show when the buffer is modified
+          modified = " ●", -- Text to show when the buffer is modified
           alternate_file = "", -- Text to show to identify the alternate file
-          directory = " ",  -- Text to show when the buffer is a directory
+          directory = " ", -- Text to show when the buffer is a directory
         },
         filetype_names = {
           ["neo-tree"] = "NeoTree",

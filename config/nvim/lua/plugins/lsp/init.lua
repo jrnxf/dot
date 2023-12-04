@@ -2,27 +2,6 @@ return {
   { import = "lazyvim.plugins.extras.lang.typescript" },
   -- add any tools you want to have installed below
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = "BufReadPre",
-    dependencies = { "mason.nvim" },
-    opts = function()
-      local nls = require("null-ls")
-      return {
-        sources = {
-          nls.builtins.formatting.prettierd,
-          nls.builtins.diagnostics.xo.with({
-            cwd = vim.loop.cwd(),
-          }),
-          nls.builtins.code_actions.xo,
-          nls.builtins.code_actions.gitsigns,
-          -- nls.builtins.formatting.prettier,
-        },
-        border = "rounded",
-        debug = true,
-      }
-    end,
-  },
-  {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     opts = {},
@@ -130,7 +109,6 @@ return {
       }
 
       local util = require("lspconfig.util")
-
 
       -- BUN
 

@@ -22,9 +22,12 @@ kp() {
 # @source (modified) https://gist.github.com/terinjokes/7d2a2f85bc7e89541c8cecabacec50b4
 kpl() {
   pod="$(kubectl get po | tail -n+2 | fzf -n1 --reverse --tac | awk '{print $1}')"
+
   if [[ -n $pod ]]; then
-    # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r '[.level, .timestamp, .message] | join(" | ")'
-    # kubectl logs --tail=500 --all-containers=true $pod -f | jq -r 'del(.req)'
+    # printf "trace_id > " >&2
+    # read -r trace_id
+
+    # kubectl logs --tail=3000 --all-containers=true $pod -f | jq -r -R 'fromjson? | select(type == "object") | del(.req) | select(.trace_id == "'"$trace_id"'")' 
     kubectl logs --tail=3000 --all-containers=true $pod -f
   fi
 }
@@ -40,11 +43,7 @@ ppr() {
   cd ~/Dev/pocus/
   AWS_PROFILE=pocus-dev aws --profile pocus-dev sso login
   garden generate-env-file cloud -l verbose
-  pnpm --dir frontend i &&
-    pnpm --dir backend i &&
-    pnpm --dir action-processor i &&
-    pnpm --dir data-collector i &&
-    pnpm --dir cube i
+  garden install-deps
   garden codegen
 }
 
@@ -79,15 +78,8 @@ _fzf_comprun() {
   esac
 }
 
-bindkey "^H" fzf-tab-complete # TODO what are the differences between these two
-# bindkey "^I" expand-or-complete
+bindkey "^H" fzf-tab-complete
 
-# fzf-tab
-# 
-#
-#   NOTE: for some reason to multi-select with ctrl-h tab complete use ctrl-space
-#
-#
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'bat --color=always $realpath'
@@ -117,7 +109,7 @@ alias reload="source ~/.zshrc"
 alias privateip="hostname -I"
 alias publicip="curl icanhazip.com"
 alias clear='printf "\33c\e[3J"'
-alias skrrrt="cd ~/Dev/skrrrt"
+alias skrrrt="cd ~/Dev/skrrrt-til-u-hurt"
 alias s="skrrrt"
 alias dot="cd ~/dotfiles"
 alias x="exit"
@@ -127,8 +119,9 @@ alias gotop="gotop --mbps"
 alias ls="exa"
 alias cat="bat"
 alias vimdiff='nvim -d'
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
-alias sc="git commit -am 'squash [skip-ci]'"
+alias sc="git commit -m 'squash [skip-ci]'"
 
 alias v='nvim'
 alias vim="nvim"
@@ -140,6 +133,8 @@ alias d-sac='docker stop $(docker ps -a -q)'    # Stop all containers
 alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
 alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
+
+unalias rd
 
 eval $(thefuck --alias)
 eval $(starship init zsh)
