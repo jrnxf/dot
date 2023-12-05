@@ -113,15 +113,15 @@ return {
             --     end
             --   end,
             -- },
-            { key = "d",     action = "remove" },
-            { key = "h",     action = "close_node" },
-            { key = "I",     action = "toggle_ignored" },
-            { key = "l",     action = "edit" },
-            { key = "r",     action = "rename" },
-            { key = "s",     action = "split" },
-            { key = "v",     action = "vsplit" },
-            { key = "Y",     action = "copy_path" },
-            { key = "y",     action = "copy_name" },
+            { key = "d", action = "remove" },
+            { key = "h", action = "close_node" },
+            { key = "I", action = "toggle_ignored" },
+            { key = "l", action = "edit" },
+            { key = "r", action = "rename" },
+            { key = "s", action = "split" },
+            { key = "v", action = "vsplit" },
+            { key = "Y", action = "copy_path" },
+            { key = "y", action = "copy_name" },
           },
         },
       },
@@ -132,23 +132,23 @@ return {
     enabled = false,
     keys = {
       { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     opts = {
       padding = { right = 50 },
       window = {
-        auto_expand_width = true,   -- default: false
+        auto_expand_width = true, -- default: false
       },
-      close_if_last_window = true,  -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       filesystem = {
         follow_current_file = true, -- This will find and focus the file in the active buffer every
         -- time the current file is changed while the tree is open.
-        group_empty_dirs = true,    -- when true, empty folders will be grouped together
+        group_empty_dirs = true, -- when true, empty folders will be grouped together
       },
     },
   },
   {
-    'karb94/neoscroll.nvim',
+    "karb94/neoscroll.nvim",
     lazy = false,
     opts = {
       post_hook = function(info)
@@ -156,20 +156,20 @@ return {
       end,
     },
     config = function(_, opts)
-      require('neoscroll').setup(opts)
+      require("neoscroll").setup(opts)
       local t = {}
       -- Syntax: t[keys] = {function, {function arguments}}
-      t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '200' } }
-      t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '200' } }
-      t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '400' } }
-      t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '400' } }
-      t['<C-y>'] = { 'scroll', { '-0.10', 'false', '100' } }
-      t['<C-e>'] = { 'scroll', { '0.10', 'false', '100' } }
-      t['zt'] = { 'zt', { '125' } }
-      t['zz'] = { 'zz', { '125' } }
-      t['zb'] = { 'zb', { '125' } }
+      t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "200" } }
+      t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "200" } }
+      t["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "400" } }
+      t["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "400" } }
+      t["<C-y>"] = { "scroll", { "-0.10", "false", "100" } }
+      t["<C-e>"] = { "scroll", { "0.10", "false", "100" } }
+      t["zt"] = { "zt", { "125" } }
+      t["zz"] = { "zz", { "125" } }
+      t["zb"] = { "zb", { "125" } }
 
-      require('neoscroll.config').set_mappings(t)
+      require("neoscroll.config").set_mappings(t)
     end,
   },
   {
@@ -498,33 +498,33 @@ return {
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
-      { "<leader>,",          "<cmd>Telescope buffers show_all_buffers=true<cr>",       desc = "Switch Buffer" },
-      { "<c-space><c-space>", "<cmd>Telescope live_grep<cr>",                           desc = "Find in Files (Grep)", },
-      { "<leader><leader>",   "<cmd>Telescope find_files<cr>",                          desc = "Find Files (root dir)" },
-      { "<leader>:",          "<cmd>Telescope command_history<cr>",                     desc = "Command History" },
-      { "<a-space><a-space>", "<cmd>Telescope builtin<cr>",                             desc = "Telescope Builtins" },
-      { "<leader>fb",         "<cmd>Telescope buffers<cr>",                             desc = "Buffers" },
-      { "<leader>ff",         Util.telescope("files"),                                  desc = "Find Files (root dir)" },
-      { "<leader>fF",         Util.telescope("files", { cwd = false }),                 desc = "Find Files (cwd)" },
-      { "<leader>r",          "<cmd>Telescope oldfiles cwd_only=true<cr>",              desc = "Recent" },
-      { "<leader>gc",         "<cmd>Telescope git_commits<CR>",                         desc = "commits" },
-      { "<leader>gs",         "<cmd>Telescope git_status<CR>",                          desc = "status" },
-      { "<leader>sa",         "<cmd>Telescope autocommands<cr>",                        desc = "Auto Commands" },
-      { "<leader>sb",         "<cmd>Telescope current_buffer_fuzzy_find<cr>",           desc = "Buffer" },
-      { "<leader>sc",         "<cmd>Telescope command_history<cr>",                     desc = "Command History" },
-      { "<leader>sC",         "<cmd>Telescope commands<cr>",                            desc = "Commands" },
-      { "<leader>sd",         "<cmd>Telescope diagnostics<cr>",                         desc = "Diagnostics" },
-      { "<leader>sg",         Util.telescope("live_grep"),                              desc = "Grep (root dir)" },
-      { "<leader>sG",         Util.telescope("live_grep", { cwd = false }),             desc = "Grep (cwd)" },
-      { "<leader>sh",         "<cmd>Telescope help_tags<cr>",                           desc = "Help Pages" },
-      { "<leader>sH",         "<cmd>Telescope highlights<cr>",                          desc = "Search Highlight Groups" },
-      { "<leader>sk",         "<cmd>Telescope keymaps<cr>",                             desc = "Key Maps" },
-      { "<leader>sM",         "<cmd>Telescope man_pages<cr>",                           desc = "Man Pages" },
-      { "<leader>sm",         "<cmd>Telescope marks<cr>",                               desc = "Jump to Mark" },
-      { "<leader>so",         "<cmd>Telescope vim_options<cr>",                         desc = "Options" },
-      { "<leader>sw",         Util.telescope("grep_string"),                            desc = "Word (root dir)" },
-      { "<leader>sW",         Util.telescope("grep_string", { cwd = false }),           desc = "Word (cwd)" },
-      { "<leader>uC",         Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
+      { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
+      { "<c-space><c-space>", "<cmd>Telescope live_grep<cr>", desc = "Find in Files (Grep)" },
+      { "<leader><leader>", "<cmd>Telescope find_files<cr>", desc = "Find Files (root dir)" },
+      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<a-space><a-space>", "<cmd>Telescope builtin<cr>", desc = "Telescope Builtins" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
+      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+      { "<leader>r", "<cmd>Telescope oldfiles cwd_only=true<cr>", desc = "Recent" },
+      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
+      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
+      { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
+      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+      { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
+      { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
+      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
+      { "<leader>sw", Util.telescope("grep_string"), desc = "Word (root dir)" },
+      { "<leader>sW", Util.telescope("grep_string", { cwd = false }), desc = "Word (cwd)" },
+      { "<leader>uC", Util.telescope("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
       {
         "<leader>ss",
         Util.telescope("lsp_document_symbols", {
@@ -546,9 +546,8 @@ return {
     },
     dependencies = {
       {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build =
-        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       },
       "nvim-telescope/telescope-live-grep-args.nvim",
       "LinArcX/telescope-command-palette.nvim",
@@ -560,21 +559,21 @@ return {
       local trouble = require("trouble.providers.telescope")
       local lga_actions = require("telescope-live-grep-args.actions")
 
-      local make_entry = require('telescope.make_entry')
-      local strings = require('plenary.strings')
-      local utils = require('telescope.utils')
-      local entry_display = require('telescope.pickers.entry_display')
-      local devicons = require('nvim-web-devicons')
-      local def_icon = devicons.get_icon('fname', { default = true })
+      local make_entry = require("telescope.make_entry")
+      local strings = require("plenary.strings")
+      local utils = require("telescope.utils")
+      local entry_display = require("telescope.pickers.entry_display")
+      local devicons = require("nvim-web-devicons")
+      local def_icon = devicons.get_icon("fname", { default = true })
       local iconwidth = strings.strdisplaywidth(def_icon)
 
       local entry_make = make_entry.gen_from_file(opts)
 
       local get_path_and_tail = function(filename)
         local bufname_tail = utils.path_tail(filename)
-        local path_without_tail = require('plenary.strings').truncate(filename, #filename - #bufname_tail, '')
+        local path_without_tail = require("plenary.strings").truncate(filename, #filename - #bufname_tail, "")
         local path_to_display = utils.transform_path({
-          path_display = { 'truncate' },
+          path_display = { "truncate" },
         }, path_without_tail)
 
         return bufname_tail, path_to_display
@@ -585,7 +584,7 @@ return {
       local filename_then_path_entry_maker = function(line)
         local entry = entry_make(line)
         local displayer = entry_display.create({
-          separator = ' ',
+          separator = " ",
           items = {
             { width = iconwidth },
             { width = nil },
@@ -595,18 +594,17 @@ return {
         entry.display = function(et)
           -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/make_entry.lua
           local tail_raw, path_to_display = get_path_and_tail(et.value)
-          local tail = tail_raw .. ' '
+          local tail = tail_raw .. " "
           local icon, iconhl = utils.get_devicons(tail_raw)
 
           return displayer({
-            { icon,            iconhl },
+            { icon, iconhl },
             tail,
-            { path_to_display, 'TelescopeResultsComment' },
+            { path_to_display, "TelescopeResultsComment" },
           })
         end
         return entry
       end
-
 
       local dropdown_opts = {
         theme = "dropdown",
@@ -645,7 +643,6 @@ return {
       --   }
       -- }
 
-
       telescope.setup({
         defaults = {
           vimgrep_arguments = {
@@ -682,7 +679,7 @@ return {
               preview_height = 0.6,
               prompt_position = "top",
               preview_position = "bottom",
-              mirror = true
+              mirror = true,
             },
             horizontal = { width = 0.9, height = 0.9, preview_width = 0.6, prompt_position = "top" },
           },
@@ -705,7 +702,7 @@ return {
           },
         },
         pickers = {
-          git_files = dropdown_opts,  -- minimal,
+          git_files = dropdown_opts, -- minimal,
           find_files = dropdown_opts, -- minimal,
           -- live_grep = minimal,
           help_tags = dropdown_opts,
@@ -713,14 +710,13 @@ return {
         },
         extensions = {
           command_palette = {
-            { "Jest",
-              { "Run last test(s)",                 ':lua require"jester".run_last()' },
-              { "Run current file",                 ':lua require"jester".run_file()' },
+            {
+              "Jest",
+              { "Run last test(s)", ':lua require"jester".run_last()' },
+              { "Run current file", ':lua require"jester".run_file()' },
               { "Run nearest test(s) under cursor", ':lua require"jester".run()' },
             },
-            { "Telescope",
-              { "Builtins", 'Telescope builtin' },
-            },
+            { "Telescope", { "Builtins", "Telescope builtin" } },
           },
           live_grep_args = {
             auto_quoting = true, -- enable/disable auto-quoting
@@ -738,16 +734,16 @@ return {
             -- layout_config = { mirror=true }, -- mirror preview pane
           },
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
-          }
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+          },
         },
       })
       telescope.load_extension("fzf")
       telescope.load_extension("live_grep_args")
-      telescope.load_extension('command_palette')
+      telescope.load_extension("command_palette")
     end,
   },
   {
@@ -755,9 +751,9 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
-      { "<leader>gdp", "<cmd>DiffviewOpen<cr>",          desc = "Diff Project" },
-      { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>",   desc = "Diff File" },
-{ "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
+      { "<leader>gdp", "<cmd>DiffviewOpen<cr>", desc = "Diff Project" },
+      { "<leader>gdf", "<cmd>DiffviewFileHistory<cr>", desc = "Diff File" },
+      { "<leader>gdF", "<cmd>DiffviewFileHistory %<cr>", desc = "Diff File %" },
     },
     opts = function()
       return {

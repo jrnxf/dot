@@ -58,15 +58,15 @@ return {
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
     end,
   },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    opts = {
-      char = "▏",
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "NvimTree" },
-      show_trailing_blankline_indent = false,
-      show_current_context = false,
-    },
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   opts = {
+  --     char = "▏",
+  --     filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "NvimTree" },
+  --     -- show_trailing_blankline_indent = false,
+  --     show_current_context = false,
+  --   },
+  -- },
   {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
