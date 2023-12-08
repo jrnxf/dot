@@ -78,7 +78,8 @@ _fzf_comprun() {
   esac
 }
 
-bindkey "^H" fzf-tab-complete
+# ctrl space
+bindkey "^ " fzf-tab-complete
 
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
@@ -100,6 +101,7 @@ export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
 
 alias pp="cd ~/Dev/pocus"
+alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"
 
 alias curltime="curl -w \"@$HOME/.curl-format.txt\" -o /dev/null -s "
 
