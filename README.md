@@ -6,5 +6,5 @@ My neovim configuration is a representation of all of the dotfiles I have ever p
 configurations I have heavily sourced / pulled inspiration from include:
 
 - [EdenEast/nyx](https://github.com/EdenEast/nyx/tree/main/config/.config/nvim)
-- [jose-elias-alvarex/dotfiles](https://github.com/jose-elias-alvarez/dotfiles/tree/main/config/nvim)
+- [jose-elias-alvarez/dotfiles](https://github.com/jose-elias-alvarez/dotfiles/tree/main/config/nvim)
 - [sindrets/dotfiles](https://github.com/sindrets/dotfiles/tree/master/.config/nvim)
