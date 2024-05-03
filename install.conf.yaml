@@ -22,7 +22,7 @@
     ~/.config/karabiner/karabiner.json: config/karabiner.json
     ~/.config/nvim:
       glob: true
-      path: config/nvim/*
+      path: config/nvim2/*
 # - shell:
 #     - command: ./setup/mac.sh
 #       description: Setting up Mac

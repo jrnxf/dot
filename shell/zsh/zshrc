@@ -27,7 +27,7 @@ kpl() {
     # printf "trace_id > " >&2
     # read -r trace_id
 
-    # kubectl logs --tail=3000 --all-containers=true $pod -f | jq -r -R 'fromjson? | select(type == "object") | del(.req) | select(.trace_id == "'"$trace_id"'")' 
+    # kubectl logs --tail=3000 --all-containers=true $pod -f | jq -r -R 'fromjson? | select(type == "object") | del(.req) | select(.trace_id == "'"$trace_id"'")'
     kubectl logs --tail=3000 --all-containers=true $pod -f
   fi
 }
@@ -82,10 +82,17 @@ _fzf_comprun() {
 bindkey "^ " fzf-tab-complete
 
 zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'bat --color=always $realpath'
 zstyle ':fzf-tab:complete:*' popup-pad 30 0 fzf-completion-opts --multi # set a bigger width to the popup win
 zstyle ':fzf-tab:*' switch-group ',' '.'
+# the continous trigger is /, which when pressed will complete and continue.
+# this is useful for completing deep paths (though ctrl+t is more useful), but
+# this is annoying as it completes when I enter / trying to get passed the
+# folder prefix of the git branch, like colby/featureX. setting the continuous
+# trigger here for all git commands so this never happens
+zstyle ':fzf-tab:complete:git*:*' continuous-trigger ''
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -136,6 +143,12 @@ alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
 alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
+# copy last git commit hash to clipboard
+glc() {
+  git rev-parse HEAD
+  git rev-parse HEAD | pbcopy
+}
+
 unalias rd
 
 eval $(thefuck --alias)
@@ -148,4 +161,3 @@ export PNPM_HOME="/Users/colby/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 export PATH="/opt/homebrew/opt/postgresql@11/bin:$PATH"
-
