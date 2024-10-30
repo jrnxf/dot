@@ -46,8 +46,8 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
-# Modern replacement for 'ls'
-brew "exa"
+# Perl lib for reading and writing EXIF metadata
+brew "exiftool"
 # Banner-like program prints strings as ASCII art
 brew "figlet"
 # Command-line fuzzy finder written in Go
@@ -88,6 +88,10 @@ brew "lazygit"
 brew "libxmu"
 # QUIC transport protocol implementation
 brew "mvfst"
+# C library of Git core methods that is re-entrant and linkable
+brew "libgit2"
+# Clone of ls with colorful output, file type icons, and more
+brew "lsd"
 # Node version management
 brew "n"
 # Fast, highly customisable system info script

@@ -1,0 +1,207 @@
+export ZSH="$HOME/.oh-my-zsh"
+export AWS_PAGER=""
+export ZSH_THEME=""
+
+# ZSH_TMUX_AUTOSTART=true
+# ZSH_TMUX_DEFAULT_SESSION_NAME="jrnxf"
+
+plugins=(fzf-tab zsh-autosuggestions aws tmux gh fzf docker git)
+
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+    branch=$(echo "$branches" |
+      fzf-tmux -d $((2 + $(wc -l <<<"$branches"))) +m) &&
+    git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+kp() {
+  kubectl get po
+}
+
+# @source (modified) https://gist.github.com/terinjokes/7d2a2f85bc7e89541c8cecabacec50b4
+kpl() {
+  pod="$(kubectl get po | tail -n+2 | fzf -n1 --reverse --tac | awk '{print $1}')"
+
+  if [[ -n $pod ]]; then
+    # printf "trace_id > " >&2
+    # read -r trace_id
+
+    # kubectl logs --tail=3000 --all-containers=true $pod -f | jq -r -R 'fromjson? | select(type == "object") | del(.req) | select(.trace_id == "'"$trace_id"'")'
+    kubectl logs --tail=3000 --all-containers=true $pod -f
+  fi
+}
+
+kplp() {
+  pod="$(kubectl get po | tail -n+2 | fzf-tmux -n1 --reverse -r 75% --tac --preview='kubectl logs --tail=20 --all-containers=true {1}' --preview-window=right:50% | awk '{print $1}')"
+  if [[ -n $pod ]]; then
+    kubectl logs --tail=500 --all-containers=true $pod -f
+  fi
+}
+
+kj() {
+  kill -9 $(jobs -l | awk '{print $3}')
+}
+
+export FZF_BASE=/opt/homebrew/bin/fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden' # set rg as the default source for fzf instead of find
+export FZF_DEFAULT_OPTS='
+ --bind ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down
+ --height=60% --layout=reverse'
+
+# ansi theme will attempt to match terminal styles
+export CUSTOM_FZF_PREVIEW_OPTS="bat --style=numbers --theme=ansi --color=always --line-range :500 {}"
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND" # To apply the command to CTRL-T as well
+export FZF_CTRL_T_OPTS="--preview \"$CUSTOM_FZF_PREVIEW_OPTS\""
+
+export FZF_TMUX_OPTS="-r 75% --multi --reverse" # opens in a new tmux pane
+
+# (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+  case "$command" in
+  v | vim | nvim) fzf "$@" --preview "$CUSTOM_FZF_PREVIEW_OPTS" ;;
+  ssh) fzf "$@" --preview 'dig {}' ;;
+  *) fzf "$@" ;;
+  esac
+}
+
+# ctrl space
+bindkey "^ " fzf-tab-complete
+
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color=always $realpath'
+zstyle ':fzf-tab:complete:ls:*' fzf-preview 'bat --color=always $realpath'
+zstyle ':fzf-tab:complete:*' popup-pad 30 0 fzf-completion-opts --multi # set a bigger width to the popup win
+zstyle ':fzf-tab:*' switch-group ',' '.'
+# the continous trigger is /, which when pressed will complete and continue.
+# this is useful for completing deep paths (though ctrl+t is more useful), but
+# this is annoying as it completes when I enter / trying to get passed the
+# folder prefix of the git branch, like colby/featureX. setting the continuous
+# trigger here for all git commands so this never happens
+zstyle ':fzf-tab:complete:git*:*' continuous-trigger ''
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $ZSH/oh-my-zsh.sh
+
+export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:~/.bun/bin:$PATH
+
+export POCUS_GARDEN_ENVIRONMENT="cloud"
+export GARDEN_LOGGER_TYPE="basic"
+export AWS_PROFILE="pocus-dev"
+export MANPAGER='nvim +Man!'
+export EDITOR="nvim"
+export PYENV_ROOT=~/.pyenv
+
+alias code="cursor"
+alias pp="cd ~/Dev/pocus"
+alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"
+
+alias pt="cd ~/Dev/pocus/frontend && pnpm typecheck"
+alias pl="cd ~/Dev/pocus/frontend && pnpm lint --quiet"
+alias ptt="cd ~/Dev/pocus/frontend && pnpm test"
+alias ppr="cd ~/Dev/pocus/frontend && pnpm prettier"
+alias pbs="cd ~/Dev/pocus/frontend && pnpm build:staging"
+alias pbl="cd ~/Dev/pocus/frontend && pnpm build:local"
+alias pt2="cd ~/Dev/pocus/frontend && pnpm e2e:staging"
+
+alias gca="git commit --amend --no-edit"
+alias gaca="git commit -a --amend --no-edit"
+
+# Interactive rebase last n commits
+gri() {
+  if [ -z "$1" ]; then
+    echo "Please provide the number of commits to rebase"
+    return 1
+  fi
+  git rebase -i HEAD~"$1"
+}
+
+
+alias curltime="curl -w \"@$HOME/.curl-format.txt\" -o /dev/null -s "
+
+alias k=kubectl
+alias dev="~/Dev"
+alias reload="source ~/.zshrc"
+alias clear='printf "\33c\e[3J"'
+alias u="cd ~/Dev/une.haus"
+alias dot="cd ~/dotfiles"
+alias x="exit"
+alias q="clear"
+alias tmux="tmux -2" # keep colorscheme in tmux
+alias gotop="gotop --mbps"
+alias ls="lsd -lah"
+alias cat="bat"
+alias vimdiff='nvim -d'
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+# for work
+export NEXT_PUBLIC_WORKSPACE_PREFIX="colby"
+
+alias sc="git commit -m 'squash [skip-ci]'"
+alias dc="git commit -m '$(date +%m/%d/%y\ %H:%M)'"
+
+alias v='nvim'
+alias vim="nvim"
+
+alias pn="pnpm"
+
+# DOCKER
+alias d-ra='docker rmi -f $(docker images -aq)' # Remove all images
+alias d-rav='docker rm -vf $(docker ps -aq)'    # Remove all volumes
+alias d-sac='docker stop $(docker ps -a -q)'    # Stop all containers
+alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
+alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
+alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
+
+# copy last git commit hash to clipboard
+glc() {
+  git rev-parse HEAD
+  git rev-parse HEAD | pbcopy
+}
+
+unalias rd
+
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+eval "$(thefuck --alias)"
+eval "$(starship init zsh)"
+
+# pnpm
+export PNPM_HOME="/Users/colby/Library/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# fixes some ghost characters in the shell
+LC_ALL=en_US.UTF-8
+
+
+#compdef gt
+###-begin-gt-completions-###
+#
+# yargs command completion script
+#
+# Installation: gt completion >> ~/.zshrc
+#    or gt completion >> ~/.zprofile on OSX.
+#
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+###-end-gt-completions-###
