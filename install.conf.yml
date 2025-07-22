@@ -11,6 +11,7 @@
 
 - link:
     ~/.zshrc: shell/zsh/.zshrc
+    ~/.config/ghostty/config: config/ghostty
     ~/.gitconfig: git/gitconfig
     ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
