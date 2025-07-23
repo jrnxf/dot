@@ -10,7 +10,7 @@
       recursive: true
 
 - link:
-    ~/.zshrc: shell/zsh/.zshrc
+    ~/.zshrc: shell/zsh/zshrc
     ~/.config/ghostty/config: config/ghostty
     ~/.gitconfig: git/gitconfig
     ~/.gitignore: git/gitignore
@@ -21,12 +21,12 @@
     ~/.config/nvim:
       glob: true
       path: config/nvim/*
-- shell:
-    - command: ./setup/mac.sh
-      description: Setting up Mac
-      stdout: true
-      stderr: true
-    - command: ./setup/neovim.sh
-      description: Setup Neovim
-      stdout: true
-      stderr: true
+# - shell:
+# - command: ./setup/mac.sh
+#   description: Setting up Mac
+#   stdout: true
+#   stderr: true
+# - command: ./setup/neovim.sh
+#   description: Setup Neovim
+#   stdout: true
+#   stderr: true

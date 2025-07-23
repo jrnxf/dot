@@ -10,7 +10,7 @@ fi
 echo "Installing packages"
 brew bundle install
 
-echo "Changin mac defaults"
+echo "Changing mac defaults"
 # allow dragging windows with ctrl+cmd, and left click dragging inside (works on most windows) ** requires restart
 defaults write -g NSWindowShouldDragOnGesture -bool true
 # defaults delete -g NSWindowShouldDragOnGesture # to stop this behaviour
