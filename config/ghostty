@@ -1,11 +1,10 @@
 window-padding-balance = true
 cursor-style = block
-font-size = 16
-font-family = GeistMono NFM
+font-family = GeistMono NF
 mouse-hide-while-typing = true
 window-colorspace = display-p3
-window-padding-x = 15
-window-padding-y = 15
+window-padding-x = 16
+window-padding-y = 16
 keybind = ctrl+a>n=new_window
 keybind = ctrl+a>h=goto_split:left
 keybind = ctrl+a>l=goto_split:right
@@ -16,3 +15,4 @@ keybind = ctrl+a>t=close_surface
 macos-icon = custom-style
 macos-icon-ghost-color = 4595AD
 macos-icon-screen-color = 0B1B1D
+keybind = shift+enter=text:\n

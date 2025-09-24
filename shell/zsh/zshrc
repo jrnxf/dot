@@ -91,7 +91,14 @@ zstyle ':fzf-tab:complete:git*:*' continuous-trigger ''
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=~/bin:~/.local/bin:~/go/bin:~/.cargo/bin:~/.pyenv:~/Dev/pocus/development/scripts:~/.bun/bin:$PATH
+export PATH="~/bin:$PATH"
+export PATH="~/.local/bin:$PATH"
+export PATH="~/go/bin:$PATH"
+export PATH="~/.cargo/bin:$PATH"
+export PATH="~/.pyenv:$PATH"
+export PATH="~/Dev/pocus/development/scripts:$PATH"
+export PATH="~/.bun/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
 export POCUS_GARDEN_ENVIRONMENT="cloud"
 export GARDEN_LOGGER_TYPE="basic"
@@ -100,6 +107,7 @@ export MANPAGER='nvim +Man!'
 export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
 
+alias bbs="bun run build && bun run start"
 alias code="cursor"
 alias pp="cd ~/Dev/pocus"
 alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"

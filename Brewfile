@@ -2,16 +2,16 @@ tap "aws/tap"
 tap "charmbracelet/tap"
 tap "fsouza/prettierd"
 tap "garden-io/garden"
+tap "go-task/tap"
 tap "homebrew/bundle"
-tap "homebrew/cask"
 tap "homebrew/cask-fonts"
-tap "homebrew/core"
 tap "homebrew/services"
 tap "isacikgoz/taps"
 tap "jason0x43/neovim-nightly"
 tap "libsql/sqld"
 tap "oven-sh/bun"
 tap "tursodatabase/tap"
+tap "withgraphite/tap"
 # Run your GitHub Actions locally
 brew "act"
 # Official Amazon AWS command-line interface
@@ -46,6 +46,8 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
+# Modern replacement for 'ls'
+brew "exa"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # Banner-like program prints strings as ASCII art
@@ -86,12 +88,10 @@ brew "kubectx"
 brew "lazygit"
 # X.Org: X miscellaneous utility routines library
 brew "libxmu"
-# QUIC transport protocol implementation
-brew "mvfst"
-# C library of Git core methods that is re-entrant and linkable
-brew "libgit2"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
+# QUIC transport protocol implementation
+brew "mvfst"
 # Node version management
 brew "n"
 # Fast, highly customisable system info script
@@ -100,12 +100,12 @@ brew "neofetch"
 brew "neovim"
 # Platform built on V8 to build network applications
 brew "node"
+# Libraries for security-enabled client and server applications
+brew "nss"
 # Manage multiple Node.js versions
 brew "nvm"
 # Object-relational database system
-brew "postgresql@14"
-# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
-brew "prettier"
+brew "postgresql@15", restart_service: :changed
 # Python version management
 brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
@@ -158,17 +158,19 @@ brew "zsh-autosuggestions"
 brew "fsouza/prettierd/prettierd", link: false
 # Development engine for Kubernetes
 brew "garden-io/garden/garden-cli"
+# Task runner / simpler Make alternative written in Go
+brew "go-task/tap/go-task"
 # fast and interactive tldr client written with go
 brew "isacikgoz/taps/tldr"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
 brew "tursodatabase/tap/turso"
+# Allows you to manage your stacked changes and submit them for review on GitHub
+brew "withgraphite/tap/graphite"
 # Command-line interface for 1Password
 cask "1password-cli"
 # Display management tool
 cask "betterdisplay"
-# Calendar for professionals and teams
-cask "notion-calendar"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Server and cloud storage browser
@@ -208,6 +210,8 @@ cask "ngrok"
 cask "nordvpn"
 # App to write, plan, collaborate, and get organised
 cask "notion"
+# Calendar for professionals and teams
+cask "notion-calendar"
 # Open-source software for live streaming and screen recording
 cask "obs"
 # Open source build of Lens Kubernetes IDE
