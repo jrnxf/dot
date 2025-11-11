@@ -102,7 +102,6 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
 export POCUS_GARDEN_ENVIRONMENT="cloud"
 export GARDEN_LOGGER_TYPE="basic"
-export AWS_PROFILE="pocus-dev"
 export MANPAGER='nvim +Man!'
 export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
@@ -113,7 +112,7 @@ alias pp="cd ~/Dev/pocus"
 alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"
 
 alias pt="cd ~/Dev/pocus/frontend && pnpm typecheck"
-alias pl="cd ~/Dev/pocus/frontend && pnpm lint --quiet"
+alias pl="cd ~/Dev/pocus/frontend && pnpm lint"
 alias ptt="cd ~/Dev/pocus/frontend && pnpm test"
 alias ppr="cd ~/Dev/pocus/frontend && pnpm prettier"
 alias pbs="cd ~/Dev/pocus/frontend && pnpm build:staging"
@@ -122,6 +121,10 @@ alias pt2="cd ~/Dev/pocus/frontend && pnpm e2e:staging"
 
 alias gca="git commit --amend --no-edit"
 alias gaca="git commit -a --amend --no-edit"
+
+alias gtc="gt continue"
+alias gtms="gt modify && gt ss"
+alias gtn="gt create"
 
 # Interactive rebase last n commits
 gri() {
@@ -182,14 +185,6 @@ unalias rd
 eval "$(thefuck --alias)"
 eval "$(starship init zsh)"
 
-# pnpm
-export PNPM_HOME="/Users/colby/Library/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
 # fixes some ghost characters in the shell
 LC_ALL=en_US.UTF-8
 
@@ -213,3 +208,19 @@ _gt_yargs_completions()
 }
 compdef _gt_yargs_completions gt
 ###-end-gt-completions-###
+# bun completions
+[ -s "/Users/colby/.bun/_bun" ] && source "/Users/colby/.bun/_bun"
+
+alias claude="/Users/colby/.claude/local/claude"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/Users/colby/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

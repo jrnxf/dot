@@ -11,6 +11,9 @@ disabled = true
 [nodejs]
 disabled = true
 
+[dotnet]
+disabled = true
+
 [rust]
 disabled = true
 
