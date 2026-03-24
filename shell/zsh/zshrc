@@ -107,6 +107,7 @@ export EDITOR="nvim"
 export PYENV_ROOT=~/.pyenv
 
 alias bbs="bun run build && bun run start"
+alias bpf="bun run preflight"
 alias code="cursor"
 alias pp="cd ~/Dev/pocus"
 alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"
@@ -115,9 +116,8 @@ alias pt="cd ~/Dev/pocus/frontend && pnpm typecheck"
 alias pl="cd ~/Dev/pocus/frontend && pnpm lint"
 alias ptt="cd ~/Dev/pocus/frontend && pnpm test"
 alias ppr="cd ~/Dev/pocus/frontend && pnpm prettier"
-alias pbs="cd ~/Dev/pocus/frontend && pnpm build:staging"
 alias pbl="cd ~/Dev/pocus/frontend && pnpm build:local"
-alias pt2="cd ~/Dev/pocus/frontend && pnpm e2e:staging"
+alias pvd="cd ~/Dev/pocus && vercel build && vercel deploy --prebuilt && cd -"
 
 alias gca="git commit --amend --no-edit"
 alias gaca="git commit -a --amend --no-edit"
@@ -135,6 +135,10 @@ gri() {
   git rebase -i HEAD~"$1"
 }
 
+gwtf() {
+   local dir=$(git worktree list | fzf | awk '{print $1}')
+   [[ -n "$dir" ]] && cd "$dir"
+}
 
 alias curltime="curl -w \"@$HOME/.curl-format.txt\" -o /dev/null -s "
 
@@ -171,6 +175,11 @@ alias d-sac='docker stop $(docker ps -a -q)'    # Stop all containers
 alias d-rac='docker rm -f $(docker ps -a -q)'   # Remove all containers
 alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
+
+
+alias yolo='claude --dangerously-skip-permissions'
+alias ason='ZSH_AUTOSUGGEST_STRATEGY=(history completion)'
+alias asoff='ZSH_AUTOSUGGEST_STRATEGY=()'
 
 # copy last git commit hash to clipboard
 glc() {
@@ -211,7 +220,6 @@ compdef _gt_yargs_completions gt
 # bun completions
 [ -s "/Users/colby/.bun/_bun" ] && source "/Users/colby/.bun/_bun"
 
-alias claude="/Users/colby/.claude/local/claude"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -224,3 +232,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+export PATH="$HOME/.local/bin:$PATH"
