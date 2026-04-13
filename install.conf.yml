@@ -2,11 +2,14 @@
     link:
       create: true
       relink: true
+      force: true
 
 - clean:
     ~/:
       force: true
     ~/.config:
+      recursive: true
+    ~/.claude:
       recursive: true
 
 - link:
@@ -22,6 +25,12 @@
     ~/.config/nvim:
       glob: true
       path: config/nvim/*
+    ~/.claude/settings.json: config/claude/settings.json
+    ~/.claude/CLAUDE.md: config/claude/CLAUDE.md
+    ~/.claude/statusline-command.sh: config/claude/statusline-command.sh
+    ~/.claude/commands/ui-skills.md: config/claude/commands/ui-skills.md
+    ~/.claude/agents/code-locator.md: config/claude/agents/code-locator.md
+    ~/.claude/skills/timesheet/SKILL.md: config/claude/skills/timesheet/SKILL.md
 - shell:
     - command: ./setup/mac.sh
       description: Setting up Mac
@@ -29,5 +38,9 @@
       stderr: true
     - command: ./setup/neovim.sh
       description: Setup Neovim
+      stdout: true
+      stderr: true
+    - command: ./setup/claude.sh
+      description: Setup Claude Code MCP servers
       stdout: true
       stderr: true

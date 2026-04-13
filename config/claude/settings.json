@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree:*)",
+      "Bash(git add:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(git commit:*)",
+      "WebFetch(domain:www.mapcn.dev)",
+      "Bash(bun run build:*)",
+      "Bash(timeout 30 bun run dev:*)",
+      "Bash(bunx tsc:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(bun run typecheck:*)",
+      "Bash(timeout 15 bun run dev:*)",
+      "Bash(curl:*)",
+      "Bash(bun run dev:*)",
+      "Bash(pkill:*)",
+      "Bash(bun run:*)",
+      "Bash(git reset:*)",
+      "Bash(npm run lint:*)",
+      "Bash(bun add:*)",
+      "WebFetch(domain:ui.shadcn.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/colby/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true
+  },
+  "voiceEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "extraKnownMarketplaces": {
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    }
+  }
+}
