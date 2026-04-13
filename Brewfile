@@ -1,12 +1,12 @@
 tap "aws/tap"
 tap "charmbracelet/tap"
-tap "fsouza/prettierd"
 tap "garden-io/garden"
 tap "go-task/tap"
 tap "isacikgoz/taps"
 tap "jason0x43/neovim-nightly"
 tap "libsql/sqld"
 tap "oven-sh/bun"
+tap "tilt-dev/tap"
 tap "tursodatabase/tap"
 tap "withgraphite/tap"
 # Run your GitHub Actions locally
@@ -21,6 +21,10 @@ brew "gettext"
 brew "harfbuzz"
 # Remove large files or passwords from Git history like git-filter-branch
 brew "bfg"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Secure and free password manager for all of your devices
+brew "bitwarden-cli"
 # Python code formatter
 brew "black"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
@@ -45,6 +49,8 @@ brew "fb303"
 brew "edencommon"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # Banner-like program prints strings as ASCII art
 brew "figlet"
 # Command-line fuzzy finder written in Go
@@ -75,10 +81,12 @@ brew "hyperfine"
 brew "jq"
 # Network authentication protocol
 brew "krb5"
-# Kubernetes command-line interface
-brew "kubernetes-cli"
 # Tool that can switch between kubectl contexts easily and create aliases
 brew "kubectx"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
+# LastPass command-line interface tool
+brew "lastpass-cli"
 # Simple terminal UI for git commands
 brew "lazygit"
 # X.Org: X miscellaneous utility routines library
@@ -91,16 +99,18 @@ brew "mvfst"
 brew "n"
 # Fast, highly customisable system info script
 brew "neofetch"
+# Neon CLI tool
+brew "neonctl"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Platform built on V8 to build network applications
-brew "node"
 # Libraries for security-enabled client and server applications
 brew "nss"
 # Manage multiple Node.js versions
 brew "nvm"
 # Object-relational database system
 brew "postgresql@15", restart_service: :changed
+# Object-relational database system
+brew "postgresql@17", link: true
 # Python version management
 brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
@@ -123,74 +133,74 @@ brew "starship"
 brew "stylua"
 # Command-line interface for running and interacting with Temporal Server and UI
 brew "temporal"
-# Tool to build, change, and version infrastructure
-brew "terraform"
 # Programmatically correct mistyped console commands
 brew "thefuck"
-# Define your dev environment as code. For microservice apps on Kubernetes
-brew "tilt"
 # Terminal multiplexer
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # URL extractor/launcher
 brew "urlview"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Watch files and take action when they change
 brew "watchman"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Command-line client for WebSockets
+brew "websocat"
 # Internet file retriever
 brew "wget"
+# Utilities to create and convert Web Open Font File (WOFF) files
+brew "woff2"
 # Access X11 clipboards from the command-line
 brew "xclip"
 # JavaScript package manager
 brew "yarn"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
-# prettier, on SPEED!
-brew "fsouza/prettierd/prettierd", link: false
-# Development engine for Kubernetes
-brew "garden-io/garden/garden-cli"
-# Task runner / simpler Make alternative written in Go
+# A fast, cross-platform build tool inspired by Make, designed for modern workflows.
 brew "go-task/tap/go-task"
 # fast and interactive tldr client written with go
 brew "isacikgoz/taps/tldr"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
+# A dev environment as code for microservice apps
+brew "tilt-dev/tap/tilt"
 brew "tursodatabase/tap/turso"
 # Allows you to manage your stacked changes and submit them for review on GitHub
 brew "withgraphite/tap/graphite"
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
 # Display management tool
 cask "betterdisplay"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
 # Write, edit, and chat about your code with AI
 cask "cursor"
-# Server and cloud storage browser
-cask "cyberduck"
 # Universal database tool and SQL client
 cask "dbeaver-community"
 # AI-powered translator
 cask "deepl"
 # Web browser
 cask "firefox"
-# Flip clock screensaver
-cask "fliqlo"
 cask "font-geist-mono-nerd-font"
-cask "font-hack-nerd-font"
-cask "font-noto-nerd-font"
-cask "font-space-mono"
-cask "font-space-mono-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Web browser
 cask "google-chrome"
 # Open-source video transcoder
 cask "handbrake-app"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
+# Open-source screen recorder built with web technology
+cask "kap"
 # Keyboard customiser
 cask "karabiner-elements"
 # Open-source keystroke visualiser
@@ -199,6 +209,8 @@ cask "keycastr"
 cask "linear-linear"
 # Screen and video recording software
 cask "loom"
+# Syncs files between computers and MEGA Cloud drives
+cask "megasync"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # VPN client for secure internet access and private browsing
@@ -215,6 +227,8 @@ cask "openlens"
 cask "pearcleaner"
 # Collaboration platform for API development
 cask "postman"
+# Peer to peer Bitorrent client
+cask "qbittorrent"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Move and resize windows using keyboard shortcuts or snap areas
@@ -233,6 +247,7 @@ vscode "adpyke.vscode-sql-formatter"
 vscode "albert.tabout"
 vscode "alexandernanberg.horizon-theme-vscode"
 vscode "alexanderte.dainty-nord-vscode"
+vscode "anthropic.claude-code"
 vscode "arcticicestudio.nord-visual-studio-code"
 vscode "asvetliakov.vscode-neovim"
 vscode "avetis.tokyo-night"
@@ -251,10 +266,10 @@ vscode "cev.overnight"
 vscode "christian-kohler.npm-intellisense"
 vscode "ckolkman.vscode-postgres"
 vscode "csstools.postcss"
+vscode "databricks.neon-local-connect"
 vscode "dbaeumer.vscode-eslint"
 vscode "dnlytras.nord-wave"
 vscode "eamodio.gitlens"
-vscode "esbenp.prettier-vscode"
 vscode "firsttris.vscode-jest-runner"
 vscode "fisheva.eva-theme"
 vscode "formulahendry.auto-rename-tag"
@@ -263,19 +278,21 @@ vscode "golang.go"
 vscode "graphql.vscode-graphql"
 vscode "graphql.vscode-graphql-execution"
 vscode "graphql.vscode-graphql-syntax"
-vscode "hashicorp.terraform"
 vscode "heybourn.headwind"
-vscode "inferrinizzard.prettier-sql-vscode"
 vscode "jakearl.search-editor-apply-changes"
 vscode "keifererikson.nightfox"
 vscode "luisgalicia.mariana-nord"
 vscode "marlosirapuan.nord-deep"
 vscode "mathiasfrohlich.kotlin"
 vscode "mikestead.dotenv"
+vscode "ms-azuretools.vscode-containers"
 vscode "ms-azuretools.vscode-docker"
 vscode "ms-playwright.playwright"
+vscode "ms-python.debugpy"
 vscode "ms-python.isort"
 vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
 vscode "mtxr.sqltools"
 vscode "mtxr.sqltools-driver-pg"
 vscode "mylesmurphy.prettify-ts"
@@ -285,7 +302,6 @@ vscode "prisma.prisma"
 vscode "redhat.vscode-xml"
 vscode "richie5um2.vscode-sort-json"
 vscode "rust-lang.rust-analyzer"
-vscode "stkb.rewrap"
 vscode "sumneko.lua"
 vscode "tobermory.es6-string-html"
 vscode "tyriar.lorem-ipsum"
@@ -293,3 +309,6 @@ vscode "tyriar.sort-lines"
 vscode "wix.vscode-import-cost"
 vscode "yoavbls.pretty-ts-errors"
 vscode "zhuangtongfa.material-theme"
+go "golang.org/x/tools/gopls"
+go "honnef.co/go/tools/cmd/staticcheck"
+npm "corepack"
