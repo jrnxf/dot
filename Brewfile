@@ -1,7 +1,6 @@
 tap "aws/tap"
 tap "charmbracelet/tap"
 tap "garden-io/garden"
-tap "go-task/tap"
 tap "isacikgoz/taps"
 tap "jason0x43/neovim-nightly"
 tap "libsql/sqld"
@@ -165,8 +164,6 @@ brew "yt-dlp"
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
-# A fast, cross-platform build tool inspired by Make, designed for modern workflows.
-brew "go-task/tap/go-task"
 # fast and interactive tldr client written with go
 brew "isacikgoz/taps/tldr"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
