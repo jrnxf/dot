@@ -13,13 +13,15 @@ Turns a screenshot of time-tracking entries into a polished PDF timesheet with c
 - User says "generate timesheet", "timesheet pdf", "build my timesheet"
 - User wants to cross-reference tracked time with git history
 
-## Execution
+## Execution Rules
 
-Run the entire workflow end-to-end without pausing for confirmation. Do not ask the user to approve intermediate steps — just execute everything and present the final result.
+- Run the entire workflow end-to-end without pausing for confirmation
+- Do not ask the user to approve intermediate steps
+- Execute everything and present the final result
 
 ## Workflow
 
-### Step 1: Read the timesheet image
+### 1. Read the timesheet image
 
 Use the Read tool on the provided image path. Extract:
 
@@ -27,7 +29,7 @@ Use the Read tool on the provided image path. Extract:
 - All time entries per day — sum all session durations into a single daily total
 - The project name (shown next to the colored dot)
 
-### Step 2: Pull git commits for the date range
+### 2. Pull git commits for the date range
 
 Run:
 
@@ -35,7 +37,7 @@ Run:
 git log --author="$(git config user.name)" --since="<first_date>" --until="<last_date_plus_1>" --format="%H %ai %s" --all
 ```
 
-### Step 3: Write descriptions from commits
+### 3. Write descriptions from commits
 
 For each day, turn each commit into a bullet point:
 
@@ -44,18 +46,21 @@ For each day, turn each commit into a bullet point:
 - Group closely related commits into a single bullet if they're part of the same logical change
 - If no commits match (e.g. meetings, env setup), use the entry's own description (if present and meaningful) or best-guess from context
 
-**Good bullet examples:**
+Good bullet examples:
 
 - `Migrated marketing page from inline styles to Tailwind classes`
 - `Added lint-staged with husky pre-commit hook`
 - `Replaced static agent-signup PNG with interactive Rive animation`
 - `Header mask/overlay styling; merged PRs #198, #199`
 
-### Step 4: Generate the PDF
+### 4. Generate the PDF
 
-Use Python with `reportlab`. Install if needed: `pip3 install --break-system-packages reportlab`
+Use Python with `reportlab`.
 
-**The PDF must follow this exact style specification:**
+- Install if needed: `pip3 install --break-system-packages reportlab`
+- Follow the style spec exactly
+
+#### Exact style specification
 
 ```python
 from reportlab.lib.pagesizes import letter
@@ -63,7 +68,8 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 
-output = "<project_dir>/colby_thomas_timesheet_<start_date>-<end_date>.pdf"  # e.g. colby_thomas_timesheet_mar_26-apr_3.pdf (lowercase 3-letter month, underscore, day)
+import os
+output = os.path.expanduser("~/Documents/colby_thomas_timesheet_<start_date>-<end_date>.pdf")  # e.g. colby_thomas_timesheet_mar_26-apr_3.pdf (lowercase 3-letter month, underscore, day)
 c = canvas.Canvas(output, pagesize=letter)
 w, h = letter
 
@@ -181,9 +187,14 @@ c.drawString(LEFT, y, f"Total: {total_h}h {total_m}m")
 c.save()
 ```
 
-### Data format
+#### Data format
 
-Structure the data as a list of tuples — one tuple per day with a list of `(description, sha)` tuples. `sha` is a short (7-char) commit hash string if the bullet was derived from a commit, or `None` if no commit matches (e.g. meetings, env setup):
+Structure the data as a list of tuples:
+
+- One tuple per day
+- Each day contains a list of `(description, sha)` tuples
+- `sha` is a short 7-char commit hash if the bullet came from a commit
+- Use `None` when no commit matches (for example meetings or environment setup)
 
 ```python
 days = [
@@ -196,12 +207,12 @@ days = [
 ]
 ```
 
-When grouping multiple commits into one bullet, use the SHA of the primary/first commit in the group.
+When grouping multiple commits into one bullet, use the SHA of the primary or first commit in the group.
 
-Day totals: format as `Xh Ym` (e.g. "2h 54m", "0h 27m") — sum of all sessions that day.
-Grand total: sum all day totals, format as `Xh Ym`.
+- Day totals: format as `Xh Ym` (for example `"2h 54m"`, `"0h 27m"`) and sum all sessions that day
+- Grand total: sum all day totals and format as `Xh Ym`
 
-### Key rules
+#### Output rules
 
 - **One row per day** with aggregated total and bullet-point list of work items
 - **Each commit becomes a bullet** — summarized in plain English, not raw commit messages
@@ -209,16 +220,9 @@ Grand total: sum all day totals, format as `Xh Ym`.
 - Day labels use format "March 26" (full month name, day number, no weekday)
 - Font is Helvetica only (Bold for title and day headers, regular for everything else)
 - No colors other than `#1a1a1a` (black), `#666666` (gray), `#cccccc` (light divider), `#e5e5e5` (day separator)
-- Output filename is `colby_thomas_timesheet_<start>-<end>.pdf` where start/end are `mon_dd` (e.g. `mar_26`, `apr_3`) — lowercase 3-letter month, underscore, day number. Saved to the current project directory **and** copied to `~/Documents/`
+- Output filename is `colby_thomas_timesheet_<start>-<end>.pdf` where start/end are `mon_dd` (e.g. `mar_26`, `apr_3`) — lowercase 3-letter month, underscore, day number. **Always write directly to `~/Documents/` — never to the project directory.**
 
-### Step 5: Copy to Documents
+### 5. Verify
 
-Always copy the generated PDF to `~/Documents/`:
-
-```bash
-cp <project_dir>/colby_thomas_timesheet_<start>-<end>.pdf ~/Documents/
-```
-
-### Step 6: Verify
-
-Read the generated PDF to confirm it renders correctly, then tell the user both file paths.
+- Read the generated PDF to confirm it renders correctly
+- Tell the user the file path

@@ -33,7 +33,8 @@
     "command": "bash /Users/colby/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "pogo@pogo": true
   },
   "extraKnownMarketplaces": {
     "cloudflare": {
@@ -41,8 +42,15 @@
         "source": "github",
         "repo": "cloudflare/skills"
       }
+    },
+    "pogo": {
+      "source": {
+        "source": "github",
+        "repo": "PocusHQ/pogo"
+      }
     }
   },
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
-  "effortLevel": "high"
+  "skipAutoPermissionPrompt": true
 }
