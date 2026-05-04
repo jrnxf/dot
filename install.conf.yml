@@ -22,9 +22,6 @@
     ~/.config/alacritty/alacritty.yml: config/alacritty.yml
     ~/.config/karabiner/karabiner.json: config/karabiner.json
     ~/.config/kitty/kitty.conf: config/kitty.conf
-    ~/.config/nvim:
-      glob: true
-      path: config/nvim/*
     ~/.claude/settings.json: config/claude/settings.json
     ~/.claude/CLAUDE.md: config/claude/CLAUDE.md
     ~/.claude/statusline-command.sh: config/claude/statusline-command.sh
