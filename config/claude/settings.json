@@ -51,6 +51,7 @@
     }
   },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true
+  "preferredNotifChannel": "ghostty"
 }
