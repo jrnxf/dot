@@ -199,6 +199,27 @@
             ]
           },
           {
+            "description": "cmd+tab+space to native app switcher",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "spacebar",
+                  "modifiers": {
+                    "mandatory": ["right_control", "right_option", "right_command", "right_shift"],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "tab",
+                    "modifiers": ["left_command"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "F4 to CMD+SPACE",
             "manipulators": [
               {
