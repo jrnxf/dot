@@ -1,0 +1,3 @@
+# Codex config is monolithic + machine-specific (project paths, trust levels);
+# kept local in ~/.codex, not tracked here.
+.codex/
