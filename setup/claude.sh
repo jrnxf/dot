@@ -1,10 +1,9 @@
 #!/bin/sh
 # Set up Claude Code and its MCP servers.
 #
-# Servers that require API keys or tokens (context7, Neon) must be added
+# Servers that require API keys or tokens (context7) must be added
 # manually per machine:
 #   claude mcp add context7 -- npx -y @upstash/context7-mcp --api-key <KEY>
-#   claude mcp add Neon --transport http --url https://mcp.neon.tech/mcp --header "Authorization: Bearer <TOKEN>"
 
 # Install Claude Code if not present
 if ! command -v claude >/dev/null 2>&1; then
@@ -28,12 +27,10 @@ claude mcp add graphite -- gt mcp
 claude mcp add statsig --transport http \
   --url https://api.statsig.com/v1/mcp
 
-claude mcp add Railway -- npx @railway/mcp-serverr
-
 claude mcp add playwright -- npx @playwright/mcp@latest
 
 claude mcp add posthog --transport http \
   --url https://mcp.posthog.com/mcp
 
 echo "Claude Code MCP servers configured."
-echo "NOTE: Add secret-bearing servers manually (context7, Neon). See comments in this script."
+echo "NOTE: Add secret-bearing servers manually (context7). See comments in this script."
