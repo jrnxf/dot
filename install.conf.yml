@@ -15,6 +15,7 @@
 - link:
     ~/.zshrc: shell/zsh/zshrc
     ~/.config/ghostty/config: config/ghostty
+    ~/.config/cmux/cmux.json: config/cmux/cmux.json
     ~/.gitconfig: git/gitconfig
     ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
@@ -25,6 +26,7 @@
     ~/.claude/settings.json: config/claude/settings.json
     ~/.claude/CLAUDE.md: config/claude/CLAUDE.md
     ~/.claude/statusline-command.sh: config/claude/statusline-command.sh
+    ~/.claude/hooks/cmux-notify.sh: config/claude/hooks/cmux-notify.sh
     ~/.claude/commands/ui-skills.md: config/claude/commands/ui-skills.md
     ~/.claude/agents/code-locator.md: config/claude/agents/code-locator.md
     ~/.claude/skills/timesheet/SKILL.md: config/claude/skills/timesheet/SKILL.md

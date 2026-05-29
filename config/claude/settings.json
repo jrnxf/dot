@@ -32,6 +32,32 @@
     "type": "command",
     "command": "bash /Users/colby/.claude/statusline-command.sh"
   },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "pogo@pogo": true
