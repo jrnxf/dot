@@ -1,0 +1,11 @@
+[mcp_servers.Railway]
+args = ["@railway/mcp-serverr"]
+command = "npx"
+
+[mcp_servers.graphite]
+args = ["mcp"]
+command = "gt"
+
+[mcp_servers.playwright]
+args = ["@playwright/mcp@latest"]
+command = "npx"
