@@ -282,7 +282,8 @@
   "remote.SSH.remotePlatform": {
     "colby@homelab": "macOS",
     "colby@homelab:~/dev/homelab": "linux",
-    "homelab": "macOS"
+    "homelab": "macOS",
+    "pogo": "linux"
   },
   "window.autoDetectColorScheme": false,
 }
