@@ -165,6 +165,11 @@ alias d-srac='d-sac && d-rac'                   # Stop and remove all containers
 alias d-sp='docker system prune -af --volumes'  # Remove entire docker system
 
 # ============================================================================
+# Aliases — homelab
+# ============================================================================
+alias sshh='ssh homelab' # fzf homelab ssh ui
+
+# ============================================================================
 # Functions — git
 # ============================================================================
 # fbr - checkout git branch (including remote branches)
@@ -278,3 +283,16 @@ esac
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
+# BEGIN ANSIBLE MANAGED HOMELAB SSH WRAPPER
+ssh() {
+  if [[ "$1" == "homelab" ]]; then
+    shift
+    local target
+    target="$("$HOME/.local/bin/homelab-ssh-pick")" || return $?
+    [[ -n "$target" ]] || return 1
+    command ssh "$target" "$@"
+  else
+    command ssh "$@"
+  fi
+}
+# END ANSIBLE MANAGED HOMELAB SSH WRAPPER
