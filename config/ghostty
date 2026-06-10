@@ -16,3 +16,4 @@ macos-icon = custom-style
 macos-icon-ghost-color = 4595AD
 macos-icon-screen-color = 0B1B1D
 keybind = shift+enter=text:\n
+theme = Cursor Dark 

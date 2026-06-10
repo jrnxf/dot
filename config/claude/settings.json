@@ -28,16 +28,15 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/colby/.claude/statusline-command.sh"
-  },
   "hooks": {
     "Stop": [
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+          {
+            "type": "command",
+            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
+          }
         ]
       }
     ],
@@ -45,7 +44,10 @@
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+          {
+            "type": "command",
+            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
+          }
         ]
       }
     ],
@@ -53,10 +55,17 @@
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "/Users/colby/.claude/hooks/cmux-notify.sh" }
+          {
+            "type": "command",
+            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
+          }
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/colby/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
