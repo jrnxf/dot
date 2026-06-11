@@ -1,30 +1,30 @@
 {
   "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[go]": {
-    "editor.defaultFormatter": "golang.go",
+    "editor.defaultFormatter": "golang.go"
   },
   "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma",
+    "editor.defaultFormatter": "Prisma.prisma"
   },
   "[properties]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
   "[shellscript]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[sql]": {
-    "editor.defaultFormatter": "mtxr.sqltools",
+    "editor.defaultFormatter": "mtxr.sqltools"
   },
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml",
+    "editor.defaultFormatter": "redhat.vscode-xml"
   },
   "cursor.composer.collapsePaneInputBoxPills": true,
   "cursor.cpp.disabledLanguages": ["plaintext"],
@@ -37,7 +37,7 @@
   "editor.accessibilitySupport": "on",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
-    "source.organizeImports": "always",
+    "source.organizeImports": "always"
   },
   "editor.colorDecorators": false,
   "editor.cursorSmoothCaretAnimation": "on",
@@ -68,7 +68,7 @@
     "*.tsx": "${capture}.ts",
     "Cargo.toml": "Cargo.lock",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
-    "tsconfig.json": "tsconfig.*.json",
+    "tsconfig.json": "tsconfig.*.json"
   },
   "extensions.ignoreRecommendations": true,
   "files.exclude": {
@@ -77,7 +77,7 @@
     "**/.hg": true,
     "**/.svn": true,
     "**/CVS": true,
-    "**/Thumbs.db": true,
+    "**/Thumbs.db": true
   },
   "git.autofetch": true,
   "git.confirmSync": false,
@@ -103,7 +103,7 @@
     "fileHistory": true,
     "repositories": true,
     "searchAndCompare": true,
-    "launchpad": false,
+    "launchpad": false
   },
   "gitlens.views.searchAndCompare.avatars": false,
   "gitlens.virtualRepositories.enabled": false,
@@ -111,7 +111,7 @@
   "multiDiffEditor.experimental.enabled": true,
   "playwright.env": {
     "DEV_MODE": "true",
-    "NODE_ENV": "test",
+    "NODE_ENV": "test"
   },
   "playwright.reuseBrowser": true,
   "playwright.showTrace": false,
@@ -127,7 +127,7 @@
     "**/build": true,
     "**/dist": true,
     "**/node_modules": true,
-    "**/tsconfig.tsbuildinfo": true,
+    "**/tsconfig.tsbuildinfo": true
   },
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.fontFamily": "monospace",
@@ -145,139 +145,139 @@
     "[jngl]": {
       "editorGhostText.foreground": "#ffffff25",
       "list.inactiveSelectionBackground": "#ffffff10",
-      "scrollbarSlider.background": "#ffffff10",
+      "scrollbarSlider.background": "#ffffff10"
     },
     "[poimandres-noitalics-storm]": {
-      "sideBarSectionHeader.background": "#ffffff20",
-    },
+      "sideBarSectionHeader.background": "#ffffff20"
+    }
   },
   "git.mergeEditor": false,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.composer.usageSummaryDisplay": "always",
   "workbench.editorAssociations": {
-    "*.svg": "default",
+    "*.svg": "default"
   },
   "editor.screenReaderAnnounceInlineSuggestion": false,
   "gitlens.views.scm.grouped.default": "searchAndCompare",
   "accessibility.signals.voiceRecordingStarted": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.lineHasBreakpoint": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.chatEditModifiedFile": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.chatRequestSent": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.chatResponseReceived": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.clear": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.codeActionApplied": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.codeActionTriggered": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.onDebugBreak": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.diffLineDeleted": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.diffLineInserted": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.diffLineModified": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.editsKept": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.positionHasError": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.lineHasError": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.lineHasFoldedArea": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.lineHasInlineSuggestion": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.noInlayHints": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.notebookCellCompleted": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.notebookCellFailed": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.progress": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.taskCompleted": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.taskFailed": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.terminalBell": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.terminalCommandFailed": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.terminalCommandSucceeded": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.terminalQuickFix": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.editsUndone": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.voiceRecordingStopped": {
-    "sound": "off",
+    "sound": "off"
   },
   "accessibility.signals.positionHasWarning": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "accessibility.signals.lineHasWarning": {
     "sound": "off",
-    "announcement": "auto",
+    "announcement": "auto"
   },
   "gitlens.mode.active": "zen",
   "workbench.colorTheme": "Default Dark Modern",
   "claudeCode.preferredLocation": "sidebar",
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "remote.SSH.remotePlatform": {
     "colby@homelab": "macOS",
@@ -286,4 +286,5 @@
     "pogo": "linux"
   },
   "window.autoDetectColorScheme": false,
+  "security.promptForLocalFileProtocolHandling": false
 }

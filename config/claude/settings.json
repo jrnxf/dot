@@ -26,7 +26,7 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch"
     ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
   "hooks": {
     "Stop": [
@@ -69,7 +69,8 @@
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
-    "pogo@pogo": true
+    "pogo@pogo": true,
+    "ruby-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "cloudflare": {
@@ -86,7 +87,8 @@
     }
   },
   "effortLevel": "high",
-  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
+  "tui": "fullscreen",
   "preferredNotifChannel": "ghostty"
 }

@@ -30,7 +30,6 @@ export TERM=xterm-256color
 export LC_ALL=en_US.UTF-8
 export AWS_PAGER=""
 export NEXT_PUBLIC_WORKSPACE_PREFIX="colby"
-export CLAUDE_CODE_EFFORT_LEVEL=high
 
 # ============================================================================
 # FZF
@@ -196,6 +195,8 @@ gwtf() {
    [[ -n "$dir" ]] && cd "$dir"
 }
 
+alias curltime="curl -w \"@$HOME/.curl-format.txt\" -o /dev/null -s "
+
 # copy last git commit hash to clipboard
 glc() {
   git rev-parse HEAD
@@ -246,7 +247,7 @@ eval "$(thefuck --alias)"
 eval "$(starship init zsh)"
 
 # bun completions
-[ -s "/Users/colby/.bun/_bun" ] && source "/Users/colby/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 #compdef gt
 ###-begin-gt-completions-###
@@ -268,13 +269,8 @@ _gt_yargs_completions()
 compdef _gt_yargs_completions gt
 ###-end-gt-completions-###
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # pnpm
-export PNPM_HOME="/Users/colby/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -296,3 +292,77 @@ ssh() {
   fi
 }
 # END ANSIBLE MANAGED HOMELAB SSH WRAPPER
+
+export NODE_OPTIONS="--max-old-space-size=8192"
+
+export PATH="~/.volta/bin:$PATH"export GH_LIBRARIES_READ_ONLY_TOKEN="$(gh auth token)"
+
+# LeadGenie native Rails (Docker services on localhost)
+export MONGO_ENDPOINT="localhost:27021"
+export ES_ENDPOINT="localhost:9200"
+export REDIS_HOST="localhost"
+export REDIS_RATELIMITER_HOST="localhost"
+export REDIS_CACHE_URL="redis://localhost:6379/0"
+export RAILS_HOST="127.0.0.1:3001"
+eval "$(rbenv init - zsh)"
+# Keep Homebrew bins ahead of rbenv shims so `tilt` (Homebrew) wins over the
+# rbenv `tilt` gem shim. Only `tilt` overlaps, so no other rbenv tool is shadowed.
+export PATH="/opt/homebrew/bin:$PATH"
+
+function request-godmode() { lumos request --app-like "Apollo - Godmode Access Request - Temporal" --for-me --length 12h --reason "$*" --wait; }
+
+# ============================================================================
+# Functions — apollo
+# ============================================================================
+# apsrc — Apollo Staging Rails Console
+# Usage: apsrc [--masked] [namespace]
+#   --masked    set MASKED_MONGO=true so models point at prod data via masked views
+#   namespace   defaults to $APOLLO_STAGING_NAMESPACE
+# Auto-configures kubectl for the staging cluster on first run.
+apsrc() {
+  local masked=0
+  local positional=()
+  for arg in "$@"; do
+    case "$arg" in
+      --masked) masked=1 ;;
+      -h|--help)
+        echo "usage: apsrc [--masked] [namespace]"
+        echo "  --masked    set MASKED_MONGO=true (see prod data with PII masked)"
+        echo "  namespace   defaults to \$APOLLO_STAGING_NAMESPACE"
+        return 0
+        ;;
+      *) positional+=("$arg") ;;
+    esac
+  done
+
+  local ns="${positional[1]:-$APOLLO_STAGING_NAMESPACE}"
+  if [[ -z "$ns" ]]; then
+    echo "usage: apsrc [--masked] <namespace>   (or set \$APOLLO_STAGING_NAMESPACE)"
+    echo "hint: namespace is commented on your PR by apolloio-ci (add label Need_Preview_Env if missing)"
+    return 1
+  fi
+
+  if ! kubectl config get-contexts -o name 2>/dev/null | grep -q "stage-23704"; then
+    echo "→ configuring kubectl for staging cluster"
+    gcloud container clusters get-credentials staging \
+      --zone us-central1-c --project stage-23704 || return 1
+  fi
+
+  local pod
+  pod=$(kubectl get pods -n "$ns" 2>/dev/null | awk '/rails.*Running/ {print $1; exit}')
+  if [[ -z "$pod" ]]; then
+    echo "no running rails pod found in namespace '$ns'"
+    echo "(VPN connected? namespace correct? preview env up?)"
+    return 1
+  fi
+
+  if (( masked )); then
+    echo "→ connecting to $pod in $ns (MASKED_MONGO=true)"
+    kubectl -n "$ns" exec -it "$pod" -- env MASKED_MONGO=true bundle exec rails c -e staging
+  else
+    echo "→ connecting to $pod in $ns (slimmed mode — default)"
+    kubectl -n "$ns" exec -it "$pod" -- bundle exec rails c -e staging
+  fi
+}
+
+ulimit -n 10240
