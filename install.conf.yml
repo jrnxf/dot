@@ -5,8 +5,7 @@
       force: true
 
 - clean:
-    ~/:
-      force: true
+    ~/: {}
     ~/.config:
       recursive: true
     ~/.claude:
