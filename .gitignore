@@ -1,3 +1,6 @@
 # Codex config is monolithic + machine-specific (project paths, trust levels);
 # kept local in ~/.codex, not tracked here.
 .codex/
+
+# brew bundle regenerates this; not useful to track for a personal machine
+Brewfile.lock.json
