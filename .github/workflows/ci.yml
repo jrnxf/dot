@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    # GitHub only auto-skips "[skip ci]"; this repo's squash alias uses "[skip-ci]"
+    if: "!contains(github.event.head_commit.message, '[skip-ci]')"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q shellcheck zsh
+          shellcheck install setup/*.sh \
+            config/claude/hooks/cmux-notify.sh \
+            config/claude/statusline-command.sh
+
+      - name: zsh syntax
+        run: zsh -n shell/zsh/zshrc
+
+      - name: strict JSON
+        run: |
+          jq empty config/karabiner.json \
+            config/cursor/keybindings.json \
+            config/claude/settings.json
+
+      - name: JSONC (cursor settings, cmux)
+        run: |
+          npx --yes json5 config/cursor/settings.json > /dev/null
+          npx --yes json5 config/cmux/cmux.json > /dev/null
+
+      - name: dotbot config parses
+        run: python3 -c "import yaml; yaml.safe_load(open('install.conf.yml'))"
