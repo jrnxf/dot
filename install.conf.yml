@@ -15,6 +15,7 @@
     ~/.zshrc: shell/zsh/zshrc
     ~/.config/ghostty/config: config/ghostty
     ~/.config/cmux/cmux.json: config/cmux/cmux.json
+    ~/.config/opencode/opencode.json: config/opencode/opencode.json
     ~/.gitconfig: git/gitconfig
     ~/.gitignore: git/gitignore
     ~/.tmux.conf: config/tmux/tmux.conf
@@ -28,6 +29,7 @@
     ~/.claude/agents/code-locator.md: config/claude/agents/code-locator.md
     ~/.claude/skills/timesheet/SKILL.md: config/claude/skills/timesheet/SKILL.md
     ~/.claude/skills/html-report/SKILL.md: config/claude/skills/html-report/SKILL.md
+    ~/.claude/skills/alert/SKILL.md: config/claude/skills/alert/SKILL.md
     "~/Library/Application Support/Code/User/settings.json": config/vscode/settings.json
     "~/Library/Application Support/Code/User/keybindings.json": config/vscode/keybindings.json
 - shell:

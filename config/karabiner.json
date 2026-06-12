@@ -273,27 +273,6 @@
               {
                 "from": {
                   "key_code": "b",
-                  "modifiers": {
-                    "mandatory": ["left_control"],
-                    "optional": ["any"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "delete_or_backspace",
-                    "modifiers": []
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "left_control + b to backspace",
-            "manipulators": [
-              {
-                "from": {
-                  "key_code": "b",
                   "modifiers": { "mandatory": ["right_shift", "right_control", "right_option"] }
                 },
                 "to": [

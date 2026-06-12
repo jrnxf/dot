@@ -4,6 +4,8 @@ Never add Claude as a co-author on commits. No `Co-Authored-By: Claude …` trai
 
 Never read `.env` files (or analogous secret-bearing files: `.envrc`, `secrets.yml`, `*.pem`, `*.key`, ansible-vault-decrypted files, credential dumps) in any repo. This applies even when the file is gitignored — secrets in `.env` shouldn't enter conversation context. If you need to know whether a key is set, use a masked check like `grep -E "^KEY=" .env | sed 's/=.*$/=<set>/'`. If you need to change a value, ask for the new value and use Edit with an `old_string` the user gives you, or have the user make the edit themselves. If a tool needs the secret (e.g. `curl` with a token), have the user run it via `! …`.
 
+Whenever you invoke one or more skills while answering, end that response with a final line `Skills used: x, y, z` listing the skill names used. If no skill was used, omit the line entirely (don't write "Skills used: none").
+
 When working in `~/dotfiles`: the Cursor extension snapshot at `config/cursor/extensions.txt` is not auto-maintained. After installing or removing Cursor extensions, refresh it with `cursor --list-extensions > config/cursor/extensions.txt` and commit.
 
 ## Inline comments

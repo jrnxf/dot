@@ -23,7 +23,7 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 # ============================================================================
 # Environment
 # ============================================================================
-export EDITOR="cursor --wait"
+export EDITOR="code --wait"
 export MANPAGER='nvim +Man!'
 export LC_ALL=en_US.UTF-8
 export AWS_PAGER=""
