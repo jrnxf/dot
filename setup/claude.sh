@@ -19,18 +19,20 @@ fi
 
 echo "Setting up Claude Code MCP servers..."
 
-claude mcp add linear-server --transport http \
-  --url https://mcp.linear.app/mcp
+add_mcp() {
+  name="$1"; shift
+  if claude mcp get "$name" >/dev/null 2>&1; then
+    echo "MCP server '$name' already configured, skipping."
+  else
+    claude mcp add "$name" "$@"
+  fi
+}
 
-claude mcp add graphite -- gt mcp
-
-claude mcp add statsig --transport http \
-  --url https://api.statsig.com/v1/mcp
-
-claude mcp add playwright -- npx @playwright/mcp@latest
-
-claude mcp add posthog --transport http \
-  --url https://mcp.posthog.com/mcp
+add_mcp linear-server --transport http --url https://mcp.linear.app/mcp
+add_mcp graphite -- gt mcp
+add_mcp statsig --transport http --url https://api.statsig.com/v1/mcp
+add_mcp playwright -- npx @playwright/mcp@latest
+add_mcp posthog --transport http --url https://mcp.posthog.com/mcp
 
 echo "Claude Code MCP servers configured."
 echo "NOTE: Add secret-bearing servers manually (context7). See comments in this script."
