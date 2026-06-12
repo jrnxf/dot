@@ -37,6 +37,10 @@
       description: Setting up Mac
       stdout: true
       stderr: true
+    - command: ./setup/zsh.sh
+      description: Setting up zsh environment (oh-my-zsh, plugins, tpm, nvm)
+      stdout: true
+      stderr: true
     - command: ./setup/neovim.sh
       description: Setup Neovim
       stdout: true
