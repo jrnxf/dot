@@ -105,7 +105,6 @@ alias u="cd ~/Dev/une.haus"
 alias v='nvim'
 alias vim="nvim"
 alias vimdiff='nvim -d'
-alias code="cursor"
 
 # ============================================================================
 # Aliases — core tools
@@ -114,8 +113,6 @@ alias ls="lsd -lah"
 alias cat="bat"
 alias tmux="tmux -2" # keep colorscheme in tmux
 alias gotop="gotop --mbps"
-alias yolo='claude'
-alias claude='claude --dangerously-skip-permissions'
 alias ason='ZSH_AUTOSUGGEST_STRATEGY=(history completion)'
 alias asoff='ZSH_AUTOSUGGEST_STRATEGY=()'
 
@@ -135,16 +132,9 @@ alias gtms="gt modify && gt ss"
 alias gtn="gt create"
 
 # ============================================================================
-# Aliases — pocus
+# Aliases — apollo
 # ============================================================================
-alias pp="cd ~/Dev/pocus"
-alias ppp="g branch -D colby/preview && g co -b colby/preview && g push -f && g co -"
-alias pt="cd ~/Dev/pocus/frontend && pnpm typecheck"
-alias pl="cd ~/Dev/pocus/frontend && pnpm lint"
-alias ptt="cd ~/Dev/pocus/frontend && pnpm test"
-alias ppr="cd ~/Dev/pocus/frontend && pnpm prettier"
-alias pbl="cd ~/Dev/pocus/frontend && pnpm build:local"
-alias pvd="cd ~/Dev/pocus && vercel build && vercel deploy --prebuilt && cd -"
+alias lg="cd ~/Dev/leadgenie"
 
 # ============================================================================
 # Aliases — bun / pnpm
@@ -277,8 +267,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
 # BEGIN ANSIBLE MANAGED HOMELAB SSH WRAPPER
 ssh() {
   if [[ "$1" == "homelab" ]]; then
@@ -366,3 +354,8 @@ apsrc() {
 }
 
 ulimit -n 10240
+
+# ============================================================================
+# Local, untracked overrides (secrets, machine-specific env, etc.)
+# ============================================================================
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
