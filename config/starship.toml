@@ -31,5 +31,14 @@ disabled = true
 
 [kubernetes]
 format = '[$context \($namespace\)](dimmed blue) '
-disabled = false
+disabled = true
 detect_folders = ["kubernetes"] # there is a kubernetes folder in pocus
+
+[python]
+disabled = true
+
+[ruby]
+disabled = true
+
+[gcloud]
+disabled = true

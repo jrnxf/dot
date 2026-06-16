@@ -28,44 +28,10 @@
     ],
     "defaultMode": "auto"
   },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
-          }
-        ]
-      }
-    ]
-  },
+  "hooks": {},
   "statusLine": {
     "type": "command",
-    "command": "bash /Users/colby/.claude/statusline-command.sh"
+    "command": "bash /Users/jrnxf/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
@@ -87,8 +53,8 @@
     }
   },
   "effortLevel": "high",
-  "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
   "tui": "fullscreen",
-  "preferredNotifChannel": "ghostty"
+  "skipDangerousModePermissionPrompt": true,
+  "preferredNotifChannel": "ghostty",
+  "skipAutoPermissionPrompt": true
 }

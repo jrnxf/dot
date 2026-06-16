@@ -30,8 +30,9 @@
     ~/.claude/commands/ui-skills.md: config/claude/commands/ui-skills.md
     ~/.claude/agents/code-locator.md: config/claude/agents/code-locator.md
     ~/.claude/skills/timesheet/SKILL.md: config/claude/skills/timesheet/SKILL.md
-    "~/Library/Application Support/Cursor/User/settings.json": config/cursor/settings.json
-    "~/Library/Application Support/Cursor/User/keybindings.json": config/cursor/keybindings.json
+    ~/.claude/skills/html-report/SKILL.md: config/claude/skills/html-report/SKILL.md
+    "~/Library/Application Support/Code/User/settings.json": config/vscode/settings.json
+    "~/Library/Application Support/Code/User/keybindings.json": config/vscode/keybindings.json
 - shell:
     - command: ./setup/mac.sh
       description: Setting up Mac
@@ -45,7 +46,7 @@
       description: Setup Claude Code MCP servers
       stdout: true
       stderr: true
-    - command: ./setup/cursor.sh
-      description: Install Cursor extensions
+    - command: ./setup/vscode.sh
+      description: Install VS Code extensions
       stdout: true
       stderr: true
