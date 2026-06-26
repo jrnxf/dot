@@ -106,6 +106,10 @@ brew "neovim"
 brew "nss"
 # Manage multiple Node.js versions
 brew "nvm"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
+# The AI coding agent built for the terminal
+brew "opencode"
 # Object-relational database system
 brew "postgresql@15", restart_service: :changed
 # Object-relational database system

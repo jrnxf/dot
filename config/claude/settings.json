@@ -28,6 +28,7 @@
     ],
     "defaultMode": "acceptEdits"
   },
+  "model": "haiku",
   "hooks": {
     "Stop": [
       {
@@ -36,6 +37,10 @@
           {
             "type": "command",
             "command": "/Users/colby/.claude/hooks/cmux-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/colby/.claude/hooks/skills-used-line.py"
           }
         ]
       }
