@@ -23,7 +23,7 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 # ============================================================================
 # Environment
 # ============================================================================
-export EDITOR="cursor --wait"
+export EDITOR="code --wait"
 export MANPAGER='nvim +Man!'
 export LC_ALL=en_US.UTF-8
 export AWS_PAGER=""
@@ -104,7 +104,6 @@ alias u="cd ~/Dev/une.haus"
 alias v='nvim'
 alias vim="nvim"
 alias vimdiff='nvim -d'
-alias code="cursor"
 
 # ============================================================================
 # Aliases — core tools

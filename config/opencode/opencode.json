@@ -1,0 +1,20 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": { "baseURL": "http://localhost:11434/v1" },
+      "models": {
+        "qwen3-coder:30b-32k": {
+          "name": "Qwen3 Coder 30B (32k)",
+          "limit": { "context": 32768, "output": 8192 }
+        },
+        "gpt-oss:20b-32k": {
+          "name": "GPT-OSS 20B (32k)",
+          "limit": { "context": 32768, "output": 8192 }
+        }
+      }
+    }
+  }
+}
