@@ -7,7 +7,7 @@ description:
   human", references either site, or wants a short readable recap of work you just did.
 ---
 
-# Plain Writeup
+# Writeup
 
 Turn an investigation, diagnosis, change, or a user supplied body of text into a short human recap. Reference style:
 https://noslopgrenade.com/, https://stopsloppypasta.ai/en/.
