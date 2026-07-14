@@ -1,5 +1,5 @@
 ---
-name: plain-writeup
+name: writeup
 description:
   Write a short, plain-English summary of a finding, investigation, or change — leading with the conclusion, saying how
   you know and what the fix is, in a human voice with no AI slop (noslopgrenade.com / stopsloppypasta.ai style). Use

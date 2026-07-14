@@ -31,7 +31,7 @@
     ~/.claude/skills/timesheet/SKILL.md: config/claude/skills/timesheet/SKILL.md
     ~/.claude/skills/html-report/SKILL.md: config/claude/skills/html-report/SKILL.md
     ~/.claude/skills/alert/SKILL.md: config/claude/skills/alert/SKILL.md
-    ~/.claude/skills/plain-writeup/SKILL.md: config/claude/skills/plain-writeup/SKILL.md
+    ~/.claude/skills/writeup/SKILL.md: config/claude/skills/writeup/SKILL.md
     "~/Library/Application Support/Code/User/settings.json": config/vscode/settings.json
     "~/Library/Application Support/Code/User/keybindings.json": config/vscode/keybindings.json
 - shell:
