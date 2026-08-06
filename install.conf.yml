@@ -21,6 +21,7 @@
     ~/.tmux.conf: config/tmux/tmux.conf
     ~/.config/starship.toml: config/starship.toml
     ~/.config/karabiner/karabiner.json: config/karabiner.json
+    ~/.codex/AGENTS.md: config/claude/CLAUDE.md
     ~/.claude/settings.json: config/claude/settings.json
     ~/.claude/CLAUDE.md: config/claude/CLAUDE.md
     ~/.claude/statusline-command.sh: config/claude/statusline-command.sh
