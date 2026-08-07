@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "deny": [
-      "Read(//Volumes/files/**)"
-    ],
     "allow": [
       "Bash(git worktree:*)",
       "Bash(git add:*)",
@@ -29,10 +26,26 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch"
     ],
+    "deny": [
+      "Read(//Volumes/files/**)"
+    ],
     "defaultMode": "auto"
   },
-  "model": "fable",
-  "hooks": {},
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/colby/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bash /Users/colby/.claude/statusline-command.sh"
