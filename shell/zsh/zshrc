@@ -304,3 +304,12 @@ ulimit -n 10240
 # Local, untracked overrides (secrets, machine-specific env, etc.)
 # ============================================================================
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/colby/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/colby/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/colby/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/colby/google-cloud-sdk/completion.zsh.inc'; fi
+export RAILS_MCP_TOKEN=24a90dd8beb46de7
+alias tilt=/opt/homebrew/bin/tilt
+export PATH="/Users/colby/.nvm/versions/node/v24.4.1/bin:$PATH"
