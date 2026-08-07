@@ -1,0 +1,44 @@
+name: Close pull requests
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  close:
+    name: Comment and close
+    if: github.event.pull_request.user.login != github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment and close pull request
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        with:
+          script: |
+            const message = [
+              "Thanks for taking an interest in these dotfiles.",
+              "This repo is public so you can read it, learn from it, and fork it freely, but it is Kun's personal setup and does not accept pull requests or feature requests.",
+              "If you want to adapt something, please fork the repo and make it yours.",
+              "If you found a bug, please open a bug report issue instead of sending a patch.",
+              "Pull requests are auto-closed here so the repo can stay personal and predictable."
+            ].join("\n");
+
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request.number;
+
+            await github.rest.pulls.createReview({
+              owner,
+              repo,
+              pull_number,
+              event: "COMMENT",
+              body: message
+            });
+
+            await github.rest.pulls.update({
+              owner,
+              repo,
+              pull_number,
+              state: "closed"
+            });
