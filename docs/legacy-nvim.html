@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en" data-theme="luxury">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legacy Neovim Setup - Archaeology of commit 22be109</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(.grid, .flex) > * { min-width: 0; }
+  :where(p, h1, h2, h3, h4, li, dd, blockquote, td, th, .badge, .label) { overflow-wrap: anywhere; }
+  :where(img, svg, video, canvas, iframe) { max-width: 100%; height: auto; }
+  .commit-hash { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>
+</head>
+<body class="bg-base-200 text-base-content min-h-screen">
+
+<div class="max-w-5xl mx-auto px-4 py-10 flex flex-col gap-10">
+
+  <!-- ============ HERO ============ -->
+  <header class="flex flex-col gap-4">
+    <div class="badge badge-outline badge-warning">repo archaeology · dotfiles</div>
+    <h1 class="text-4xl font-bold leading-tight">The Legacy Neovim Setup</h1>
+    <p class="text-lg opacity-80 max-w-3xl">
+      Before the wipe, this repo carried a fully built-out, 11-iteration Neovim configuration:
+      ~45 plugins, a per-server LSP layer with format-on-save, a hand-rolled Lua stdlib, and a
+      hot-reloadable boot pipeline. This page maps what was there, where it lives in git
+      history, and what deserves resurrection into today's minimal lazy.nvim config.
+    </p>
+    <div class="stats stats-vertical sm:stats-horizontal shadow bg-base-100">
+      <div class="stat">
+        <div class="stat-title">Reference commit</div>
+        <div class="stat-value text-2xl commit-hash text-primary">22be109</div>
+        <div class="stat-desc">last commit with the full setup</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Plugins</div>
+        <div class="stat-value text-2xl">~45</div>
+        <div class="stat-desc">packer.nvim, custom conf handler</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Language servers</div>
+        <div class="stat-value text-2xl">10</div>
+        <div class="stat-desc">one file per server</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">Custom lib modules</div>
+        <div class="stat-value text-2xl">9</div>
+        <div class="stat-desc">lua/jrnxf/lib/*</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">How it died: the three commits that matter</h2>
+      <ul class="timeline timeline-vertical timeline-compact mt-2">
+        <li>
+          <div class="timeline-middle"><span class="badge badge-primary badge-sm"></span></div>
+          <div class="timeline-end timeline-box w-full">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="commit-hash font-bold text-primary">22be109</span>
+              <span class="badge badge-primary badge-soft">reference commit</span>
+            </div>
+            <p class="mt-1 text-sm opacity-80">"nvim restructuring pt11" - the end state of an
+            11-part restructuring effort. Everything below describes the tree at this commit,
+            under <code>config/nvim/</code>.</p>
+          </div>
+          <hr>
+        </li>
+        <li>
+          <hr>
+          <div class="timeline-middle"><span class="badge badge-warning badge-sm"></span></div>
+          <div class="timeline-end timeline-box w-full">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="commit-hash font-bold">58c0037</span>
+              <span class="badge badge-warning badge-soft">the wipe · May 4, 2026</span>
+            </div>
+            <p class="mt-1 text-sm opacity-80">"wipe nvim config, archive old setup as nvim.bak" -
+            the packer-based config had broken against then-current Neovim, so it was shelved to
+            <code>config/nvim.bak</code> and machines started barebones.</p>
+          </div>
+          <hr>
+        </li>
+        <li>
+          <hr>
+          <div class="timeline-middle"><span class="badge badge-error badge-sm"></span></div>
+          <div class="timeline-end timeline-box w-full">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="commit-hash font-bold">39f6a45</span>
+              <span class="badge badge-error badge-soft">gone from the working tree</span>
+            </div>
+            <p class="mt-1 text-sm opacity-80">"migrate to nix-darwin + home-manager" - deleted
+            <code>config/nvim.bak</code> entirely. Nothing of the old setup survives outside git
+            history.</p>
+          </div>
+        </li>
+      </ul>
+      <div role="alert" class="alert alert-info alert-soft mt-2">
+        <span>Recovery is one command away - see the snippet below. The durable version of this
+        page lives at <code>docs/legacy-nvim.md</code>.</span>
+      </div>
+      <div id="recover-file" class="mt-2"></div>
+    </div>
+  </section>
+
+  <!-- ============ ARCHITECTURE ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">Architecture: how it booted</h2>
+      <p class="opacity-80">One-line <code>init.lua</code>, then an explicit, documented boot
+      order. The LSP namespace deliberately waited until nvim-lspconfig and all its dependencies
+      were loaded, wired through packer's <code>after</code>/<code>config</code> hooks.</p>
+      <pre class="mermaid bg-transparent">
+flowchart TD
+  A["init.lua<br/><i>require('jrnxf.bootstrap').init()</i>"] --> B["define_globals()<br/>_G.jrn store · _G.put() debug print"]
+  B --> C["disable_distribution_plugins()<br/>netrw, tar, zip, tutor, shada, ~20 total"]
+  C --> D["impatient.nvim<br/>startup cache (pcall'd)"]
+  D --> E["jrnxf.core<br/>options · keymaps · commands · events · colors"]
+  E --> F["jrnxf.plugins<br/>packer spec, custom 'conf' handler"]
+  F -->|"after lspconfig + deps load"| G["jrnxf.lsp<br/>shared handlers, then one module per server"]
+      </pre>
+      <div class="grid md:grid-cols-2 gap-4 mt-2">
+        <div class="mockup-code text-sm">
+          <pre><code>config/nvim/
+├── init.lua          # one line
+├── .stylua.toml
+├── lua/jrnxf/
+│   ├── bootstrap.lua # boot order
+│   ├── core/         # options, keymaps,
+│   │                 # commands, events, colors
+│   ├── lib/          # hand-rolled stdlib
+│   ├── lsp/          # one file per server
+│   └── plugins/      # one conf per plugin
+└── snippets/         # LuaSnip: all, lua, ts</code></pre>
+        </div>
+        <div class="flex flex-col gap-3">
+          <div class="card card-border bg-base-200">
+            <div class="card-body py-4">
+              <h3 class="font-semibold">Packer's custom <code>conf</code> handler</h3>
+              <p class="text-sm opacity-80">A spec entry like
+              <code>{ 'folke/trouble.nvim', conf = 'trouble' }</code> auto-expanded to
+              <code>require('jrnxf.plugins.trouble')</code>. Packer is dead, but the
+              one-config-file-per-plugin convention maps 1:1 onto lazy.nvim's
+              <code>plugins/</code> spec directories.</p>
+            </div>
+          </div>
+          <div class="card card-border bg-base-200">
+            <div class="card-body py-4">
+              <h3 class="font-semibold">Hot reload without restart</h3>
+              <p class="text-sm opacity-80"><code>lib/reload.lua</code> purged every
+              <code>jrnxf.core</code>/<code>jrnxf.plugins</code> module from
+              <code>package.loaded</code>, re-ran bootstrap, then <code>packer.sync()</code>.
+              Bound to <kbd class="kbd kbd-sm">F3</kbd> and
+              <kbd class="kbd kbd-sm">&lt;leader&gt;fr</kbd>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HAND-ROLLED LIB ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">The hand-rolled <code>lib/</code></h2>
+      <p class="opacity-80">The most personal part of the setup and the easiest to lose without
+      noticing. None of this is replaceable by a plugin.</p>
+      <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+        <table class="table table-zebra">
+          <thead><tr><th>Module</th><th>What it did</th><th>Bound to</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-sm">lib/utils.lua</td>
+              <td><code>smart_telescope_files()</code> git-aware file finder ·
+                  <code>exec_current_file()</code> ·
+                  <code>open_url_under_cursor()</code> incl. bare <code>user/repo</code> GitHub
+                  shorthand · table utils (<code>vec_union</code>, <code>tbl_deep_clone</code>,
+                  <code>tbl_union_extend_or_overwrite</code>)</td>
+              <td><kbd class="kbd kbd-sm">F1</kbd> <kbd class="kbd kbd-sm">F2</kbd></td>
+            </tr>
+            <tr>
+              <td class="font-mono text-sm">lib/reload.lua</td>
+              <td>Full config hot-reload (see above)</td>
+              <td><kbd class="kbd kbd-sm">F3</kbd></td>
+            </tr>
+            <tr>
+              <td class="font-mono text-sm">lib/keymaps.lua</td>
+              <td>Global <code>nmap</code>/<code>vmap</code>/<code>xmap</code>/<code>cmap</code>/<code>kmap</code>/<code>buf_map</code>
+                  helpers - every mapping in the config stayed terse and uniform</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-sm">bootstrap.lua</td>
+              <td><code>_G.put(...)</code> - vim.inspect + notify debug printing, used constantly
+                  while hacking on the config</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-sm">lib/{platform, path, modlist, events, colors}.lua</td>
+              <td>Small platform/path/module-enumeration helpers supporting the rest</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LSP ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">The LSP layer</h2>
+      <p class="opacity-80">One file per server under <code>lua/jrnxf/lsp/</code>, with shared
+      behavior established in <code>lsp/init.lua</code>. This whole layer is absent from the
+      current config - it is the single biggest gap.</p>
+      <div class="flex flex-wrap gap-2 mt-1">
+        <span class="badge badge-outline">bashls</span>
+        <span class="badge badge-outline">eslint</span>
+        <span class="badge badge-outline">gopls</span>
+        <span class="badge badge-outline">jsonls</span>
+        <span class="badge badge-outline">null_ls</span>
+        <span class="badge badge-outline">prismals</span>
+        <span class="badge badge-outline">pyright</span>
+        <span class="badge badge-outline">rust_analyzer</span>
+        <span class="badge badge-outline">sumneko_lua <span class="opacity-60">→ lua_ls</span></span>
+        <span class="badge badge-outline">tsserver <span class="opacity-60">→ ts_ls</span></span>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <h3 class="font-semibold">Shared behavior (lsp/init.lua)</h3>
+            <ul class="list-disc ml-5 text-sm opacity-80 flex flex-col gap-1 mt-1">
+              <li>Rounded borders on every float: diagnostics, hover, signature help, <code>:LspInfo</code></li>
+              <li><code>virtual_text = false</code> - diagnostics in gutter + floats, never inline</li>
+              <li>Custom per-severity gutter icons</li>
+              <li><strong>Format on save</strong> via a shared <code>LspFormatting</code> augroup,
+                  plus <kbd class="kbd kbd-xs">&lt;leader&gt;fo</kbd> and visual-mode
+                  <kbd class="kbd kbd-xs">&lt;CR&gt;</kbd> on demand</li>
+              <li>Highlight-references-on-hold, with a documented toggle between vim-illuminate
+                  and a plugin-free LSP <code>documentHighlight</code> path</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <h3 class="font-semibold">Mason ensure_installed - a census of the languages used</h3>
+            <p class="text-sm opacity-70 mt-1">Port this list wholesale; it encodes TS/JS, Go,
+            Python, Lua, Bash, Rust, Prisma, Tailwind.</p>
+            <div class="flex flex-wrap gap-1.5 mt-2 text-xs">
+              <span class="badge badge-ghost badge-sm">tailwindcss-language-server</span>
+              <span class="badge badge-ghost badge-sm">pyright</span>
+              <span class="badge badge-ghost badge-sm">html-lsp</span>
+              <span class="badge badge-ghost badge-sm">bash-language-server</span>
+              <span class="badge badge-ghost badge-sm">editorconfig-checker</span>
+              <span class="badge badge-ghost badge-sm">gopls</span>
+              <span class="badge badge-ghost badge-sm">lua-language-server</span>
+              <span class="badge badge-ghost badge-sm">luacheck</span>
+              <span class="badge badge-ghost badge-sm">misspell</span>
+              <span class="badge badge-ghost badge-sm">prettierd</span>
+              <span class="badge badge-ghost badge-sm">shellcheck</span>
+              <span class="badge badge-ghost badge-sm">shfmt</span>
+              <span class="badge badge-ghost badge-sm">stylua</span>
+              <span class="badge badge-ghost badge-sm">typescript-language-server</span>
+              <span class="badge badge-ghost badge-sm">xo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-sm opacity-80 mt-2"><strong>null-ls</strong> handled formatting (prettierd,
+      shfmt, stylua), code actions (shellcheck, xo, gitsigns), and the fun
+      <code>hover.dictionary</code> / <code>hover.printenv</code> sources. It is abandoned now -
+      conform.nvim + nvim-lint is the modern path.</p>
+    </div>
+  </section>
+
+  <!-- ============ PLUGIN INVENTORY ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">Plugin inventory (~45)</h2>
+      <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+        <table class="table table-zebra table-sm">
+          <thead><tr><th>Area</th><th>Plugins</th></tr></thead>
+          <tbody>
+            <tr><td class="font-semibold">Syntax</td><td>nvim-treesitter + playground, nvim-ts-autotag, ts-context-commentstring (working JSX comments)</td></tr>
+            <tr><td class="font-semibold">Finding</td><td>telescope (+ fzf-native, live-grep-args, bookmarks) <em>and</em> fzf-lua <em>and</em> harpoon - all three at once</td></tr>
+            <tr><td class="font-semibold">Completion</td><td>nvim-cmp (nvim-lua, nvim-lsp, buffer, path, emoji, cmdline sources, lspkind icons), LuaSnip + custom snippets (<code>cl</code>, <code>imp</code>)</td></tr>
+            <tr><td class="font-semibold">Git</td><td>fugitive, gitsigns, diffview (pinned to a commit to dodge a horizontal-split bug)</td></tr>
+            <tr><td class="font-semibold">UI</td><td>feline statusline (custom, 2 files), bufferline v3, nvim-tree, dressing, nui, fidget, notifier, indent-blankline, zen-mode, trouble</td></tr>
+            <tr><td class="font-semibold">Editing</td><td>Comment.nvim, vim-surround, nvim-autopairs, inc-rename (live rename preview), better-escape (<code>jk</code>/<code>kj</code>)</td></tr>
+            <tr><td class="font-semibold">Motion</td><td>cinnamon smooth scrolling (leap and neoscroll tried, commented out)</td></tr>
+            <tr><td class="font-semibold">Colors</td><td>nightfox (<strong>terafox</strong> active), rose-pine, onenord, onedark, catppuccin, nvim-colorizer</td></tr>
+            <tr><td class="font-semibold">Lang</td><td>go.nvim, typescript.nvim, neodev, schemastore</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div role="alert" class="alert alert-soft mt-3">
+        <span><strong>The commented-out graveyard is itself data:</strong> noice, lualine,
+        legendary, leap, neoscroll, todo-comments - all tried, all rejected. Feline carried a
+        warning about a packer <code>VimEnter</code> double-fire bug, and trouble once ran from a
+        personal fork carrying a looping feature.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KEYMAPS ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">Keymaps worth remembering</h2>
+      <p class="opacity-80">Space leader. Diff these against current <code>lua/keys.lua</code> and
+      port what's missing.</p>
+      <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+        <table class="table table-zebra table-sm">
+          <thead><tr><th>Keys</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr><td><kbd class="kbd kbd-sm">jk</kbd> / <kbd class="kbd kbd-sm">kj</kbd></td><td>Escape insert mode (better-escape)</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">x</kbd> <kbd class="kbd kbd-sm">X</kbd> <kbd class="kbd kbd-sm">&lt;leader&gt;d</kbd> <kbd class="kbd kbd-sm">&lt;leader&gt;p</kbd></td><td>Void-register family: delete without clobbering, paste keeping the register</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">←</kbd><kbd class="kbd kbd-sm">→</kbd><kbd class="kbd kbd-sm">↑</kbd><kbd class="kbd kbd-sm">↓</kbd> · <kbd class="kbd kbd-sm">&lt;leader&gt;=</kbd></td><td>Arrow keys resize windows; equalize splits</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">&lt;CR&gt;</kbd></td><td>Clears search highlight and still acts as Enter</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">n</kbd>/<kbd class="kbd kbd-sm">N</kbd> · <kbd class="kbd kbd-sm">j</kbd>/<kbd class="kbd kbd-sm">k</kbd></td><td>Recenter matches with <code>zzzv</code>; respect wrapped lines (<code>gj</code>/<code>gk</code>)</td></tr>
+            <tr><td>visual <kbd class="kbd kbd-sm">J</kbd>/<kbd class="kbd kbd-sm">K</kbd> · <kbd class="kbd kbd-sm">&lt;</kbd>/<kbd class="kbd kbd-sm">&gt;</kbd></td><td>Move selected lines; keep selection after indenting</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">c.</kbd></td><td><code>%s</code> substitution pre-filled with word under cursor</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">&lt;leader&gt;o</kbd> / <kbd class="kbd kbd-sm">&lt;leader&gt;O</kbd></td><td>Insert blank lines without insert mode, count-aware</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">&lt;leader&gt;gB</kbd></td><td>Open current file <em>and line</em> on GitHub via <code>gh browse</code></td></tr>
+            <tr><td><kbd class="kbd kbd-sm">gs</kbd> · <kbd class="kbd kbd-sm">gj</kbd>/<kbd class="kbd kbd-sm">gk</kbd></td><td>Fugitive <code>:0G</code> status; <code>diffget //2</code> (theirs) / <code>//3</code> (mine) in conflicts</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">&lt;leader&gt;gd</kbd> / <kbd class="kbd kbd-sm">gh</kbd> / <kbd class="kbd kbd-sm">gH</kbd></td><td>Diffview open · full history · current-file history</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">&lt;C-a&gt;</kbd> <kbd class="kbd kbd-sm">&lt;C-e&gt;</kbd> <kbd class="kbd kbd-sm">&lt;C-h/j/k/l&gt;</kbd> <kbd class="kbd kbd-sm">&lt;C-f&gt;</kbd></td><td>Emacs-style cmdline nav; insert current file path</td></tr>
+            <tr><td><kbd class="kbd kbd-sm">F1</kbd> <kbd class="kbd kbd-sm">F2</kbd> <kbd class="kbd kbd-sm">F3</kbd></td><td>Run current file · open URL under cursor · hot-reload config</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm opacity-70 mt-2">A small <code>docs/nvim.md</code> also existed with vim
+      tips: <code>vim -V9myVim.log</code> verbose-log debugging, and <code>:v/pat/d</code> /
+      <code>:g!/pat/d</code> to delete non-matching lines.</p>
+    </div>
+  </section>
+
+  <!-- ============ BRING OVER ============ -->
+  <section class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title text-2xl">Verdict: what to bring over</h2>
+      <p class="opacity-80">Today's config is minimal lazy.nvim: snacks.nvim, which-key, gitsigns,
+      neogit, diffview, oil, rose-pine. Ranked gaps, with modern replacements where the old
+      plugin is dead:</p>
+      <div class="grid md:grid-cols-2 gap-3 mt-2">
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-error">1 · biggest gap</span>
+              <h3 class="font-semibold">LSP + formatting layer</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">Recreate the per-server layout and format-on-save.
+            Modern stack: nvim-lspconfig + mason (still alive) + <strong>conform.nvim</strong> +
+            <strong>nvim-lint</strong> (null-ls is dead). Rename relics:
+            <code>sumneko_lua → lua_ls</code>, <code>tsserver → ts_ls</code>.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-error">2</span>
+              <h3 class="font-semibold">Mason ensure_installed list</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">A complete census of languages actually worked in.
+            Port wholesale.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-warning">3</span>
+              <h3 class="font-semibold">Treesitter</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">Absent today; was foundational. Add
+            ts-context-commentstring back if JSX commenting matters again.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-warning">4</span>
+              <h3 class="font-semibold">Completion + snippets</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">nvim-cmp or its modern successor
+            <strong>blink.cmp</strong>; carry the LuaSnip snippets dir - tiny files, pure muscle
+            memory.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-warning">5</span>
+              <h3 class="font-semibold">lib/utils.lua helpers</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1"><code>smart_telescope_files</code> (adapt to
+            snacks.picker), <code>open_url_under_cursor</code> with GitHub shorthand,
+            <code>exec_current_file</code>, <code>put()</code>. Personal tooling - no plugin
+            replaces these.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-warning">6</span>
+              <h3 class="font-semibold">The keymaps</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">Whole table above, especially the void-register
+            family, <code>c.</code>, <code>&lt;leader&gt;gB</code>, fugitive/diffview bindings,
+            window-resize arrows.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-info">7</span>
+              <h3 class="font-semibold">inc-rename</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">Live-preview LSP rename. Small, still
+            maintained.</p>
+          </div>
+        </div>
+        <div class="card card-border bg-base-200">
+          <div class="card-body py-4">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-info">8</span>
+              <h3 class="font-semibold">Format-on-save discipline</h3>
+            </div>
+            <p class="text-sm opacity-80 mt-1">The <code>LspFormatting</code> augroup pattern (or
+            conform's <code>format_on_save</code>) with the
+            <kbd class="kbd kbd-xs">&lt;leader&gt;fo</kbd> escape hatch.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="font-semibold text-lg mb-2">Leave behind</h3>
+          <ul class="list-disc ml-5 text-sm opacity-80 flex flex-col gap-1">
+            <li><strong>packer</strong> - dead; lazy.nvim won</li>
+            <li><strong>impatient</strong> - built in as <code>vim.loader.enable()</code></li>
+            <li><strong>feline</strong> - unmaintained; snacks/lualine/heirline cover it</li>
+            <li><strong>null-ls</strong> - abandoned</li>
+            <li><strong>nvim-tree</strong> - oil covers it</li>
+            <li><strong>colorscheme zoo</strong> - rose-pine already won</li>
+            <li><strong>cinnamon</strong> - Neovim 0.10+ <code>smoothscroll</code>, snacks animations</li>
+            <li><strong>notifier / dressing / nui</strong> - snacks.nvim + <code>vim.ui</code> improvements</li>
+            <li><strong>harpoon</strong> - only if the workflow itch returns</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg mb-2">Judgment calls</h3>
+          <ul class="list-disc ml-5 text-sm opacity-80 flex flex-col gap-1">
+            <li><strong>telescope vs fzf-lua vs snacks.picker</strong> - the old config ran both
+            telescope and fzf-lua simultaneously; snacks.picker likely suffices now.</li>
+            <li><strong>trouble</strong> - worth re-evaluating (v3 rewrote it) if
+            diagnostics-list workflows come back.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-sm opacity-60 text-center pb-6">
+    Durable copy: <code>docs/legacy-nvim.md</code> · Reference tree:
+    <code>git show 22be109:config/nvim/…</code>
+  </footer>
+</div>
+
+<script type="module">
+  import { File } from "https://esm.sh/@pierre/diffs@1.2.10?bundle";
+  const theme = { light: "github-light", dark: "github-dark" };
+  new File({ theme, themeType: "dark", overflow: "wrap" }).render({
+    containerWrapper: document.querySelector("#recover-file"),
+    file: {
+      name: "recover-legacy-nvim.sh",
+      contents: `git show 22be109:config/nvim/init.lua               # read any single file\ngit ls-tree -r --name-only 22be109 -- config/nvim   # list everything\ngit checkout 22be109 -- config/nvim                 # resurrect the whole tree\n`,
+    },
+  });
+</script>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.esm.min.mjs";
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const paint = document.createElement("canvas").getContext("2d");
+  function toRgba(color) {
+    paint.clearRect(0, 0, 1, 1);
+    paint.fillStyle = "#000";
+    paint.fillStyle = color;
+    paint.fillRect(0, 0, 1, 1);
+    return paint.getImageData(0, 0, 1, 1).data;
+  }
+  function compositeRgba(foreground, background) {
+    const fa = foreground[3] / 255;
+    const ba = background[3] / 255;
+    const a = fa + ba * (1 - fa);
+    if (a === 0) return [0, 0, 0, 0];
+    return [
+      (foreground[0] * fa + background[0] * ba * (1 - fa)) / a,
+      (foreground[1] * fa + background[1] * ba * (1 - fa)) / a,
+      (foreground[2] * fa + background[2] * ba * (1 - fa)) / a,
+      a * 255,
+    ];
+  }
+  function pageIsDark() {
+    const root = document.documentElement;
+    const rootBackground = toRgba(getComputedStyle(root).backgroundColor);
+    const bodyBackground = document.body ? toRgba(getComputedStyle(document.body).backgroundColor) : [0, 0, 0, 0];
+    const [r, g, b, a] = compositeRgba(bodyBackground, rootBackground);
+    if (a > 0) return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5;
+    const colorScheme = getComputedStyle(root).colorScheme;
+    if (colorScheme.includes("dark") && !colorScheme.includes("light")) return true;
+    if (colorScheme.includes("light") && !colorScheme.includes("dark")) return false;
+    return darkQuery.matches;
+  }
+  const diagrams = [...document.querySelectorAll(".mermaid")].map((el) => ({ el, src: el.textContent }));
+  let applied;
+  let rendering = false;
+  let queued = false;
+  function queueRender() {
+    queued = true;
+    if (rendering) return;
+    void render();
+  }
+  async function render() {
+    rendering = true;
+    try {
+      while (queued) {
+        queued = false;
+        const theme = pageIsDark() ? "dark" : "default";
+        if (theme === applied) continue;
+        mermaid.initialize({ startOnLoad: false, theme, securityLevel: "strict" });
+        for (const { el, src } of diagrams) {
+          el.removeAttribute("data-processed");
+          el.textContent = src;
+        }
+        try {
+          await mermaid.run({ nodes: diagrams.map((d) => d.el) });
+        } catch (error) {
+          console.error("Mermaid diagram render failed:", error);
+          return;
+        }
+        applied = theme;
+      }
+    } finally {
+      rendering = false;
+      if (queued) queueRender();
+    }
+  }
+  if (document.readyState === "complete") queueRender();
+  else window.addEventListener("load", queueRender, { once: true });
+  const themeObserver = new MutationObserver(queueRender);
+  for (const el of [document.documentElement, document.body]) {
+    if (!el) continue;
+    themeObserver.observe(el, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
+  }
+  document.addEventListener("change", queueRender, true);
+  document.addEventListener("transitionend", ({ propertyName }) => {
+    if (propertyName === "background-color") queueRender();
+  }, true);
+  darkQuery.addEventListener("change", queueRender);
+</script>
+
+</body>
+</html>
