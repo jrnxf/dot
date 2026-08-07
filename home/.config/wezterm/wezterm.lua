@@ -30,4 +30,20 @@ config.keys = {
 	},
 }
 
+-- By default CTRL+wheel resizes the font. Holding CTRL for vim/terminal chords
+-- (<C-w>, <C-a>) and brushing the trackpad then zooms at random. Make CTRL+wheel
+-- scroll like a plain wheel instead.
+config.mouse_bindings = {
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		mods = "CTRL",
+		action = act.ScrollByCurrentEventWheelDelta,
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		mods = "CTRL",
+		action = act.ScrollByCurrentEventWheelDelta,
+	},
+}
+
 return config
