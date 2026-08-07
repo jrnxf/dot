@@ -32,9 +32,18 @@ in
     syntaxHighlighting.enable = true;  # commands turn green when valid
     plugins = [
       {
-        # tab completion in an fzf popup, replacing the old omz custom plugin
+        # tab completion in an fzf popup, replacing the old omz custom plugin.
+        # strip the prebuilt native module: its baked-in version string
+        # doesn't match what fzf-tab.zsh expects, so every shell start it
+        # prompts "fzftab module needs to be rebuild, rebuild now?[Y/n]".
+        # without modules/Src/aloxaf it falls back to the supported
+        # pure-zsh ls-colors implementation instead.
         name = "fzf-tab";
-        src = pkgs.zsh-fzf-tab;
+        src = pkgs.runCommand "zsh-fzf-tab-no-module" { } ''
+          cp -r ${pkgs.zsh-fzf-tab} $out
+          chmod -R u+w $out
+          rm -rf $out/share/fzf-tab/modules
+        '';
         file = "share/fzf-tab/fzf-tab.plugin.zsh";
       }
     ];
@@ -196,7 +205,7 @@ in
 
       # ---- carried over from pre-nix zshrc ----
       # shell
-      reload = "source ~/.zshrc";
+      reload = "~/.dotfiles/rebuild.sh && exec zsh";
       clear = ''printf "\33c\e[3J"'';
       x = "exit";
       q = "clear";
@@ -210,6 +219,7 @@ in
       # core tools
       ls = "lsd -lah";
       cat = "bat";
+      curltime = ''curl -w "@$HOME/.curl-format.txt" -o /dev/null -s '';
       tmux = "tmux -2";
       gotop = "gotop --mbps";
       ason = "ZSH_AUTOSUGGEST_STRATEGY=(history completion)";
@@ -276,6 +286,16 @@ in
   # Ghostty keeps runtime state (auto/) next to its config, so link just the file.
   home.file.".config/ghostty/config".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/ghostty/config";
+
+  # Same for Karabiner: assets/ and automatic_backups/ next to it are runtime
+  # state, so link only the authored file. Karabiner rewrites karabiner.json on
+  # every GUI edit; if it ever replaces the symlink with a plain file, copy it
+  # back into the repo and re-run rebuild.sh to restore the link.
+  home.file.".config/karabiner/karabiner.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/karabiner/karabiner.json";
+
+  home.file.".curl-format.txt".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.curl-format.txt";
 
   home.file.".gitconfig".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.gitconfig";

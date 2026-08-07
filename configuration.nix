@@ -17,13 +17,18 @@
       AppleInterfaceStyle = "Dark";
       KeyRepeat = 2;          # fast key repeat
       InitialKeyRepeat = 15;  # short delay before repeat
-      _HIHideMenuBar = true;  # auto-hide the menu bar
       AppleShowAllExtensions = true;
+      _HIHideMenuBar = false;
     };
     dock.autohide = true;
     finder.FXPreferredViewStyle = "Nlsv";  # list view by default
     finder.CreateDesktop = false;          # clean desktop
     trackpad.Clicking = true;              # tap to click
+    # NOTE: universalaccess.* (e.g. closeViewScrollWheelToggle, to stop Ctrl+scroll
+    # zooming the screen during <C-w>/<C-a> chords) is deliberately NOT set here.
+    # macOS TCC-protects that domain, so activation dies with
+    # "Could not write domain com.apple.universalaccess". Set it by hand in
+    # System Settings > Accessibility > Zoom.
   };
   nix-homebrew = {
     enable = true;
@@ -109,6 +114,10 @@
       "lefthook"
       "libffi"
       "libgit2"
+      # sqld is pulled in as a dependency of tursodatabase/tap/turso; declare it
+      # so nix-homebrew writes its formula trust into trust.json (manual `brew
+      # trust` entries get wiped on every activation).
+      { name = "libsql/sqld/sqld"; trusted = true; }
       "libxml2"
       "libxmu"
       "libxslt"
