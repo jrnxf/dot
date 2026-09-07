@@ -31,7 +31,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "fable[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -54,7 +54,8 @@
     "figma@claude-plugins-official": true,
     "pogo@pogo": true,
     "ruby-lsp@claude-plugins-official": true,
-    "caveman@caveman": true
+    "caveman@caveman": true,
+    "cloudflare@cloudflare": true
   },
   "extraKnownMarketplaces": {
     "cloudflare": {
@@ -81,5 +82,6 @@
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "preferredNotifChannel": "ghostty",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
