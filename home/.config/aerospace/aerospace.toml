@@ -1,0 +1,64 @@
+# AeroSpace config. Docs: https://nikitabobko.github.io/AeroSpace/guide
+# Based on the upstream default config, trimmed to workspaces 1-9 and with
+# small gaps. Full default lives at
+# /Applications/AeroSpace.app/Contents/Resources/default-config.toml
+#
+# Keybindings do NOT live here: AeroSpace can't tell right cmd from left
+# (nikitabobko/AeroSpace#28), so the Karabiner jrnxf profile ("right command =
+# aerospace key") intercepts right-cmd chords and drives the aerospace CLI
+# directly. Left cmd stays a completely normal cmd. Only the modal `service`
+# bindings below are handled by AeroSpace itself.
+
+config-version = 2
+
+start-at-login = true
+# The config is a live symlink into the dotfiles repo; pick up edits on save.
+auto-reload-config = true
+
+after-startup-command = []
+
+# i3-style normalizations: keep the tree flat and alternate split orientation.
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+accordion-padding = 30
+
+# Warp the mouse when focus jumps to another monitor.
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Undo cmd-h; hidden windows and tiling don't mix.
+automatically-unhide-macos-hidden-apps = true
+
+focus-follows-mouse.enabled = false
+# Karabiner already emits remapped (dvorak) keycodes, so plain qwerty here.
+key-mapping.preset = 'qwerty'
+
+# Keep 1-9 alive even when empty so workspace switching never lands on a dead
+# workspace.
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+gaps.inner.horizontal = 8
+gaps.inner.vertical =   8
+gaps.outer.left =       8
+gaps.outer.bottom =     8
+gaps.outer.top =        8
+gaps.outer.right =      8
+
+# Empty on purpose; see the header comment. Karabiner owns the main-mode keys.
+[mode.main.binding]
+
+# Modal mode, entered via right-cmd shift ; (Karabiner). Plain keys are fine
+# here because AeroSpace grabs the whole keyboard while a non-main mode is on.
+[mode.service.binding]
+    esc = 'mode main'
+    c = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # toggle floating <-> tiling
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    h = ['join-with left', 'mode main']
+    j = ['join-with down', 'mode main']
+    k = ['join-with up', 'mode main']
+    l = ['join-with right', 'mode main']
