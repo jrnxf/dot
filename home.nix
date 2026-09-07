@@ -28,6 +28,7 @@ in
 
   programs.zsh = {
     enable = true;
+    autocd = true;                     # type a dir name to cd into it
     autosuggestion.enable = true;      # ghost text from history
     syntaxHighlighting.enable = true;  # commands turn green when valid
     plugins = [
@@ -63,7 +64,7 @@ in
       export PATH="$HOME/.nvm/versions/node/v24.4.1/bin:$PATH"
 
       # ---- Environment ----
-      export EDITOR="code --wait"
+      export EDITOR="nvim"
       export MANPAGER='nvim +Man!'
       export LC_ALL=en_US.UTF-8
       export AWS_PAGER=""

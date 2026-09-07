@@ -20,7 +20,7 @@
       AppleShowAllExtensions = true;
       _HIHideMenuBar = false;
     };
-    dock.autohide = true;
+    dock.autohide = false;
     finder.FXPreferredViewStyle = "Nlsv";  # list view by default
     finder.CreateDesktop = false;          # clean desktop
     trackpad.Clicking = true;              # tap to click
@@ -50,7 +50,6 @@
       { name = "charmbracelet/tap"; trusted = true; }
       "deskflow/tap"
       { name = "garden-io/garden"; trusted = true; }
-      { name = "go-task/tap"; trusted = true; }
       { name = "isacikgoz/taps"; trusted = true; }
       { name = "jason0x43/neovim-nightly"; trusted = true; }
       { name = "libsql/sqld"; trusted = true; }
@@ -94,7 +93,7 @@
       "gmp"
       "gnu-sed"
       "go"
-      "go-task/tap/go-task"
+      "go-task"
       "golang-migrate"
       "gotop"
       "gum"
