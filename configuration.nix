@@ -225,7 +225,6 @@
       "topnotch"
       "visual-studio-code"
       "vlc"
-      "wezterm"
       "zoom"
     ];
   };

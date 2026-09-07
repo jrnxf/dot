@@ -20,7 +20,7 @@ Running the switch builds:
 - Nix user packages (ripgrep, fd, fzf, jq, lazygit, Neovim, Hack Nerd Font)
 - Shell (zsh, aliases, starship prompt)
 - Editor (Neovim config with the rose-pine moon theme)
-- Terminal (WezTerm config with the rose-pine moon theme and dimmed unfocused windows)
+- Terminal (Ghostty config with the Cursor Dark theme)
 - Agent configs (Claude, Codex, opencode all share one AGENTS.md)
 - Optional Pi theme and local extensions, generic UI settings and model overrides, plus two deliberately pinned third-party Pi packages
 
@@ -176,7 +176,7 @@ Home Manager deliberately does not manage `~/.pi/agent` itself, or Pi authentica
 
 The first time you launch `nvim`, it bootstraps [lazy.nvim](https://github.com/folke/lazy.nvim) by cloning plugins from GitHub.
 That needs network access once; after that it's offline.
-Neovim and WezTerm both use the rose-pine moon theme.
+Neovim uses the rose-pine moon theme; Ghostty uses Cursor Dark.
 Neovim keeps italics off and uses a transparent background on macOS, Windows, and WSL so it matches the terminal setup.
 
 ## License
