@@ -22,7 +22,7 @@ Running the switch builds:
 - Editor (Neovim config with the rose-pine moon theme)
 - Terminal (Ghostty config with the Cursor Dark theme)
 - Agent configs (Claude, Codex, opencode all share one AGENTS.md)
-- Optional Pi theme and local extensions, generic UI settings and model overrides, plus two deliberately pinned third-party Pi packages
+- Pi coding agent, theme and local extensions, generic UI settings and model overrides, plus two deliberately pinned third-party Pi packages
 
 ## Prerequisites
 
@@ -137,12 +137,12 @@ The files under `home/` are the real files - editing them here is editing your l
 `home.nix` uses `mkOutOfStoreSymlink` to point paths like `~/.config/nvim` straight at `home/.config/nvim` in this repo, so the two never drift out of sync.
 You only run `./rebuild.sh` when you change something that isn't just a symlinked file, like a package list or a system default.
 
-## Optional Pi configuration
+## Pi coding agent
 
-Pi is an opt-in CLI, not a dependency this repository vendors. Install it from its owner with the [official Pi instructions](https://pi.dev), for example:
+The [Pi coding agent](https://pi.dev) is declared as `pi-coding-agent` in `configuration.nix`'s Homebrew package list. `./bootstrap.sh` or `./rebuild.sh` installs it with the other managed CLI tools. Launch it in a project:
 
 ```sh
-npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+pi
 ```
 
 [Pi Launcher](https://github.com/kunchenguid/homebrew-tap) is also optional and installed from its owner, not declared by this config:
@@ -170,7 +170,7 @@ The version and commit are immutable pins, so Pi does not move them during packa
 
 Both packages execute with your full user permissions and must be trusted like any other executable code. The compaction package is experimental, sends the relevant OpenAI compaction and continuity data to OpenAI, and upstream declares the stale peer range `>=0.80.9 <0.81.0`; this exact immutable ref was locally proven to load and perform remote compaction on Pi 0.82.0. Do not treat that proof as a guarantee for a different Pi version or a different package ref.
 
-Home Manager deliberately does not manage `~/.pi/agent` itself, or Pi authentication, sessions, trust decisions, caches, npm/git package trees, or any other runtime state. The model overrides contain no credentials or endpoint settings, do not choose a default model, and only take effect after you authenticate Pi yourself. This remains an additive post-video layer: it does not install Pi, a launcher, or package source code into this repository.
+Home Manager deliberately does not manage `~/.pi/agent` itself, or Pi authentication, sessions, trust decisions, caches, npm/git package trees, or any other runtime state. The model overrides contain no credentials or endpoint settings, do not choose a default model, and only take effect after you authenticate Pi yourself. Use `/login` inside Pi to connect a supported subscription, then `/model` to choose a model. Homebrew manages the CLI version separately from the pinned extension packages; the Pi 0.82.0 compatibility proof above does not cover later CLI releases. A launcher and third-party package source code are not installed into this repository.
 
 ## Notes
 

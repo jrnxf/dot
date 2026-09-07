@@ -136,6 +136,7 @@
       "ollama"
       "openssl@3"
       "oven-sh/bun/bun"
+      "pi-coding-agent"
       "pipx"
       "poppler"
       "postgresql@15"
