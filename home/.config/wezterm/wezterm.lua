@@ -3,11 +3,8 @@ local act = wezterm.action
 
 local config = wezterm.config_builder()
 
-config.color_scheme = "rose-pine-moon"
 config.font = wezterm.font("Hack Nerd Font")
 config.font_size = 15.0
-config.window_background_opacity = 0.8
-config.macos_window_background_blur = 50
 config.hide_tab_bar_if_only_one_tab = true
 config.window_decorations = "RESIZE"
 
@@ -34,6 +31,25 @@ config.keys = {
 -- (<C-w>, <C-a>) and brushing the trackpad then zooms at random. Make CTRL+wheel
 -- scroll like a plain wheel instead.
 config.mouse_bindings = {
+	-- Default mouse-up copies the selection to the clipboard ("copy on
+	-- highlight"). PrimarySelection is a no-op on macOS, so these keep
+	-- selection working without clobbering the clipboard; CMD+C/CMD+V
+	-- stay the only copy/paste path.
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "NONE",
+		action = act.CompleteSelection("PrimarySelection"),
+	},
+	{
+		event = { Up = { streak = 2, button = "Left" } },
+		mods = "NONE",
+		action = act.CompleteSelection("PrimarySelection"),
+	},
+	{
+		event = { Up = { streak = 3, button = "Left" } },
+		mods = "NONE",
+		action = act.CompleteSelection("PrimarySelection"),
+	},
 	{
 		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
 		mods = "CTRL",
