@@ -50,8 +50,8 @@ Change the host label or CPU architecture if needed, and read the Homebrew clean
 `bootstrap.sh` does four things, in order:
 
 1. Installs Determinate Nix, if it isn't already installed.
-2. Symlinks this repo to `~/.dotfiles`.
-   This has to happen before the first build, because `home.nix` points at config files through `~/.dotfiles`.
+2. Checks that this repo lives at `~/dotfiles`.
+   `home.nix` points at config files through that path, so the build links to nothing if the repo lives anywhere else.
 3. Checks the `user` configured in `flake.nix` against your actual macOS username, and offers to fix it for you if they differ.
 4. Runs the first `darwin-rebuild switch`.
    It fetches the `darwin-rebuild` tool from the nix-darwin 26.05 release branch, then applies this repo's locked flake config.

@@ -1,7 +1,7 @@
 { config, pkgs, user, ... }:
 
 let
-  dotfiles = "${config.home.homeDirectory}/.dotfiles";
+  dotfiles = "${config.home.homeDirectory}/dotfiles";
 in
 
 {
@@ -206,7 +206,7 @@ in
 
       # ---- carried over from pre-nix zshrc ----
       # shell
-      reload = "~/.dotfiles/rebuild.sh && exec zsh";
+      reload = "~/dotfiles/rebuild.sh && exec zsh";
       clear = ''printf "\33c\e[3J"'';
       x = "exit";
       q = "clear";
