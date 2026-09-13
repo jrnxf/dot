@@ -4,6 +4,11 @@ home/.config/herdr/session.json
 home/.config/herdr/release-notes.json
 home/.config/herdr/*.sock
 
+# Karabiner runtime state (whole dir is symlinked from ~/.config/karabiner,
+# so the GUI writes these next to the tracked karabiner.json; never commit)
+/home/.config/karabiner/assets/
+/home/.config/karabiner/automatic_backups/
+
 # macOS + nix build noise
 .DS_Store
 result

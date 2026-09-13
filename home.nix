@@ -288,12 +288,13 @@ in
   home.file.".config/ghostty/config".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/ghostty/config";
 
-  # Same for Karabiner: assets/ and automatic_backups/ next to it are runtime
-  # state, so link only the authored file. Karabiner rewrites karabiner.json on
-  # every GUI edit; if it ever replaces the symlink with a plain file, copy it
-  # back into the repo and re-run rebuild.sh to restore the link.
-  home.file.".config/karabiner/karabiner.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/karabiner/karabiner.json";
+  # Karabiner saves via write-temp-then-rename, which clobbers a file symlink
+  # on every GUI edit. Linking the whole directory instead makes those renames
+  # land inside the repo, so GUI edits show up as a git diff rather than a
+  # broken link. Runtime state written next to the config (assets/,
+  # automatic_backups/) ends up in the repo dir too and is gitignored.
+  home.file.".config/karabiner".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/karabiner";
 
   home.file.".curl-format.txt".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.curl-format.txt";

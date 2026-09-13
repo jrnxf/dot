@@ -181,7 +181,7 @@
       "1password-cli"
       "nikitabobko/tap/aerospace"
       "betterdisplay"
-      "claude-code"
+      "claude-code@latest"
       "cmux"
       "codex"
       "cursor"
