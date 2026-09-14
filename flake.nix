@@ -18,11 +18,16 @@
     let
       # The one username line to change if this isn't your machine.
       # bootstrap.sh offers to rewrite this for you if your macOS username differs.
-      user = "colby";
+      user = "jrnxf";
+      # Per-machine overrides (e.g. excluding an MDM-managed app on a work Mac) live in
+      # local.nix. It's tracked with a neutral default - see the comment in that file for
+      # how to set a real override without it leaking into the shared repo.
+      localOverrides =
+        if builtins.pathExists ./local.nix then import ./local.nix else { };
     in
     {
       darwinConfigurations."mac" = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit user; };
+        specialArgs = { inherit user localOverrides; };
         modules = [
           ./configuration.nix
           nix-homebrew.darwinModules.nix-homebrew
@@ -32,6 +37,10 @@
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit user; };
             home-manager.users.${user} = import ./home.nix;
+            # Pre-existing files at a managed path (e.g. from before this repo took over,
+            # or a background daemon recreating its config dir) get renamed instead of
+            # blocking activation.
+            home-manager.backupFileExtension = "hm-backup";
           }
         ];
       };

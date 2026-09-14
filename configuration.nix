@@ -1,4 +1,4 @@
-{ user, ... }:
+{ user, localOverrides ? { }, ... }:
 
 {
   # Determinate already manages the Nix daemon, so nix-darwin shouldn't.
@@ -176,7 +176,9 @@
       "zsh"
       "zsh-autosuggestions"
     ];
-    casks = [
+    # Machine-specific exclusions (e.g. an MDM-managed app that collides with the
+    # Homebrew install) live in local.nix, not here.
+    casks = builtins.filter (c: !(builtins.elem c (localOverrides.excludeCasks or [ ]))) [
       "1password"
       "1password-cli"
       "nikitabobko/tap/aerospace"
