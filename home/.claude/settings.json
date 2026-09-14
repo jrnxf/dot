@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/colby/.claude/hooks/herdr-agent-state.sh' session",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
             "timeout": 10
           }
         ]
@@ -48,7 +48,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash /Users/colby/.claude/statusline-command.sh"
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,

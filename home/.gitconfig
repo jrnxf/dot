@@ -21,7 +21,7 @@
 [init]
 	defaultBranch = main
 [core]
-	excludesfile = /Users/colby/.gitignore
+	excludesfile = ~/.gitignore
 [diff]
 	tool = vimdiff
 [difftool]
