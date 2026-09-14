@@ -183,6 +183,7 @@
       "1password-cli"
       "nikitabobko/tap/aerospace"
       "betterdisplay"
+      "brave-browser"
       "claude-code@latest"
       "cmux"
       "codex"
