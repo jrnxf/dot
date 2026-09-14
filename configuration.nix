@@ -53,7 +53,6 @@
       { name = "isacikgoz/taps"; trusted = true; }
       { name = "jason0x43/neovim-nightly"; trusted = true; }
       { name = "libsql/sqld"; trusted = true; }
-      { name = "nikitabobko/tap"; trusted = true; }
       { name = "oven-sh/bun"; trusted = true; }
       { name = "tilt-dev/tap"; trusted = true; }
       { name = "tursodatabase/tap"; trusted = true; }
@@ -181,7 +180,6 @@
     casks = builtins.filter (c: !(builtins.elem c (localOverrides.excludeCasks or [ ]))) [
       "1password"
       "1password-cli"
-      "nikitabobko/tap/aerospace"
       "betterdisplay"
       "brave-browser"
       "claude-code@latest"
