@@ -1,0 +1,49 @@
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
+
+[mcp_servers.semble]
+command = "uvx"
+args = ["--from", "semble[mcp]", "semble"]
+
+[mcp_servers.semble.tools.search]
+approval_mode = "approve"
+
+[mcp_servers.shadcn]
+command = "npx"
+args = ["-y", "shadcn@latest", "mcp"]
+
+[projects."/Users/jrnxf/Dev/ax"]
+trust_level = "trusted"
+
+[projects."/Users/jrnxf/Dev"]
+trust_level = "trusted"
+
+[projects."/Users/jrnxf"]
+trust_level = "trusted"
+
+[projects."/Users/jrnxf/Dev/leadgenie"]
+trust_level = "trusted"
+
+[projects."/Users/jrnxf/Dev/ai-tool-slack-bot"]
+trust_level = "trusted"
+
+[projects."/Users/jrnxf/.bb/personal-workspaces/env_nmkb9xhim8"]
+trust_level = "trusted"
+
+[features]
+hooks = true
+
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "pull-request-number", "run-state", "approval-mode", "context-used", "five-hour-limit", "weekly-limit", "fast-mode"]
+status_line_use_colors = true
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
+
+[hooks.state]
+
+[hooks.state."/Users/jrnxf/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:559f6a32f694e477d50d45081ac6df82dbe75a3b886856c8f5e25b086e9ea2e5"

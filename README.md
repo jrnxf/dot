@@ -118,17 +118,19 @@ If you don't use it, just remove it from `brews` in your copy.
 
 - `home/AGENTS.md` is my personal agent policy, and `home.nix` installs it for Claude, Codex, and opencode.
   If you clone this repo, you'd silently inherit my agent instructions - edit or delete `home/AGENTS.md` if you don't want that.
-- The `cc` and `co` shell aliases in `home.nix` are high-agency shortcuts: `claude --dangerously-skip-permissions` and `codex --full-auto`.
-  They're convenient for me, but know what they do before you use them.
+- The `cc` alias in `home/.zshrc` runs `claude --dangerously-skip-permissions`; `co` runs `codex`.
+  Codex's symlinked `home/.codex/config.toml` sets global `approval_policy = "never"` and
+  `sandbox_mode = "danger-full-access"`.
+  New Codex sessions default to no approval prompts and no sandbox across projects, unless overridden.
 
 ## Repo tour
 
 - `flake.nix` - the entry point.
   Wires up nixpkgs, nix-darwin, home-manager, and nix-homebrew, and declares the `mac` machine.
 - `configuration.nix` - system-level config: macOS defaults, Homebrew.
-- `home.nix` - user-level config: shell, packages, prompt, and the symlinks described below.
+- `home.nix` - user-level packages and the symlinks described below.
 - `rebuild.sh` - re-applies the config after the first switch.
-  Run this every time you make a change.
+  Run this after changing Nix declarations or adding managed links.
 - `home/` - the actual config files that get symlinked into place; the sections below explain the shared symlink model and Pi's narrower selective setup.
 
 ## How the symlinks work
@@ -136,6 +138,8 @@ If you don't use it, just remove it from `brews` in your copy.
 The files under `home/` are the real files - editing them here is editing your live config, no rebuild needed to see the change in your editor.
 `home.nix` uses `mkOutOfStoreSymlink` to point paths like `~/.config/nvim` straight at `home/.config/nvim` in this repo, so the two never drift out of sync.
 You only run `./rebuild.sh` when you change something that isn't just a symlinked file, like a package list or a system default.
+
+Zsh settings, aliases, and fzf integration live in `home/.zshrc`; Starship settings live in `home/.config/starship.toml`. Nix installs the tools and exposes stable plugin paths under `~/.local/share/zsh-packages`. Start a new shell after editing `.zshrc`, or use `reload` to rebuild and restart it. Codex links only `config.toml`, leaving credentials and sessions in its local directory.
 
 ## Pi coding agent
 
