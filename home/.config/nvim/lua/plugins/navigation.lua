@@ -4,7 +4,12 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      picker = { enabled = true },
+      picker = {
+        enabled = true,
+        sources = {
+          explorer = { hidden = true },
+        },
+      },
       explorer = { replace_netrw = true },  -- sidebar tree; `nvim <dir>` opens it
       notifier = { enabled = true },
       input = { enabled = true },
@@ -18,4 +23,3 @@ return {
     },
   },
 }
-
