@@ -12,6 +12,12 @@
     home = "/Users/${user}";
   };
   system.stateVersion = 6;
+
+  # home/.zshrc runs compinit itself. nix-darwin's /etc/zshrc compinit sees a
+  # different fpath, so the two runs invalidate ~/.zcompdump for each other and
+  # every shell rebuilds the completion dump twice (~7s startup).
+  programs.zsh.enableGlobalCompInit = false;
+
   system.defaults = {
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
