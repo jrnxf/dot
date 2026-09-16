@@ -61,6 +61,14 @@ in
   home.file.".claude/commands".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/commands";
 
+  # Share the authored skill across agents without replacing installed skills.
+  home.file.".agents/skills/pr-walkthrough".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
+  home.file.".claude/skills/pr-walkthrough".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
+  home.file.".codex/skills/pr-walkthrough".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
+
   # Ghostty keeps runtime state (auto/) next to its config, so link just the file.
   home.file.".config/ghostty/config".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/ghostty/config";
