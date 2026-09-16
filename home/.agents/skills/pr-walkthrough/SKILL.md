@@ -66,12 +66,10 @@ Once publishing returns a real hosted URL, use `gh-axi` to update the PR descrip
 ### Interactive walkthrough
 
 [Explore the change in plain English, with diagrams and interactive examples](ARTIFACT_URL)
-
-Access: ACTUAL_SHARING_STATUS
 <!-- pr-walkthrough:end -->
 ```
 
-Substitute the returned URL and actual access status. If sharing still requires a manual action, say so in the block, for example `Private to the author; reviewer access pending.` Posting the link does not authorize making the artifact public. Never post a local file path or a placeholder URL to the PR.
+Substitute the returned URL. Do not add an access or sharing status line to the block; report sharing status to the user in the final message instead. Posting the link does not authorize making the artifact public. Never post a local file path or a placeholder URL to the PR.
 
 Use a structured body argument or a temporary body file to preserve Markdown and newlines. Read back the description to verify the block is the first content in the body, the correct link appears exactly once and unrelated content is preserved. If publishing or the PR edit is unavailable, report that remaining step accurately instead of claiming completion.
 
