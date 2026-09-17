@@ -141,6 +141,21 @@ You only run `./rebuild.sh` when you change something that isn't just a symlinke
 
 Zsh settings, aliases, and fzf integration live in `home/.zshrc`; Starship settings live in `home/.config/starship.toml`. Nix installs the tools and exposes stable plugin paths under `~/.local/share/zsh-packages`. Start a new shell after editing `.zshrc`, or use `reload` to rebuild and restart it. Codex links only `config.toml`, leaving credentials and sessions in its local directory.
 
+## Official AXI tools
+
+The four tools in the [official AXI catalog](https://axi.md/) are installed using
+their upstream skill-based setup: `gh-axi`, `chrome-devtools-axi`, `lavish-axi`
+(skill name `lavish`), and `quota-axi`. No community catalog tools are included.
+
+Their official skills live in `home/.agents/skills/` and `home.nix` links each one
+into `~/.agents/skills/`, `~/.claude/skills/`, and `~/.codex/skills/`. Run
+`./rebuild.sh` after adding or changing those links. The skills invoke the CLIs
+with `npx -y`; `node`, `gh`, and `google-chrome` are already declared in
+`configuration.nix`. No global npm install or extra Homebrew tap is needed.
+The skill files are checked in; CLI versions are resolved by npx rather than
+pinned by the Nix lockfile. Update the skills from their respective
+`kunchenguid/<tool>` repositories, keeping upstream content intact.
+
 ## Pi coding agent
 
 The [Pi coding agent](https://pi.dev) is declared as `pi-coding-agent` in `configuration.nix`'s Homebrew package list. `./bootstrap.sh` or `./rebuild.sh` installs it with the other managed CLI tools. Launch it in a project:
