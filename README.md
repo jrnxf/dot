@@ -141,6 +141,35 @@ You only run `./rebuild.sh` when you change something that isn't just a symlinke
 
 Zsh settings, aliases, and fzf integration live in `home/.zshrc`; Starship settings live in `home/.config/starship.toml`. Nix installs the tools and exposes stable plugin paths under `~/.local/share/zsh-packages`. Start a new shell after editing `.zshrc`, or use `reload` to rebuild and restart it. Codex links only `config.toml`, leaving credentials and sessions in its local directory.
 
+## MCP servers
+
+Codex and Claude Code both declare Semble, shadcn, Atlassian, Grafana, and Excalidraw:
+
+- Codex reads `home/.codex/config.toml` through its existing global config symlink.
+- Claude Code auto-loads the `dotfiles-mcp@skills-dir` plugin from
+  `home/.claude/skills/dotfiles-mcp/`. Home Manager links that directory into
+  `~/.claude/skills/`, making the servers available across projects without CLI flags.
+  This requires a Claude Code version with skills-directory plugin support
+  (verified with 2.1.267); the Homebrew declaration installs `claude-code@latest`.
+
+Run `./rebuild.sh` to install the Claude plugin link, then start new agent sessions.
+Check discovery with `codex mcp list` and
+`claude plugin details dotfiles-mcp@skills-dir`; use `/mcp` inside Claude to check
+connections and authenticate. In Codex, use `codex mcp login atlassian` and, if
+required by the server, `codex mcp login grafana`.
+Each app keeps its own authentication state outside the repo.
+Grafana points at a work-specific endpoint and requires the appropriate network access.
+[Excalidraw](https://github.com/excalidraw/excalidraw-mcp) uses its recommended
+hosted server at `https://mcp.excalidraw.com`, so no local build is needed.
+Its interactive diagram interface requires a client with MCP Apps support.
+
+When adding or changing a server, update both Codex's `mcp_servers` tables and
+the Claude plugin's `.mcp.json`. Keep tokens out of these tracked files; use
+OAuth or the clients' environment-variable credential settings instead.
+`node` and `uv` are already declared in `configuration.nix`; npx and uvx resolve
+the shadcn and Semble packages on launch, so those package versions are not
+pinned by the Nix lockfile.
+
 ## Official AXI tools
 
 The four tools in the [official AXI catalog](https://axi.md/) are installed using

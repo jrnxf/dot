@@ -15,6 +15,16 @@ approval_mode = "approve"
 command = "npx"
 args = ["-y", "shadcn@latest", "mcp"]
 
+[mcp_servers.atlassian]
+url = "https://mcp.atlassian.com/v1/mcp"
+
+[mcp_servers.grafana]
+url = "https://grafana-mcp.ops-gcp.apollo.io/mcp"
+startup_timeout_sec = 15
+
+[mcp_servers.excalidraw]
+url = "https://mcp.excalidraw.com"
+
 [projects."/Users/jrnxf/Dev/ax"]
 trust_level = "trusted"
 

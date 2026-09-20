@@ -61,6 +61,10 @@ in
   home.file.".claude/commands".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/commands";
 
+  # Claude auto-loads plugins in its skills directory, including MCP-only plugins.
+  home.file.".claude/skills/dotfiles-mcp".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/skills/dotfiles-mcp";
+
   # Share the authored skill across agents without replacing installed skills.
   home.file.".agents/skills/pr-walkthrough".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
