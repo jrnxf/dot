@@ -4,19 +4,19 @@
       {
         "hooks": [
           {
-            "command": "bash \"$HOME/.codex/herdr-agent-state.sh\" session",
+            "command": "lavish-axi",
             "timeout": 10,
             "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
       },
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
-            "command": "lavish-axi",
-            "timeout": 10
+            "command": "bash '/Users/jrnxf/.codex/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
           }
         ]
       }

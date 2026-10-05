@@ -46,6 +46,9 @@ trust_level = "trusted"
 [projects."/Users/jrnxf/Dev/ouvir"]
 trust_level = "trusted"
 
+[projects."/Users/jrnxf/Dev/firstmate"]
+trust_level = "trusted"
+
 [features]
 hooks = true
 
@@ -60,4 +63,19 @@ gpt-6-astra = 4
 [hooks.state]
 
 [hooks.state."/Users/jrnxf/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:1960d651d9c3bcc56a9ec9e210a9bb3ebe1bc245c125ec74f060cc1619adabae"
+trusted_hash = "sha256:341f095eb06db5b52fa3c919f6e3ba2ada4c63883b73a18707a760623a7fc589"
+
+[hooks.state."/Users/jrnxf/.codex/hooks.json:session_start:1:0"]
+trusted_hash = "sha256:93fbfa14717a31d18c62d1ba6141b6d7dd89551c24972ca793fadfd6f74baa7f"
+
+[hooks.state."/Users/jrnxf/Dev/firstmate/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:a920c3e99340de2feaf624585635e43b8541c9fdd5aeb5c0d9dd2479ef05b411"
+
+[hooks.state."/Users/jrnxf/Dev/firstmate/.codex/hooks.json:pre_tool_use:0:1"]
+trusted_hash = "sha256:224d6e3538b2957b83e5fd2de2701e9fc09362c01e2a01cb9dbf5755fd9a88fc"
+
+[hooks.state."/Users/jrnxf/Dev/firstmate/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:bd1d74568c7a9e7aa86174b6c1a06d0d9cd8e891ac66159743cf518085cc5c38"
+
+[hooks.state."/Users/jrnxf/Dev/firstmate/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:6874d92dd2befa3254ab2c99d3559399f98d3c155f533ce19c9872115504946b"

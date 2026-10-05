@@ -200,15 +200,14 @@ by `home.nix`:
 - Codex: `home/.codex/hooks.json` and `home/.codex/herdr-agent-state.sh`.
 - OpenCode: `home/.config/opencode/plugins/`.
 
-The tracked copies call `lavish-axi` by name and reach herdr's script through
-`$HOME`, so they work under any username and survive tool upgrades. Do not run
-`lavish-axi setup hooks`: it rewrites the command to a `/nix/store` path that
-breaks on the next upgrade. `herdr integration install` does not recognize the
-`$HOME` form, so reinstalling an integration appends a second, absolute-path
-copy of its hook through the symlink; delete that copy. Run
-`tests/agent-hooks.test.sh` before committing changes to these files: it fails
-on absolute paths, `/nix/store` paths, and duplicated herdr hooks. Codex asks to
-trust `hooks.json` once per machine (`/hooks`).
+The tracked copies call `lavish-axi` by name and keep herdr's own hook form,
+`bash '/Users/jrnxf/...'`, which is fine because every machine uses the `jrnxf`
+account. `herdr integration install` only recognizes that exact form, so with it
+in place a reinstall changes nothing; any other spelling gets a duplicate
+appended. Do not run `lavish-axi setup hooks`: it rewrites the command to a
+`/nix/store` path that breaks on the next upgrade. Run
+`tests/agent-hooks.test.sh` before committing changes to these files. Codex
+asks to trust `hooks.json` again whenever it changes (`/hooks`).
 
 ## Pi coding agent
 

@@ -79,10 +79,10 @@ in
   home.file.".codex/config.toml".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.codex/config.toml";
 
-  # Session hooks for Codex and OpenCode. `lavish-axi setup hooks` and herdr's
-  # integration installer write machine-specific paths into these, so the
-  # portable versions are tracked here; link files, not directories, because
-  # both tools keep runtime state alongside.
+  # Session hooks for Codex and OpenCode. `lavish-axi setup hooks` writes a
+  # /nix/store path into these that breaks on upgrade, so stable versions are
+  # tracked here; link files, not directories, because both tools keep runtime
+  # state alongside.
   home.file.".codex/hooks.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.codex/hooks.json";
   home.file.".codex/herdr-agent-state.sh".source =
