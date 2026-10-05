@@ -203,10 +203,12 @@ by `home.nix`:
 The tracked copies call `lavish-axi` by name and reach herdr's script through
 `$HOME`, so they work under any username and survive tool upgrades. Do not run
 `lavish-axi setup hooks`: it rewrites the command to a `/nix/store` path that
-breaks on the next upgrade. Updating herdr's integrations rewrites its files
-through the symlinks; review the diff and restore the `$HOME` path in
-`hooks.json` if it comes back absolute. Codex asks to trust `hooks.json` once
-per machine (`/hooks`).
+breaks on the next upgrade. `herdr integration install` does not recognize the
+`$HOME` form, so reinstalling an integration appends a second, absolute-path
+copy of its hook through the symlink; delete that copy. Run
+`tests/agent-hooks.test.sh` before committing changes to these files: it fails
+on absolute paths, `/nix/store` paths, and duplicated herdr hooks. Codex asks to
+trust `hooks.json` once per machine (`/hooks`).
 
 ## Pi coding agent
 
