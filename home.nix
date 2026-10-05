@@ -8,6 +8,32 @@ let
     chmod -R u+w $out
     rm -rf $out/share/fzf-tab/modules
   '';
+  # MarkText ships unsigned, so the Homebrew cask was disabled (Gatekeeper) and
+  # nixpkgs marks it bad on darwin. Package the upstream arm64 zip directly;
+  # home-manager links the .app into ~/Applications/Home Manager Apps.
+  marktext = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+    pname = "marktext";
+    version = "0.19.1";
+    src = pkgs.fetchurl {
+      url = "https://github.com/marktext/marktext/releases/download/v${finalAttrs.version}/marktext-mac-arm64-${finalAttrs.version}.zip";
+      hash = "sha256-9UAuT6nUK/+JIky55V4LonVaGfm78ZMqFefH/PyLp3w=";
+    };
+    nativeBuildInputs = [ pkgs.unzip ];
+    sourceRoot = ".";
+    dontFixup = true; # never touch a prebuilt app bundle
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/Applications
+      cp -R marktext.app "$out/Applications/MarkText.app"
+      runHook postInstall
+    '';
+    meta = {
+      description = "Simple and elegant markdown editor";
+      homepage = "https://github.com/marktext/marktext";
+      license = pkgs.lib.licenses.mit;
+      platforms = [ "aarch64-darwin" ];
+    };
+  });
 in
 
 {
@@ -26,10 +52,16 @@ in
     neovim
     # the font everything renders in
     nerd-fonts.hack
+    # gui apps not installable via homebrew casks
+    marktext  # markdown editor
   ]
   # agent tooling firstmate needs on PATH
   ++ import ./firstmate-tools.nix { inherit pkgs; };
   fonts.fontconfig.enable = true;
+  # Copy .app bundles into ~/Applications/Home Manager Apps instead of
+  # symlinking them into the store; Spotlight and Raycast skip symlinked apps.
+  targets.darwin.copyApps.enable = true;
+  targets.darwin.linkApps.enable = false;
   home.sessionVariables.EDITOR = "nvim";
 
   # Stable package paths for the editable shell configuration.
