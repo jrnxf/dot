@@ -116,6 +116,7 @@
       "kubernetes-cli"
       "lastpass-cli"
       "lazygit"
+      "leaf-markdown-viewer"  # terminal markdown viewer, installs `leaf`
       "lefthook"
       "libffi"
       "libgit2"
