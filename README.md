@@ -185,6 +185,11 @@ The skill files are checked in; CLI versions are resolved by npx rather than
 pinned by the Nix lockfile. Update the skills from their respective
 `kunchenguid/<tool>` repositories, keeping upstream content intact.
 
+[Firstmate](https://github.com/kunchenguid/firstmate) needs the binaries
+themselves on `PATH`, at minimum versions, so `firstmate-tools.nix` additionally
+packages pinned releases of those four plus `tasks-axi`, `treehouse`, and
+`no-mistakes`. The file's header describes how to bump a version.
+
 ## Pi coding agent
 
 The [Pi coding agent](https://pi.dev) is declared as `pi-coding-agent` in `configuration.nix`'s Homebrew package list. `./bootstrap.sh` or `./rebuild.sh` installs it with the other managed CLI tools. Launch it in a project:

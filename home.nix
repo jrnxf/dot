@@ -26,7 +26,9 @@ in
     neovim
     # the font everything renders in
     nerd-fonts.hack
-  ];
+  ]
+  # agent tooling firstmate needs on PATH
+  ++ import ./firstmate-tools.nix { inherit pkgs; };
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
 
