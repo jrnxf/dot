@@ -207,9 +207,10 @@ and is not pulled by default. It loads the caveman plugin from
 
 ### Agent session hooks
 
-Claude Code, Codex, and OpenCode each run two session hooks: herdr's agent-state
-reporter and `lavish-axi`'s ambient context. All of them are tracked and linked
-by `home.nix`:
+Claude Code, Codex, and OpenCode each run herdr's agent-state reporter and
+`lavish-axi`'s ambient context as session hooks. Claude Code and Codex also run
+`gh-axi` and `chrome-devtools-axi` at session start. All of them are tracked and
+linked by `home.nix`:
 
 - Claude Code: `home/.claude/settings.json` and `home/.claude/hooks/`.
 - Codex: `home/.codex/hooks.json` and `home/.codex/herdr-agent-state.sh`.
