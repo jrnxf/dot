@@ -190,6 +190,24 @@ themselves on `PATH`, at minimum versions, so `firstmate-tools.nix` additionally
 packages pinned releases of those four plus `tasks-axi`, `treehouse`, and
 `no-mistakes`. The file's header describes how to bump a version.
 
+### Agent session hooks
+
+Claude Code, Codex, and OpenCode each run two session hooks: herdr's agent-state
+reporter and `lavish-axi`'s ambient context. All of them are tracked and linked
+by `home.nix`:
+
+- Claude Code: `home/.claude/settings.json` and `home/.claude/hooks/`.
+- Codex: `home/.codex/hooks.json` and `home/.codex/herdr-agent-state.sh`.
+- OpenCode: `home/.config/opencode/plugins/`.
+
+The tracked copies call `lavish-axi` by name and reach herdr's script through
+`$HOME`, so they work under any username and survive tool upgrades. Do not run
+`lavish-axi setup hooks`: it rewrites the command to a `/nix/store` path that
+breaks on the next upgrade. Updating herdr's integrations rewrites its files
+through the symlinks; review the diff and restore the `$HOME` path in
+`hooks.json` if it comes back absolute. Codex asks to trust `hooks.json` once
+per machine (`/hooks`).
+
 ## Pi coding agent
 
 The [Pi coding agent](https://pi.dev) is declared as `pi-coding-agent` in `configuration.nix`'s Homebrew package list. `./bootstrap.sh` or `./rebuild.sh` installs it with the other managed CLI tools. Launch it in a project:
