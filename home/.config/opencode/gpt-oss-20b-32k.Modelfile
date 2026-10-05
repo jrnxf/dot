@@ -1,0 +1,3 @@
+# 32k-context variant of gpt-oss:20b, the default model in opencode.json.
+FROM gpt-oss:20b
+PARAMETER num_ctx 32768

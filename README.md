@@ -190,6 +190,21 @@ themselves on `PATH`, at minimum versions, so `firstmate-tools.nix` additionally
 packages pinned releases of those four plus `tasks-axi`, `treehouse`, and
 `no-mistakes`. The file's header describes how to bump a version.
 
+### OpenCode
+
+`home/.config/opencode/opencode.json` is linked into place. It defines a local
+Ollama provider and defaults to `ollama/gpt-oss:20b-32k`, a 32k-context variant
+that fits in 24 GB of RAM. Homebrew installs Ollama, but models are not
+declarative, so create the variant once per machine (13 GB download):
+
+```sh
+ollama create gpt-oss:20b-32k -f ~/dotfiles/home/.config/opencode/gpt-oss-20b-32k.Modelfile
+```
+
+The config also lists `qwen3-coder:30b-32k`, which needs more memory than that
+and is not pulled by default. It loads the caveman plugin from
+`plugins/caveman/`, which caveman's own installer manages and is not tracked.
+
 ### Agent session hooks
 
 Claude Code, Codex, and OpenCode each run two session hooks: herdr's agent-state

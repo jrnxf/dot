@@ -87,6 +87,8 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.codex/hooks.json";
   home.file.".codex/herdr-agent-state.sh".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.codex/herdr-agent-state.sh";
+  home.file.".config/opencode/opencode.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/opencode/opencode.json";
   home.file.".config/opencode/plugins/axi-lavish-axi.js".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/opencode/plugins/axi-lavish-axi.js";
   home.file.".config/opencode/plugins/herdr-agent-state.js".source =
