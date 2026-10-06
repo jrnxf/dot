@@ -169,6 +169,28 @@ ssh() {
   fi
 }
 
+# Go to Firstmate: its directory on the machine that hosts it, its herdr session
+# on the ssh host `firstmate` from anywhere else. Remote attach draws the UI
+# here, so it gets the Firstmate-coloured config (see home.nix). Without herdr
+# here, or when the attach fails or is declined, go through plain ssh instead.
+fm() {
+  if [[ -d ~/firstmate ]]; then
+    cd ~/firstmate
+    return
+  fi
+  if (( $+commands[herdr] )); then
+    HERDR_CONFIG_PATH="$HOME/.config/herdr-firstmate/config.toml" herdr --remote firstmate && return
+  fi
+  ssh -t firstmate 'cd ~/firstmate && exec herdr'
+}
+
+# Logging in to the Linux machine lands in Firstmate. Only a login shell still
+# sitting in $HOME moves: commands run over ssh, scp and rsync never read this
+# file, and herdr panes and tmux windows keep the directory they were given.
+if [[ $OSTYPE == linux* && -o login && $PWD == $HOME && -d ~/firstmate && -z $TMUX && -z $HERDR_ENV ]]; then
+  cd ~/firstmate
+fi
+
 # ---- Tool initialization ----
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 [[ $commands[thefuck] ]] && eval "$(thefuck --alias)"
@@ -224,7 +246,6 @@ alias -- d-srac='d-sac && d-rac'
 alias -- dc='git commit -m "$(date +%m/%d/%y\ %H:%M)"'
 alias -- dev='cd ~/Dev'
 alias -- dot='cd ~/dotfiles'
-alias -- fm='cd ~/firstmate'
 alias -- gaca='git commit -a --amend --no-edit'
 alias -- gca='git commit --amend --no-edit'
 alias -- gotop='gotop --mbps'

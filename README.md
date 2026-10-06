@@ -129,6 +129,26 @@ What differs from the Mac:
 - Logins are per machine and never in this repo: run `gh auth login` and `claude` once.
 - The Semble MCP server is unverified on Linux: `uv` is installed for it, but it has not been started there yet (see "MCP servers").
 
+### Firstmate
+
+The Linux machine hosts [Firstmate](https://github.com/kunchenguid/firstmate) at `~/firstmate`, and `fm` (in `home/.zshrc`) goes there from either machine.
+Where `~/firstmate` exists it changes into it.
+Anywhere else it attaches herdr to the session on the ssh host `firstmate` with `herdr --remote firstmate`, and falls back to `ssh -t firstmate` running herdr there when herdr is missing locally or the attach fails or is declined.
+It takes no arguments, and expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this repo.
+
+An interactive login shell on the Linux machine starts in `~/firstmate` when that directory exists.
+Only a login shell still sitting in `$HOME` moves: commands run over ssh, `scp` and `rsync` are unaffected, and shells opened inside a herdr pane or a tmux window keep the directory they were given.
+The Mac's login directory does not change.
+
+Herdr says which machine a session is on in two ways:
+
+- The right edge of the tab bar shows the hostname, on both machines.
+  Herdr resolves it where the panes run, so a remote attach names the remote machine.
+- The sidebar is tinted dark teal for the Firstmate session only.
+  Herdr takes its theme from the client's config and has no include, so `home.nix` generates `~/.config/herdr-firstmate/config.toml` from the tracked config plus that one colour.
+  `home-linux.nix` points `HERDR_CONFIG_PATH` at it for every herdr started on the Linux machine, and `fm` does the same for its remote attach.
+  The generated file follows edits to `home/.config/herdr/config.toml` at the next rebuild, and is read-only, so herdr's reset-keys action cannot rewrite it.
+
 ## Make it yours
 
 This repo is mine.

@@ -1,6 +1,6 @@
 # The Linux home configuration, for a headless machine that runs agents:
 # everything shared, plus what Homebrew provides on the Mac.
-{ pkgs, pkgsUnstable, ... }:
+{ config, pkgs, pkgsUnstable, ... }:
 
 {
   imports = [ ./home.nix ];
@@ -27,4 +27,10 @@
     herdr
   ]);
   fonts.fontconfig.enable = true;
+
+  # This machine hosts Firstmate, so every herdr started here uses the tinted
+  # config home.nix generates. herdr's sockets, logs and session state stay in
+  # ~/.config/herdr; only the config file moves.
+  home.sessionVariables.HERDR_CONFIG_PATH =
+    "${config.home.homeDirectory}/.config/herdr-firstmate/config.toml";
 }
