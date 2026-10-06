@@ -132,9 +132,15 @@ What differs from the Mac:
 ### Firstmate
 
 The Linux machine hosts [Firstmate](https://github.com/kunchenguid/firstmate) at `~/firstmate`, and `fm` (in `home/.zshrc`) goes there from either machine.
-Where `~/firstmate` exists it changes into it.
-Anywhere else it attaches herdr to the session on the ssh host `firstmate` with `herdr --remote firstmate`, and falls back to `ssh -t firstmate` running herdr there when herdr is missing locally or the attach fails or is declined.
-It takes no arguments, and expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this repo.
+It decides by machine, not by whether `~/firstmate` exists.
+On the Mac it always attaches herdr to the session on the ssh host `firstmate` with `herdr --remote firstmate`, and falls back to `ssh -t firstmate` running herdr there when herdr is missing locally or the attach fails or is declined.
+A `~/firstmate` on the Mac does not change that.
+On the Linux machine it changes into `~/firstmate` and opens herdr there.
+Inside a herdr pane or a tmux window it only changes directory, so it never nests a second herdr, and the same goes when herdr is not installed.
+It expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this repo.
+
+`fm local` changes into this machine's own `~/firstmate` and opens nothing, or says so when there is none.
+On the Mac that is the deliberate way into a spare copy, and it prints a reminder: never run Firstmate on both machines at once.
 
 An interactive login shell on the Linux machine starts in `~/firstmate` when that directory exists.
 Only a login shell still sitting in `$HOME` moves: commands run over ssh, `scp` and `rsync` are unaffected, and shells opened inside a herdr pane or a tmux window keep the directory they were given.

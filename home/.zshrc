@@ -169,19 +169,42 @@ ssh() {
   fi
 }
 
-# Go to Firstmate: its directory on the machine that hosts it, its herdr session
-# on the ssh host `firstmate` from anywhere else. Remote attach draws the UI
-# here, so it gets the Firstmate-coloured config (see home.nix). Without herdr
-# here, or when the attach fails or is declined, go through plain ssh instead.
+# Go to Firstmate, deciding by machine rather than by whether ~/firstmate
+# exists. On the Mac, always its herdr session on the ssh host `firstmate`:
+# remote attach draws the UI here, so it gets the Firstmate-coloured config
+# (see home.nix), and without herdr here, or when the attach fails or is
+# declined, it goes through plain ssh instead. On the Linux machine, which
+# hosts it, change into ~/firstmate and open herdr, unless this shell is
+# already inside herdr or tmux, where a second herdr would nest.
+# `fm local` only changes into this machine's own ~/firstmate and opens
+# nothing; on the Mac that is the deliberate way into the spare copy.
 fm() {
-  if [[ -d ~/firstmate ]]; then
-    cd ~/firstmate
+  if [[ $# -gt 1 || ( $# -eq 1 && $1 != local ) ]]; then
+    print -u2 "usage: fm [local]"
+    return 2
+  fi
+  if [[ $1 == local ]]; then
+    if [[ ! -d ~/firstmate ]]; then
+      print -u2 "fm: there is no ~/firstmate on this machine"
+      return 1
+    fi
+    cd ~/firstmate || return
+    if [[ $OSTYPE == darwin* ]]; then
+      print -u2 "fm: this is the Mac's spare copy - never run Firstmate on both machines at once"
+    fi
+    return 0
+  fi
+  if [[ $OSTYPE == darwin* ]]; then
+    if (( $+commands[herdr] )); then
+      HERDR_CONFIG_PATH="$HOME/.config/herdr-firstmate/config.toml" herdr --remote firstmate && return
+    fi
+    ssh -t firstmate 'cd ~/firstmate && exec herdr'
     return
   fi
-  if (( $+commands[herdr] )); then
-    HERDR_CONFIG_PATH="$HOME/.config/herdr-firstmate/config.toml" herdr --remote firstmate && return
+  cd ~/firstmate || return
+  if [[ -z $HERDR_ENV && -z $TMUX ]] && (( $+commands[herdr] )); then
+    herdr
   fi
-  ssh -t firstmate 'cd ~/firstmate && exec herdr'
 }
 
 # Logging in to the Linux machine lands in Firstmate. Only a login shell still
