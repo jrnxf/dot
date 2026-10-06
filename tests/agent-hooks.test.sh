@@ -29,6 +29,7 @@ for file in "$CLAUDE" "$CODEX"; do
 
   foreign=$(printf '%s\n' "$commands" | grep '/Users/' | grep -v '/Users/jrnxf/')
   [ -z "$foreign" ] || fail "$name has a hook under another user's home: $foreign"
+  # shellcheck disable=SC2016 # the literal text $HOME is what must be absent
   assert_not_contains "$commands" '$HOME' "$name spells a hook with \$HOME; herdr would append a duplicate, use /Users/jrnxf"
   assert_not_contains "$commands" "/nix/store/" "$name has a hook with a /nix/store path; call the tool by name"
 
