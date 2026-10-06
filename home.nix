@@ -1,6 +1,6 @@
 # User-level packages and links shared by every machine. The per-OS entry
 # points, home-darwin.nix and home-linux.nix, import this and add their own.
-{ config, pkgs, user, ... }:
+{ config, lib, pkgs, user, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/dotfiles";
@@ -68,6 +68,19 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/nvim";
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/herdr";
+  # The same config with a tinted sidebar, for herdr showing the Firstmate
+  # machine's session: home-linux.nix makes it that machine's config, and `fm`
+  # hands it to the remote-attach client elsewhere, which draws the UI with
+  # its own theme. herdr has no include, only HERDR_CONFIG_PATH for a whole
+  # file, so this is generated from the tracked config rather than copied; it
+  # follows edits to that file at the next rebuild.
+  home.file.".config/herdr-firstmate/config.toml".source =
+    (pkgs.formats.toml { }).generate "herdr-firstmate-config.toml" (
+      lib.recursiveUpdate (fromTOML (builtins.readFile ./home/.config/herdr/config.toml)) {
+        # dark teal: text contrast stays within 5% of the default sidebar's
+        theme.custom.sidebar_bg = "#12262b";
+      }
+    );
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/settings.json";
   home.file.".claude/statusline-command.sh".source =

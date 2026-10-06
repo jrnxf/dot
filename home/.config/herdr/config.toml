@@ -18,3 +18,7 @@ agent_panel_sort = "spaces"
 # Create tabs immediately with generated names instead of prompting for one.
 # Rename later with rename_tab (default prefix+shift+t).
 prompt_new_tab_name = false
+
+# Name the machine the panes run on at the right edge of the tab bar. herdr
+# resolves it on the server, so a remote attach shows the remote machine.
+tab_bar_right = [{ type = "hostname" }]
