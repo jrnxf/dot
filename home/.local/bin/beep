@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# beep - play a named sound on the NAS speaker.
+#
+#   beep [-v] done|need-you|failed
+#
+# Built to be called from hooks and scripts: it always exits 0 and prints
+# nothing, whether the sound played, the name is unknown, the NAS is
+# unreachable or busy, or it is quiet hours. -v says on stderr what happened.
+#
+# This is the only place that knows the NAS address. It is an address rather
+# than a host name because LAN names do not resolve on the Linux guest.
+url=http://10.94.1.20:7337/beep
+
+# Quiet hours, local time: nothing plays from the first time until the second.
+# A window may cross midnight. BEEP_QUIET overrides it for one call or one
+# environment, in the same HH:MM-HH:MM form, and BEEP_QUIET=off disables it.
+quiet=${BEEP_QUIET:-22:00-08:00}
+
+verbose=
+if [ "${1:-}" = -v ]; then
+  verbose=1
+  shift
+fi
+
+# Every exit goes through here, so the status is always 0.
+finish() {
+  [ -z "$verbose" ] || printf 'beep: %s\n' "$1" >&2
+  exit 0
+}
+
+# Notes are {"hz", "ms"} played in order; hz 0 is a rest.
+case ${1:-} in
+  # three even beeps
+  done)
+    notes='[{"hz":880,"ms":150},{"hz":0,"ms":100},{"hz":880,"ms":150},{"hz":0,"ms":100},{"hz":880,"ms":150}]' ;;
+  # a rising two-note call, asked twice
+  need-you)
+    notes='[{"hz":660,"ms":120},{"hz":990,"ms":250},{"hz":0,"ms":200},{"hz":660,"ms":120},{"hz":990,"ms":250}]' ;;
+  # three falling notes, the last one held
+  failed)
+    notes='[{"hz":440,"ms":200},{"hz":330,"ms":200},{"hz":220,"ms":500}]' ;;
+  '') finish 'usage: beep [-v] done|need-you|failed' ;;
+  *) finish "unknown sound: $1" ;;
+esac
+
+# minutes HH:MM: print minutes since midnight, or fail on anything else.
+minutes() {
+  [[ $1 =~ ^([01][0-9]|2[0-3]):([0-5][0-9])$ ]] || return 1
+  printf '%s' $((10#${BASH_REMATCH[1]} * 60 + 10#${BASH_REMATCH[2]}))
+}
+
+if [ "$quiet" != off ]; then
+  # A window or clock that cannot be read counts as quiet: a beep that goes
+  # missing by day costs less than one that sounds at night.
+  if [[ $quiet == *-* ]] && start=$(minutes "${quiet%%-*}") && end=$(minutes "${quiet#*-}") \
+    && now=$(minutes "$(date +%H:%M)"); then
+    if [ "$start" -le "$end" ]; then
+      [ "$now" -ge "$start" ] && [ "$now" -lt "$end" ] && finish "quiet hours ($quiet)"
+    else
+      { [ "$now" -ge "$start" ] || [ "$now" -lt "$end" ]; } && finish "quiet hours ($quiet)"
+    fi
+  else
+    finish "cannot tell whether $quiet is now, staying quiet"
+  fi
+fi
+
+# The NAS answers 202 at once and plays from its own queue, so two seconds
+# only ever run out when it cannot be reached.
+status=$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 2 \
+  --header 'Content-Type: application/json' --data "$notes" "$url" 2>/dev/null)
+case $status in
+  202) finish "sent $1" ;;
+  429) finish 'NAS queue is full, dropped' ;;
+  000 | '') finish 'NAS unreachable' ;;
+  *) finish "NAS answered $status" ;;
+esac

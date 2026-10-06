@@ -155,6 +155,24 @@ Herdr says which machine a session is on in two ways:
 The same generated file sets `terminal.new_cwd = "~/firstmate"`, so every new workspace, tab and pane on the Linux machine opens in `~/firstmate` rather than following the pane it came from.
 Herdr resolves that on the server, so the Mac's own herdr sessions keep the default.
 
+## Beep
+
+`beep <sound>` plays a named sound on the NAS speaker, from either machine.
+It is `home/.local/bin/beep`, linked to `~/.local/bin/beep`, and the only place that knows the NAS address.
+
+- `beep done` - three even beeps.
+- `beep need-you` - a rising two-note call, twice.
+- `beep failed` - three falling notes.
+
+It is meant for hooks and scripts, so it always exits 0 and prints nothing: an unknown sound, an unreachable or busy NAS and quiet hours all pass in silence, and it never waits more than two seconds.
+`beep -v <sound>` says on stderr what happened.
+
+Nothing plays during quiet hours, 22:00 to 08:00 local time.
+Change the `quiet=` default at the top of the script to move the window for good, or set `BEEP_QUIET` for one call or one environment: `BEEP_QUIET=23:00-07:00`, or `BEEP_QUIET=off`.
+
+`~/.local/bin` is on `PATH` through `home/.zshrc`, so a caller that does not inherit an interactive shell's `PATH` should name `~/.local/bin/beep` in full.
+`tests/beep.test.sh` checks all of this with `curl` and `date` stubbed, so running it never makes a sound.
+
 ## Make it yours
 
 This repo is mine.

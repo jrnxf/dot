@@ -137,6 +137,11 @@ in
   home.file.".curl-format.txt".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.curl-format.txt";
 
+  # `beep <sound>` plays a named sound on the NAS speaker. .zshrc puts
+  # ~/.local/bin on PATH; a caller without that PATH names the full path.
+  home.file.".local/bin/beep".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.local/bin/beep";
+
   home.file.".gitconfig".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.gitconfig";
   home.file.".gitignore".source =
