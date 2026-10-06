@@ -11,6 +11,8 @@
     nodejs
     bun
     tmux
+    # uvx launches the Semble MCP server
+    uv
     # the shared .zshrc aliases cat and ls to these
     bat
     lsd

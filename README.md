@@ -122,11 +122,12 @@ ln -s /Users/jrnxf/.nix-profile/bin/chromium /opt/google/chrome/chrome
 
 What differs from the Mac:
 
-- `home-linux.nix` installs what Homebrew provides there: git, the GitHub CLI, Node, bun, tmux, Chromium, Claude Code and Herdr.
+- `home-linux.nix` installs what Homebrew provides there: git, the GitHub CLI, Node, uv, bun, tmux, Chromium, Claude Code and Herdr.
   Codex, OpenCode and Pi are not installed; their configs are linked, so adding the package is all it would take.
 - Claude Code and Herdr come from the `nixpkgs-unstable` flake input, because Homebrew follows their latest release on the Mac.
   They move only when the lock does: `nix flake update nixpkgs-unstable`, then `./rebuild.sh`.
 - Logins are per machine and never in this repo: run `gh auth login` and `claude` once.
+- The Semble MCP server is unverified on Linux: `uv` is installed for it, but it has not been started there yet (see "MCP servers").
 
 ## Make it yours
 
@@ -216,7 +217,8 @@ Its interactive diagram interface requires a client with MCP Apps support.
 When adding or changing a server, update both Codex's `mcp_servers` tables and
 the Claude plugin's `.mcp.json`. Keep tokens out of these tracked files; use
 OAuth or the clients' environment-variable credential settings instead.
-`node` and `uv` are already declared in `configuration.nix`; npx and uvx resolve
+`node` and `uv` are already declared in `configuration.nix` on the Mac and in
+`home-linux.nix` on Linux; npx and uvx resolve
 the shadcn and Semble packages on launch, so those package versions are not
 pinned by the Nix lockfile.
 
