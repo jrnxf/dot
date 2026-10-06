@@ -23,7 +23,7 @@ set -u
 # shellcheck source=tests/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-TMP_ROOT=$(dotfiles_test_tmproot pi-calm)
+dotfiles_test_tmproot TMP_ROOT pi-calm
 CALM_DIR="$ROOT/home/.pi/agent/extensions/calm"
 PI_PACKAGE_DIR=${PI_CALM_TEST_PACKAGE_DIR:-"$(npm root -g 2>/dev/null)/@earendil-works/pi-coding-agent"}
 TMUX_SOCKET="pi-calm-test-$$"

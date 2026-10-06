@@ -35,14 +35,18 @@ dotfiles_test_cleanup() {
   done
 }
 
+# dotfiles_test_tmproot <variable> [prefix]: create a temp directory, removed
+# when the test exits, and store its path in <variable>. It assigns instead of
+# printing because a command substitution would run it in a subshell, whose
+# exit trap removes the directory before the caller ever sees it.
 dotfiles_test_tmproot() {
-  local prefix=${1:-dotfiles-test} root
+  local prefix=${2:-dotfiles-test} root
   root=$(mktemp -d "${TMPDIR:-/tmp}/${prefix}.XXXXXX")
   if [ "${#DOTFILES_TEST_CLEANUP_DIRS[@]}" -eq 0 ]; then
     trap dotfiles_test_cleanup EXIT
   fi
   DOTFILES_TEST_CLEANUP_DIRS+=("$root")
-  printf '%s\n' "$root"
+  printf -v "$1" '%s' "$root"
 }
 
 # --- assertions ---------------------------------------------------------------
