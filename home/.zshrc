@@ -171,7 +171,7 @@ ssh() {
 
 # ---- Tool initialization ----
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
-eval "$(thefuck --alias)"
+[[ $commands[thefuck] ]] && eval "$(thefuck --alias)"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 _gt_yargs_completions() {
   local reply
@@ -186,7 +186,7 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-eval "$(rbenv init - zsh)"
+[[ $commands[rbenv] ]] && eval "$(rbenv init - zsh)"
 # Keep Homebrew bins ahead of rbenv shims so `tilt` (Homebrew) wins over
 # the rbenv `tilt` gem shim.
 export PATH="/opt/homebrew/bin:$PATH"

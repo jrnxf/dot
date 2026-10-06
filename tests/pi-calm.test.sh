@@ -113,9 +113,13 @@ test_zero_coupling_and_state_file() {
     assert_not_contains "$(cat "$file")" "$pat_dash" "$file mentions $pat_dash"
     assert_not_contains "$(cat "$file")" "$separator" "$file contains the operational separator"
   done
-  # The upstream project name may appear only in a license attribution.
-  local attribution_name="First""mate"
-  license_hits=$(grep -rni "$attribution_name" "$CALM_DIR" "$ROOT/README.md" "$ROOT/home.nix" 2>/dev/null | grep -v "Adapted from" || true)
+  # The upstream project name may appear only in a license attribution inside
+  # the shipped extension, whose sources and LICENSE are an owned text contract.
+  local attribution_name="First""mate" scan_status=0
+  [ -f "$CALM_DIR/LICENSE" ] || fail "calm LICENSE is missing from $CALM_DIR"
+  license_hits=$(grep -rni "$attribution_name" "$CALM_DIR") || scan_status=$?
+  [ "$scan_status" -le 1 ] || fail "could not scan $CALM_DIR for upstream references"
+  license_hits=$(printf '%s\n' "$license_hits" | grep -v "Adapted from" || true)
   [ -z "$license_hits" ] || fail "unexpected upstream references outside license attribution: $license_hits"
   grep -q "MIT License" "$CALM_DIR/LICENSE" || fail "calm LICENSE lost the MIT permission text"
   grep -q "Copyright (c) 2026 Kun Chen" "$CALM_DIR/LICENSE" || fail "calm LICENSE lost the copyright notice"

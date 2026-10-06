@@ -1,3 +1,5 @@
+# User-level packages and links shared by every machine. The per-OS entry
+# points, home-darwin.nix and home-linux.nix, import this and add their own.
 { config, pkgs, user, ... }:
 
 let
@@ -8,36 +10,12 @@ let
     chmod -R u+w $out
     rm -rf $out/share/fzf-tab/modules
   '';
-  # MarkText ships unsigned, so the Homebrew cask was disabled (Gatekeeper) and
-  # nixpkgs marks it bad on darwin. Package the upstream arm64 zip directly;
-  # home-manager links the .app into ~/Applications/Home Manager Apps.
-  marktext = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-    pname = "marktext";
-    version = "0.19.1";
-    src = pkgs.fetchurl {
-      url = "https://github.com/marktext/marktext/releases/download/v${finalAttrs.version}/marktext-mac-arm64-${finalAttrs.version}.zip";
-      hash = "sha256-9UAuT6nUK/+JIky55V4LonVaGfm78ZMqFefH/PyLp3w=";
-    };
-    nativeBuildInputs = [ pkgs.unzip ];
-    sourceRoot = ".";
-    dontFixup = true; # never touch a prebuilt app bundle
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/Applications
-      cp -R marktext.app "$out/Applications/MarkText.app"
-      runHook postInstall
-    '';
-    meta = {
-      description = "Simple and elegant markdown editor";
-      homepage = "https://github.com/marktext/marktext";
-      license = pkgs.lib.licenses.mit;
-      platforms = [ "aarch64-darwin" ];
-    };
-  });
 in
 
 {
   home.username = user;
+  # Linux uses the macOS-style path too (see README, "Linux machine"): tracked
+  # hook commands and agent state name this home directory literally.
   home.homeDirectory = "/Users/${user}";
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
@@ -50,18 +28,9 @@ in
     jq        # json on the command line
     lazygit
     neovim
-    # the font everything renders in
-    nerd-fonts.hack
-    # gui apps not installable via homebrew casks
-    marktext  # markdown editor
   ]
   # agent tooling firstmate needs on PATH
   ++ import ./firstmate-tools.nix { inherit pkgs; };
-  fonts.fontconfig.enable = true;
-  # Copy .app bundles into ~/Applications/Home Manager Apps instead of
-  # symlinking them into the store; Spotlight and Raycast skip symlinked apps.
-  targets.darwin.copyApps.enable = true;
-  targets.darwin.linkApps.enable = false;
   home.sessionVariables.EDITOR = "nvim";
 
   # Stable package paths for the editable shell configuration.
@@ -147,18 +116,6 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/quota-axi";
   home.file.".codex/skills/quota-axi".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/quota-axi";
-
-  # Ghostty keeps runtime state (auto/) next to its config, so link just the file.
-  home.file.".config/ghostty/config".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/ghostty/config";
-
-  # Karabiner saves via write-temp-then-rename, which clobbers a file symlink
-  # on every GUI edit. Linking the whole directory instead makes those renames
-  # land inside the repo, so GUI edits show up as a git diff rather than a
-  # broken link. Runtime state written next to the config (assets/,
-  # automatic_backups/) ends up in the repo dir too and is gitignored.
-  home.file.".config/karabiner".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/karabiner";
 
   home.file.".curl-format.txt".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.curl-format.txt";

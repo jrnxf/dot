@@ -4,6 +4,7 @@ Watch the walkthrough: https://youtu.be/5N-okeDdIuI
 
 My personal Mac setup, managed with nix-darwin and home-manager.
 One repo, one command, and a fresh Mac ends up configured the same way every time.
+A headless Linux machine can take the shell and agent half of it; see "Linux machine".
 
 ## Contributing / Using This Repo
 
@@ -35,8 +36,8 @@ Running the switch builds:
 On a brand new Mac, from a bare clone of this repo:
 
 ```sh
-git clone https://github.com/kunchenguid/dotfiles.git
-cd dotfiles
+git clone https://github.com/jrnxf/dot.git ~/dotfiles
+cd ~/dotfiles
 ```
 
 Before you run it: review "Make it yours" below.
@@ -80,14 +81,62 @@ Edit the config files in place, then apply:
 That's it.
 No separate build-and-copy step.
 
+## Linux machine
+
+A Linux machine gets the user-level half of this setup through standalone home-manager: the shell, the agent configs, and the agent toolchain at the same versions the Mac runs.
+There are no system settings, no Homebrew and no GUI apps.
+It is built for Debian 13 on x86_64, for a machine that only runs agents and is reached over ssh.
+
+Prepare the machine once, as root.
+Install `curl`, `git` and `xz-utils`, then create the account with its home under `/Users`:
+
+```sh
+mkdir -p /Users
+useradd --create-home --home-dir /Users/jrnxf --shell /bin/bash jrnxf
+```
+
+The macOS-style home is deliberate.
+The tracked agent hooks name `/Users/jrnxf` literally (see "Agent session hooks"), and so do the paths agents record about the projects they work in, so both keep working when the home directory is the same on every machine.
+
+Install Nix the way `bootstrap.sh` does on the Mac, then, as that user, one command builds and applies everything:
+
+```sh
+git clone https://github.com/jrnxf/dot.git ~/dotfiles
+~/dotfiles/rebuild.sh
+```
+
+`rebuild.sh` is the same script as on the Mac; on Linux it applies `homeConfigurations.linux` from `flake.nix` and needs no sudo.
+Run it again after any change, or use `reload`.
+
+Two things need root and are outside what home-manager can do, so finish by hand:
+
+```sh
+# Log in to the zsh this repo configures.
+echo /Users/jrnxf/.nix-profile/bin/zsh >> /etc/shells
+chsh --shell /Users/jrnxf/.nix-profile/bin/zsh jrnxf
+
+# chrome-devtools-axi only looks for a browser at Google Chrome's install path.
+mkdir -p /opt/google/chrome
+ln -s /Users/jrnxf/.nix-profile/bin/chromium /opt/google/chrome/chrome
+```
+
+What differs from the Mac:
+
+- `home-linux.nix` installs what Homebrew provides there: git, the GitHub CLI, Node, uv, bun, tmux, Chromium, Claude Code and Herdr.
+  Codex, OpenCode and Pi are not installed; their configs are linked, so adding the package is all it would take.
+- Claude Code and Herdr come from the `nixpkgs-unstable` flake input, because Homebrew follows their latest release on the Mac.
+  They move only when the lock does: `nix flake update nixpkgs-unstable`, then `./rebuild.sh`.
+- Logins are per machine and never in this repo: run `gh auth login` and `claude` once.
+- The Semble MCP server is unverified on Linux: `uv` is installed for it, but it has not been started there yet (see "MCP servers").
+
 ## Make it yours
 
 This repo is mine.
 If you clone it, review these before you run `bootstrap.sh`:
 
-- **Username**: run `./bootstrap.sh` (it detects your macOS username and offers to set it) OR change the single `user = "kunchen"` line in `flake.nix`.
+- **Username**: run `./bootstrap.sh` (it detects your macOS username and offers to set it) OR change the single `user = "jrnxf"` line in `flake.nix`.
   Everything else (`configuration.nix`, `home.nix`, home directory paths) is threaded from that one variable.
-- **Host label** `"mac"`, in three places: `flake.nix` (the `darwinConfigurations."mac"` name), `rebuild.sh:5` (the `#mac` at the end of the flake reference), and `bootstrap.sh`'s first-switch command (also `#mac`).
+- **Host label** `"mac"`, in three places: `flake.nix` (the `darwinConfigurations."mac"` name), `rebuild.sh` (the `#mac` at the end of the flake reference), and `bootstrap.sh`'s first-switch command (also `#mac`).
   All three have to match.
 - **CPU architecture**, `hostPlatform` in `configuration.nix` (see Prerequisites above).
 
@@ -126,10 +175,12 @@ If you don't use it, just remove it from `brews` in your copy.
 ## Repo tour
 
 - `flake.nix` - the entry point.
-  Wires up nixpkgs, nix-darwin, home-manager, and nix-homebrew, and declares the `mac` machine.
+  Wires up nixpkgs, nix-darwin, home-manager, and nix-homebrew, and declares the `mac` machine and the `linux` home.
 - `configuration.nix` - system-level config: macOS defaults, Homebrew.
-- `home.nix` - user-level packages and the symlinks described below.
-- `rebuild.sh` - re-applies the config after the first switch.
+- `home.nix` - user-level packages and the symlinks described below, shared by every machine.
+- `home-darwin.nix`, `home-linux.nix` - what only one OS gets, on top of `home.nix`.
+- `firstmate-tools.nix` - pinned agent CLIs, packaged once for both systems.
+- `rebuild.sh` - re-applies the config after the first switch, on either OS.
   Run this after changing Nix declarations or adding managed links.
 - `home/` - the actual config files that get symlinked into place; the sections below explain the shared symlink model and Pi's narrower selective setup.
 
@@ -166,7 +217,8 @@ Its interactive diagram interface requires a client with MCP Apps support.
 When adding or changing a server, update both Codex's `mcp_servers` tables and
 the Claude plugin's `.mcp.json`. Keep tokens out of these tracked files; use
 OAuth or the clients' environment-variable credential settings instead.
-`node` and `uv` are already declared in `configuration.nix`; npx and uvx resolve
+`node` and `uv` are already declared in `configuration.nix` on the Mac and in
+`home-linux.nix` on Linux; npx and uvx resolve
 the shadcn and Semble packages on launch, so those package versions are not
 pinned by the Nix lockfile.
 
@@ -218,7 +270,7 @@ linked by `home.nix`:
 
 The tracked copies call `lavish-axi` by name and keep herdr's own hook form,
 `bash '/Users/jrnxf/...'`, which is fine because every machine uses the `jrnxf`
-account. `herdr integration install` only recognizes that exact form, so with it
+account with its home at `/Users/jrnxf`, Linux included. `herdr integration install` only recognizes that exact form, so with it
 in place a reinstall changes nothing; any other spelling gets a duplicate
 appended. Do not run `lavish-axi setup hooks`: it rewrites the command to a
 `/nix/store` path that breaks on the next upgrade. Run

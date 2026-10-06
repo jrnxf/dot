@@ -1,27 +1,36 @@
 # Agent CLI tools Firstmate (https://github.com/kunchenguid/firstmate) requires on PATH.
 # None are in nixpkgs or Homebrew, and upstream installs them with `curl | sh`
 # and `npm install -g`, which leaves nothing reproducible behind. Package the
-# pinned upstream releases here instead. To upgrade one: bump its version, set
-# its hashes to lib.fakeHash, run `reload`, and paste the hashes Nix reports.
+# pinned upstream releases here instead, for both the Mac and the Linux home
+# configuration. To upgrade one: bump its version, set its hashes to
+# lib.fakeHash, run `reload`, and paste the hashes Nix reports. A prebuilt
+# release has one hash per system and `reload` only reports the local one; get
+# the other with `nix store prefetch-file <release url>`.
 { pkgs }:
 
 let
   inherit (pkgs) lib;
+  inherit (pkgs.stdenv.hostPlatform) system isDarwin isLinux;
   owner = "kunchenguid";
+  # Upstream's release asset name for each system packaged here.
+  releaseTarget = {
+    aarch64-darwin = "darwin-arm64";
+    x86_64-linux = "linux-amd64";
+  };
   # pnpm 11 from this nixpkgs gets SIGKILLed finishing an install on darwin;
   # the lockfiles are format 9.0, which pnpm 10 reads as-is.
   pnpm = pkgs.pnpm_10;
 
   # Upstream publishes prebuilt Go binaries; the tarball holds just the binary.
-  goRelease = { pname, version, hash, description }:
-    pkgs.stdenvNoCC.mkDerivation {
+  goRelease = { pname, version, hashes, description }:
+    pkgs.stdenvNoCC.mkDerivation ({
       inherit pname version;
       src = pkgs.fetchurl {
-        url = "https://github.com/${owner}/${pname}/releases/download/v${version}/${pname}-v${version}-darwin-arm64.tar.gz";
-        inherit hash;
+        url = "https://github.com/${owner}/${pname}/releases/download/v${version}/${pname}-v${version}-${releaseTarget.${system}}.tar.gz";
+        hash = hashes.${system};
       };
       sourceRoot = ".";
-      dontFixup = true; # never touch a prebuilt, ad-hoc signed binary
+      dontFixup = isDarwin; # never touch a prebuilt, ad-hoc signed binary
       installPhase = ''
         runHook preInstall
         install -Dm755 ${pname} $out/bin/${pname}
@@ -31,10 +40,15 @@ let
         inherit description;
         homepage = "https://github.com/${owner}/${pname}";
         license = lib.licenses.mit;
-        platforms = [ "aarch64-darwin" ];
+        platforms = lib.attrNames hashes;
         mainProgram = pname;
       };
-    };
+    } // lib.optionalAttrs isLinux {
+      # Some of the Linux binaries link glibc dynamically; point those at the
+      # Nix loader instead of whatever the host has in /lib64.
+      nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+      dontStrip = true;
+    });
 
   # The axi tools are pnpm TypeScript projects; build each from its release tag
   # against its own lockfile rather than trusting an unlocked `npm install -g`.
@@ -81,13 +95,19 @@ in
   (goRelease {
     pname = "treehouse";
     version = "3.1.2";
-    hash = "sha256-JGZt3sNGtf0fBGf0dcZH2OLORegOioRUjq3pezU8vks=";
+    hashes = {
+      aarch64-darwin = "sha256-JGZt3sNGtf0fBGf0dcZH2OLORegOioRUjq3pezU8vks=";
+      x86_64-linux = "sha256-vAWcbbvPaxGnQekq7R2EXVtKlvHZxeb3jBqiUCZpli0=";
+    };
     description = "Pool of reusable git worktrees for parallel agents";
   })
   (goRelease {
     pname = "no-mistakes";
     version = "1.84.0";
-    hash = "sha256-Ll+DgwOrcn7czRpgpINAaAJGBsaK59l/3A/e7Ne9TZA=";
+    hashes = {
+      aarch64-darwin = "sha256-Ll+DgwOrcn7czRpgpINAaAJGBsaK59l/3A/e7Ne9TZA=";
+      x86_64-linux = "sha256-sPuKnfQSxfofuSo1hP+h1NW01uDRc476L4uIMg+L8cI=";
+    };
     description = "Review, test, and PR validation pipeline behind a git push";
   })
   (axiTool {
