@@ -79,6 +79,10 @@ in
       lib.recursiveUpdate (fromTOML (builtins.readFile ./home/.config/herdr/config.toml)) {
         # dark teal: text contrast stays within 5% of the default sidebar's
         theme.custom.sidebar_bg = "#12262b";
+        # New workspaces, tabs and panes on the Firstmate machine open in
+        # ~/firstmate instead of following the pane they came from. herdr
+        # resolves this on the server, so it is the Linux machine's path.
+        terminal.new_cwd = "~/firstmate";
       }
     );
   home.file.".claude/settings.json".source =

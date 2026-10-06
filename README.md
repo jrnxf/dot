@@ -155,6 +155,9 @@ Herdr says which machine a session is on in two ways:
   `home-linux.nix` points `HERDR_CONFIG_PATH` at it for every herdr started on the Linux machine, and `fm` does the same for its remote attach.
   The generated file follows edits to `home/.config/herdr/config.toml` at the next rebuild, and is read-only, so herdr's reset-keys action cannot rewrite it.
 
+The same generated file sets `terminal.new_cwd = "~/firstmate"`, so every new workspace, tab and pane on the Linux machine opens in `~/firstmate` rather than following the pane it came from.
+Herdr resolves that on the server, so the Mac's own herdr sessions keep the default.
+
 ## Make it yours
 
 This repo is mine.
