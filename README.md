@@ -139,9 +139,6 @@ On the Linux machine it changes into `~/firstmate` and opens herdr there.
 Inside a herdr pane or a tmux window it only changes directory, so it never nests a second herdr, and the same goes when herdr is not installed.
 It expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this repo.
 
-`fm local` changes into this machine's own `~/firstmate` and opens nothing, or says so when there is none.
-On the Mac that is the deliberate way into a spare copy, and it prints a reminder: never run Firstmate on both machines at once.
-
 An interactive login shell on the Linux machine starts in `~/firstmate` when that directory exists.
 Only a login shell still sitting in `$HOME` moves: commands run over ssh, `scp` and `rsync` are unaffected, and shells opened inside a herdr pane or a tmux window keep the directory they were given.
 The Mac's login directory does not change.
