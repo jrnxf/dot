@@ -12,9 +12,12 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # Only for the few fast-moving agent CLIs home-linux.nix takes from it.
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs@{ self, nix-darwin, nix-homebrew, home-manager, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nix-homebrew, home-manager, nixpkgs, nixpkgs-unstable }:
     let
       # The one username line to change if this isn't your machine.
       # bootstrap.sh offers to rewrite this for you if your macOS username differs.
@@ -36,13 +39,27 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit user; };
-            home-manager.users.${user} = import ./home.nix;
+            home-manager.users.${user} = import ./home-darwin.nix;
             # Pre-existing files at a managed path (e.g. from before this repo took over,
             # or a background daemon recreating its config dir) get renamed instead of
             # blocking activation.
             home-manager.backupFileExtension = "hm-backup";
           }
         ];
+      };
+
+      # Standalone home-manager for a Linux machine: the user-level half of the
+      # setup above, with no system layer. Applied by rebuild.sh.
+      homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {
+          inherit user;
+          pkgsUnstable = import nixpkgs-unstable {
+            system = "x86_64-linux";
+            config.allowUnfreePredicate = pkg: nixpkgs.lib.getName pkg == "claude-code";
+          };
+        };
+        modules = [ ./home-linux.nix ];
       };
     };
 }
