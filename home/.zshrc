@@ -176,23 +176,10 @@ ssh() {
 # declined, it goes through plain ssh instead. On the Linux machine, which
 # hosts it, change into ~/firstmate and open herdr, unless this shell is
 # already inside herdr or tmux, where a second herdr would nest.
-# `fm local` only changes into this machine's own ~/firstmate and opens
-# nothing; on the Mac that is the deliberate way into the spare copy.
 fm() {
-  if [[ $# -gt 1 || ( $# -eq 1 && $1 != local ) ]]; then
-    print -u2 "usage: fm [local]"
+  if (( $# )); then
+    print -u2 "usage: fm"
     return 2
-  fi
-  if [[ $1 == local ]]; then
-    if [[ ! -d ~/firstmate ]]; then
-      print -u2 "fm: there is no ~/firstmate on this machine"
-      return 1
-    fi
-    cd ~/firstmate || return
-    if [[ $OSTYPE == darwin* ]]; then
-      print -u2 "fm: this is the Mac's spare copy - never run Firstmate on both machines at once"
-    fi
-    return 0
   fi
   if [[ $OSTYPE == darwin* ]]; then
     if (( $+commands[herdr] )); then

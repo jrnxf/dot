@@ -13,7 +13,9 @@ set -u
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 ZSHRC="$ROOT/home/.zshrc"
-command -v zsh >/dev/null || fail "zsh is required to test home/.zshrc"
+# Resolved once: run_fm narrows PATH to the stubs and the system directories,
+# which hides a zsh installed anywhere else, such as a Nix profile.
+zsh_bin=$(command -v zsh) || fail "zsh is required to test home/.zshrc"
 zsh -n "$ZSHRC" || fail "home/.zshrc has a syntax error"
 
 fm_source=$(sed -n '/^fm() {$/,/^}$/p' "$ZSHRC")
@@ -63,7 +65,7 @@ run_fm() {
   : > "$calls"
   env -u TMUX -u HERDR_ENV -u HERDR_CONFIG_PATH HOME="$home" PATH="$bin:/usr/bin:/bin" \
     FM_SOURCE="$fm_source" FAKE_OSTYPE="$ostype" ${vars[@]+"${vars[@]}"} \
-    zsh -f -c 'OSTYPE=$FAKE_OSTYPE; cd "$HOME"; eval "$FM_SOURCE"; fm "$@"; print -r -- "$PWD"' fm-test "$@" \
+    "$zsh_bin" -f -c 'OSTYPE=$FAKE_OSTYPE; cd "$HOME"; eval "$FM_SOURCE"; fm "$@"; print -r -- "$PWD"' fm-test "$@" \
     2> "$fm_err"
 }
 
@@ -103,22 +105,15 @@ run_fm "$mac" "$host" "$tmp/bin-none" >/dev/null
 [ "$(cat "$calls")" = "$ssh_fallback" ] || fail "fm should use ssh when herdr is not installed, ran: $(cat "$calls")"
 pass "fm on macOS uses plain ssh when herdr is missing"
 
-# macOS `fm local`: the spare copy, and nothing opened.
-[ "$(run_fm "$mac" "$host" "$tmp/bin-new" local)" = "$host/firstmate" ] || fail "fm local should cd into the local ~/firstmate"
-[ ! -s "$calls" ] || fail "fm local should open nothing, ran: $(cat "$calls")"
-assert_contains "$(cat "$fm_err")" "never run Firstmate on both machines at once" "fm local should remind that Firstmate runs on one machine only"
-[ "$(wc -l < "$fm_err")" -eq 1 ] || fail "fm local's reminder should be one line, said: $(cat "$fm_err")"
-pass "fm local on macOS changes into the spare copy and opens nothing"
-
-[ "$(run_fm "$mac" "$away" "$tmp/bin-new" local)" = "$away" ] || fail "fm local should stay put without a local ~/firstmate"
-[ ! -s "$calls" ] || fail "fm local should open nothing without a local ~/firstmate, ran: $(cat "$calls")"
-assert_contains "$(cat "$fm_err")" "there is no ~/firstmate on this machine" "fm local should say when there is no local ~/firstmate"
-pass "fm local on macOS says so when there is no local ~/firstmate"
-
-[ "$(run_fm "$mac" "$host" "$tmp/bin-new" nonsense)" = "$host" ] || fail "fm should stay put for an unknown argument"
-[ ! -s "$calls" ] || fail "fm should open nothing for an unknown argument, ran: $(cat "$calls")"
-assert_contains "$(cat "$fm_err")" "usage: fm [local]" "fm should print its usage for an unknown argument"
-pass "fm rejects an unknown argument"
+[ "$(run_fm "$mac" "$host" "$tmp/bin-new" nonsense)" = "$host" ] || fail "fm should stay put for an argument"
+[ ! -s "$calls" ] || fail "fm should open nothing for an argument, ran: $(cat "$calls")"
+[ "$(cat "$fm_err")" = "usage: fm" ] || fail "fm should print its usage for an argument, said: $(cat "$fm_err")"
+[ "$(run_fm "$mac" "$host" "$tmp/bin-new" local)" = "$host" ] || fail "fm should stay put for the removed local argument"
+[ ! -s "$calls" ] || fail "fm should open nothing for the removed local argument, ran: $(cat "$calls")"
+[ "$(cat "$fm_err")" = "usage: fm" ] || fail "fm should print its usage for the removed local argument, said: $(cat "$fm_err")"
+[ "$(run_fm "$linux" "$host" "$tmp/bin-new" local)" = "$host" ] || fail "fm on Linux should stay put for an argument"
+[ ! -s "$calls" ] || fail "fm on Linux should open nothing for an argument, ran: $(cat "$calls")"
+pass "fm rejects any argument"
 
 # Linux: the machine that hosts Firstmate.
 [ "$(run_fm "$linux" "$host" "$tmp/bin-new")" = "$host/firstmate" ] || fail "fm on Linux should cd into ~/firstmate"
@@ -135,11 +130,6 @@ pass "fm on Linux only changes directory inside herdr or tmux"
 [ "$(run_fm "$linux" "$host" "$tmp/bin-none")" = "$host/firstmate" ] || fail "fm on Linux without herdr should cd into ~/firstmate"
 [ ! -s "$calls" ] || fail "fm on Linux without herdr should run nothing, ran: $(cat "$calls")"
 pass "fm on Linux only changes directory when herdr is missing"
-
-[ "$(run_fm "$linux" "$host" "$tmp/bin-new" local)" = "$host/firstmate" ] || fail "fm local on Linux should cd into ~/firstmate"
-[ ! -s "$calls" ] || fail "fm local on Linux should open nothing, ran: $(cat "$calls")"
-[ ! -s "$fm_err" ] || fail "fm local on Linux has nothing to remind about, said: $(cat "$fm_err")"
-pass "fm local on Linux changes directory and opens nothing"
 
 # --- Linux login directory -----------------------------------------------------
 
