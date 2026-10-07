@@ -169,31 +169,6 @@ ssh() {
   fi
 }
 
-# Go to Firstmate, deciding by machine rather than by whether ~/firstmate
-# exists. On the Mac, always its herdr session on the ssh host `firstmate`:
-# remote attach draws the UI here, so it gets the Firstmate-coloured config
-# (see home.nix), and without herdr here, or when the attach fails or is
-# declined, it goes through plain ssh instead. On the Linux machine, which
-# hosts it, change into ~/firstmate and open herdr, unless this shell is
-# already inside herdr or tmux, where a second herdr would nest.
-fm() {
-  if (( $# )); then
-    print -u2 "usage: fm"
-    return 2
-  fi
-  if [[ $OSTYPE == darwin* ]]; then
-    if (( $+commands[herdr] )); then
-      HERDR_CONFIG_PATH="$HOME/.config/herdr-firstmate/config.toml" herdr --remote firstmate && return
-    fi
-    ssh -t firstmate 'cd ~/firstmate && exec herdr'
-    return
-  fi
-  cd ~/firstmate || return
-  if [[ -z $HERDR_ENV && -z $TMUX ]] && (( $+commands[herdr] )); then
-    herdr
-  fi
-}
-
 # Logging in to the Linux machine lands in Firstmate. Only a login shell still
 # sitting in $HOME moves: commands run over ssh, scp and rsync never read this
 # file, and herdr panes and tmux windows keep the directory they were given.

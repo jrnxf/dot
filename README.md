@@ -131,13 +131,12 @@ What differs from the Mac:
 
 ### Firstmate
 
-The Linux machine hosts [Firstmate](https://github.com/kunchenguid/firstmate) at `~/firstmate`, and `fm` (in `home/.zshrc`) goes there from either machine.
-It decides by machine, not by whether `~/firstmate` exists.
-On the Mac it always attaches herdr to the session on the ssh host `firstmate` with `herdr --remote firstmate`, and falls back to `ssh -t firstmate` running herdr there when herdr is missing locally or the attach fails or is declined.
-A `~/firstmate` on the Mac does not change that.
-On the Linux machine it changes into `~/firstmate` and opens herdr there.
-Inside a herdr pane or a tmux window it only changes directory, so it never nests a second herdr, and the same goes when herdr is not installed.
+The Linux machine hosts [Firstmate](https://github.com/kunchenguid/firstmate) at `~/firstmate`, and there is one way to it from the Mac: herdr's saved SSH machine.
+Save it once on each Mac with `herdr machine add firstmate`, then plain `herdr` shows that machine in the sidebar beside Local, in one window.
+herdr runs on the Mac and draws the UI; the herdr server on the Linux machine owns the panes and the agents in them, so they keep running when the Mac disconnects.
 It expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this repo.
+From a phone, or anywhere without herdr, `ssh firstmate` and run `herdr` there.
+There is no `fm` command any more: it opened a second, standalone herdr attached to that machine alone, which the saved machine made redundant.
 
 An interactive login shell on the Linux machine starts in `~/firstmate` when that directory exists.
 Only a login shell still sitting in `$HOME` moves: commands run over ssh, `scp` and `rsync` are unaffected, and shells opened inside a herdr pane or a tmux window keep the directory they were given.
@@ -147,9 +146,10 @@ Herdr says which machine a session is on in two ways:
 
 - The right edge of the tab bar shows the hostname, on both machines.
   Herdr resolves it where the panes run, so a remote attach names the remote machine.
-- The sidebar is tinted dark teal for the Firstmate session only.
+- The sidebar is tinted dark teal when herdr itself runs on the Linux machine.
   Herdr takes its theme from the client's config and has no include, so `home.nix` generates `~/.config/herdr-firstmate/config.toml` from the tracked config plus that one colour.
-  `home-linux.nix` points `HERDR_CONFIG_PATH` at it for every herdr started on the Linux machine, and `fm` does the same for its remote attach.
+  `home-linux.nix` points `HERDR_CONFIG_PATH` at it for every herdr started on the Linux machine, which is what draws the UI when you ssh in and run herdr there.
+  The Mac's own herdr, where Firstmate is a saved machine, draws everything with the Mac's theme, and the machine label in the sidebar tells the two apart.
   The generated file follows edits to `home/.config/herdr/config.toml` at the next rebuild, and is read-only, so herdr's reset-keys action cannot rewrite it.
 
 The same generated file sets `terminal.new_cwd = "~/firstmate"`, so every new workspace, tab and pane on the Linux machine opens in `~/firstmate` rather than following the pane it came from.

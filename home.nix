@@ -68,12 +68,13 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/nvim";
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.config/herdr";
-  # The same config with a tinted sidebar, for herdr showing the Firstmate
-  # machine's session: home-linux.nix makes it that machine's config, and `fm`
-  # hands it to the remote-attach client elsewhere, which draws the UI with
-  # its own theme. herdr has no include, only HERDR_CONFIG_PATH for a whole
-  # file, so this is generated from the tracked config rather than copied; it
-  # follows edits to that file at the next rebuild.
+  # The same config with a tinted sidebar and Firstmate's working directory,
+  # for the Firstmate machine: home-linux.nix makes it that machine's config.
+  # The tint shows when herdr itself runs there (over plain ssh); a Mac that
+  # reaches it as a saved machine draws the UI with its own theme. herdr has
+  # no include, only HERDR_CONFIG_PATH for a whole file, so this is generated
+  # from the tracked config rather than copied; it follows edits to that file
+  # at the next rebuild.
   home.file.".config/herdr-firstmate/config.toml".source =
     (pkgs.formats.toml { }).generate "herdr-firstmate-config.toml" (
       lib.recursiveUpdate (fromTOML (builtins.readFile ./home/.config/herdr/config.toml)) {
