@@ -22,3 +22,10 @@ prompt_new_tab_name = false
 # Name the machine the panes run on at the right edge of the tab bar. herdr
 # resolves it on the server, so a remote attach shows the remote machine.
 tab_bar_right = [{ type = "hostname" }]
+
+[ui.toast]
+delivery = "herdr"
+
+[theme]
+name = "catppuccin"
+auto_switch = false

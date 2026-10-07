@@ -293,6 +293,7 @@ linked by `home.nix`:
 - Claude Code: `home/.claude/settings.json` and `home/.claude/hooks/`.
 - Codex: `home/.codex/hooks.json` and `home/.codex/herdr-agent-state.sh`.
 - OpenCode: `home/.config/opencode/plugins/`.
+- Pi: `home/.pi/agent/extensions/herdr-agent-state.ts`, herdr's reporter only.
 
 The tracked copies call `lavish-axi` by name and keep herdr's own hook form,
 `bash '/Users/jrnxf/...'`, which is fine because every machine uses the `jrnxf`
