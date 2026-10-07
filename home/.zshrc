@@ -75,7 +75,10 @@ export PATH="$HOME/.nvm/versions/node/v24.4.1/bin:$PATH"
 # ---- Environment ----
 export EDITOR="nvim"
 export MANPAGER='nvim +Man!'
-export LC_ALL=en_US.UTF-8
+# Linux sets LC_ALL in .zshenv.
+if [[ $OSTYPE != linux* ]]; then
+  export LC_ALL=en_US.UTF-8
+fi
 export AWS_PAGER=""
 export NEXT_PUBLIC_WORKSPACE_PREFIX="colby"
 export NODE_OPTIONS="--max-old-space-size=8192"
