@@ -32,6 +32,12 @@ status_indicators = "dots"
 # row with the git branch and status.
 rows = [["state_icon", "workspace"]]
 
+[ui.sidebar.agents]
+# One row per agent: its state icon, space and tab. The default also names the
+# machine, which repeats the space where the two share a name, and adds a
+# second row with the agent program, which is always the same one here.
+rows = [["state_icon", "workspace", "tab"]]
+
 [ui.toast]
 delivery = "herdr"
 
