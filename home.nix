@@ -100,13 +100,19 @@ in
   home.file.".claude/skills/dotfiles-mcp".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/skills/dotfiles-mcp";
 
-  # Share the authored skill across agents without replacing installed skills.
+  # Share the authored skills across agents without replacing installed skills.
   home.file.".agents/skills/pr-walkthrough".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
   home.file.".claude/skills/pr-walkthrough".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
   home.file.".codex/skills/pr-walkthrough".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-walkthrough";
+  home.file.".agents/skills/pr-visual-evidence".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-visual-evidence";
+  home.file.".claude/skills/pr-visual-evidence".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-visual-evidence";
+  home.file.".codex/skills/pr-visual-evidence".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-visual-evidence";
 
   # Official axi.md catalog skills invoke their CLIs through Homebrew's npx.
   home.file.".agents/skills/gh-axi".source =
