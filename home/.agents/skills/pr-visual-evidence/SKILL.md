@@ -47,7 +47,7 @@ scripts/annotate.sh before-x.png after-x.png 596,93,752,119 b:10,200,300,260 a:1
 GitHub has no API for attachments, so upload through the description's web editor in a signed-in browser. One signed-in session can serve many PRs.
 
 1. Open the PR, then the description's "Show options" menu, then "Edit". Retry if the editor does not open on the first click.
-2. Upload each `*.annotated.png` with the editor's "Attach files" control, in caption order. Wait until each `https://github.com/user-attachments/assets/...` URL appears in the textarea before the next upload. If the browser tool refuses a file path, copy the images to `/tmp` first.
+2. Always embed the annotated copies with the red boxes, never the plain screenshots alone. Upload each `*.annotated.png` with the editor's "Attach files" control, in caption order. Wait until each `https://github.com/user-attachments/assets/...` URL appears in the textarea before the next upload. If the browser tool refuses a file path, copy the images to `/tmp` first.
 3. Replace the inserted `<img>` tags with one block per pair: a bold caption line, then a two-column table.
 
    ```markdown
