@@ -208,6 +208,7 @@ If you don't use it, just remove it from `brews` in your copy.
 - `firstmate-tools.nix` - pinned agent CLIs, packaged once for both systems.
 - `rebuild.sh` - re-applies the config after the first switch, on either OS.
   Run this after changing Nix declarations or adding managed links.
+- `work-overlays.sh` - applies the machine-local overlays described below on every switch.
 - `home/` - the actual config files that get symlinked into place; the sections below explain the shared symlink model and Pi's narrower selective setup.
 
 ## How the symlinks work
@@ -217,6 +218,15 @@ The files under `home/` are the real files - editing them here is editing your l
 You only run `./rebuild.sh` when you change something that isn't just a symlinked file, like a package list or a system default.
 
 Zsh settings, aliases, and fzf integration live in `home/.zshrc`; Starship settings live in `home/.config/starship.toml`. Nix installs the tools and exposes stable plugin paths under `~/.local/share/zsh-packages`. Start a new shell after editing `.zshrc`, or use `reload` to rebuild and restart it. Codex links only `config.toml`, leaving credentials and sessions in its local directory.
+
+### Machine-local overlays
+
+Some agent instructions and skills belong on one machine only. Give them a `.work` suffix and they stay on that machine: `.gitignore` ignores every `*.work.md` and `*.work/`, so they are never committed. Back them up yourself, for example to a password manager.
+
+- `home/AGENTS.work.md` is appended to `home/AGENTS.md` in the global instructions for Claude, Codex, and opencode. While it exists, those instructions are a generated copy, so run `reload` after editing either file. Without it, they stay a live link to `home/AGENTS.md`.
+- `home/.agents/skills/<name>.work/` is linked as `<name>` into `~/.agents/skills/`, `~/.claude/skills/`, and `~/.codex/skills/`. A rebuild removes the links of a deleted overlay.
+
+The flake cannot see gitignored files, so `work-overlays.sh` applies these on every switch. For per-machine Nix overrides, use `local.nix` instead.
 
 ## MCP servers
 

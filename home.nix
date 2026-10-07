@@ -4,6 +4,7 @@
 
 let
   dotfiles = "${config.home.homeDirectory}/dotfiles";
+  agentInstructions = "${config.xdg.stateHome}/dotfiles/AGENTS.md";
   # The prebuilt fzf-tab module has a Zsh version mismatch; use its shell fallback.
   fzfTab = pkgs.runCommand "zsh-fzf-tab-no-module" { } ''
     cp -r ${pkgs.zsh-fzf-tab} $out
@@ -154,10 +155,21 @@ in
   home.file.".pi/agent/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.pi/agent/settings.json";
 
+  # The global agent instructions go through a path work-overlays.sh owns: a
+  # live link to home/AGENTS.md, or that file plus the gitignored
+  # home/AGENTS.work.md when this machine has one. The overlay is invisible to
+  # the flake, so it can only be detected at activation, and keeping the
+  # generated file outside Home Manager's links means a switch never collides
+  # with it.
   home.file.".claude/CLAUDE.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/AGENTS.md";
+    config.lib.file.mkOutOfStoreSymlink agentInstructions;
   home.file.".codex/AGENTS.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/AGENTS.md";
+    config.lib.file.mkOutOfStoreSymlink agentInstructions;
   home.file.".config/opencode/AGENTS.md".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/AGENTS.md";
+    config.lib.file.mkOutOfStoreSymlink agentInstructions;
+  # It also links any home/.agents/skills/<name>.work/ beside the skills above.
+  home.activation.workOverlays = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    run ${pkgs.bash}/bin/bash ${./work-overlays.sh} \
+      ${lib.escapeShellArg dotfiles} ${lib.escapeShellArg agentInstructions}
+  '';
 }
