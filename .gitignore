@@ -23,5 +23,10 @@ result-*
 # Pi Calm is a runtime toggle; its local state file is never tracked
 /home/.pi/agent/calm
 
+# Machine-local overlays (README, "Machine-local overlays"): they exist only
+# on the machine that needs them and are never committed
+*.work.md
+*.work/
+
 # no-mistakes local validation state - never commit in this public repo
 .no-mistakes/
