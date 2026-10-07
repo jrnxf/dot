@@ -23,6 +23,11 @@ prompt_new_tab_name = false
 # resolves it on the server, so a remote attach shows the remote machine.
 tab_bar_right = [{ type = "hostname" }]
 
+[ui.sidebar.spaces]
+# One row per space: just its state icon and name. The default adds a second
+# row with the git branch and status.
+rows = [["state_icon", "workspace"]]
+
 [ui.toast]
 delivery = "herdr"
 
