@@ -1,6 +1,6 @@
 # The Linux home configuration, for a headless machine that runs agents:
 # everything shared, plus what Homebrew provides on the Mac.
-{ config, pkgs, pkgsUnstable, ... }:
+{ config, lib, pkgs, pkgsUnstable, ... }:
 
 let
   # The host half of Moshi, the phone terminal: `moshi-hook host setup` prints
@@ -29,6 +29,16 @@ let
       platforms = [ "x86_64-linux" ];
     };
   });
+
+  # Captain's Deck, the herdr plugin that draws Firstmate's flow as a kanban
+  # board. Upstream publishes no releases or tags, so this pins a commit of its
+  # default branch (plugin version 0.7.1); bump rev and hash together.
+  captains-deck = pkgs.fetchFromGitHub {
+    owner = "deimantasnork";
+    repo = "captains-deck";
+    rev = "06c8284b1a8e17b7ec0acaa8d32c3bcbb23ec9c3";
+    hash = "sha256-0gFRuxQS8Vx4/kJjBTeGs0drQF9QYHn2kcAOEuEpFTk=";
+  };
 in
 
 {
@@ -62,6 +72,19 @@ in
   # ~/.config/herdr; only the config file moves.
   home.sessionVariables.HERDR_CONFIG_PATH =
     "${config.home.homeDirectory}/.config/herdr-firstmate/config.toml";
+
+  # Register Captain's Deck with herdr, enabled. herdr has no plugin setting in
+  # config.toml: plugins live in a registry it owns (~/.config/herdr/plugins.json),
+  # written through its CLI, so this is an activation step rather than a linked
+  # file. `plugin link` takes a local directory, here the pinned store path,
+  # where `plugin install` would clone the repository again on every rebuild.
+  # It replaces any earlier registration of the same plugin, and works with or
+  # without a herdr server running; a running one sees the plugin at once.
+  # A failure only warns, so a herdr that cannot answer never blocks a rebuild.
+  home.activation.herdrCaptainsDeck = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    run --quiet ${pkgsUnstable.herdr}/bin/herdr plugin link ${captains-deck} --enabled \
+      || warnEcho "herdr did not register the Captain's Deck plugin; the next rebuild retries"
+  '';
 
   # The Moshi daemon, as the unit `moshi-hook service install` would write but
   # owned by Home Manager, so it follows the package across version bumps.
