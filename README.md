@@ -138,6 +138,13 @@ It expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this
 From a phone, or anywhere without herdr, `ssh firstmate` and run `herdr` there.
 There is no `fm` command any more: it opened a second, standalone herdr attached to that machine alone, which the saved machine made redundant.
 
+[Moshi](https://getmoshi.app) is the phone's terminal for it.
+`home-linux.nix` installs its host half, `moshi-hook`, and runs the daemon as the user service `moshi-hook.service`.
+Pair a phone once, on the Linux machine, with `moshi-hook host setup --host <address> --port <port>`, then scan the QR it prints and run `systemctl --user restart moshi-hook` so the daemon picks up the pairing.
+Give it the address and SSH port the phone reaches the machine at: left alone it offers the machine's own addresses, which are no use when the machine sits behind a forward.
+The package is pinned, and `moshi-hook update` cannot write to the Nix store, so a new release is a version and hash bump in `home-linux.nix`.
+`moshi-hook install` is not part of this: it writes hook entries into `~/.claude/settings.json`, `~/.codex/hooks.json` and `~/.pi/agent/extensions/`, which are tracked files this repo shares with the Mac, where `moshi-hook` is not installed.
+
 An interactive login shell on the Linux machine starts in `~/firstmate` when that directory exists.
 Only a login shell still sitting in `$HOME` moves: commands run over ssh, `scp` and `rsync` are unaffected, and shells opened inside a herdr pane or a tmux window keep the directory they were given.
 The Mac's login directory does not change.
