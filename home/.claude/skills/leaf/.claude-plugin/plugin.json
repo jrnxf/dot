@@ -1,0 +1,7 @@
+{
+  "name": "leaf",
+  "version": "0.1.0",
+  "description": "Shows markdown in a pane, rendered by leaf (https://leaf.rivolink.mg)",
+  "author": { "name": "Colby Thomas" },
+  "types": "./types/index.d.ts"
+}
