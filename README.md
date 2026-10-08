@@ -273,10 +273,9 @@ pinned by the Nix lockfile.
 
 - `/leaf <file>` shows a markdown file.
 - `/leaf reply` shows Claude's last reply.
-- `/leaf close` closes the pane.
 
 While the pane is open it follows the markdown files Claude writes or edits.
-It never opens by itself.
+It never opens by itself, and once you close it (its close mark, or ctrl+x then x) it stops following.
 On a wide fullscreen terminal the pane docks on the right; on a narrow one it sits above the prompt.
 To scroll, press ctrl+x then tab to give the pane the keyboard, and Esc to hand it back.
 

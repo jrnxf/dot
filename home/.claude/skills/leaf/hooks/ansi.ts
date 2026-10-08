@@ -5,13 +5,15 @@ export type Run = {
   bold?: boolean
   italic?: boolean
   underline?: boolean
+  strikethrough?: boolean
 }
 
 const SGR = /\x1b\[([0-9;]*)m/g
 const hex = (r: number, g: number, b: number) =>
   '#' + [r, g, b].map(n => n.toString(16).padStart(2, '0')).join('')
 
-// leaf --inline ansi writes SGR only: truecolor fg/bg, bold, italic, underline, reset.
+// leaf --inline ansi writes SGR only: truecolor fg/bg, bold, italic, underline, strikethrough, reset.
+// Under a custom theme it can also write named and indexed colors: text in those keeps the pane's own color.
 const apply = (style: Omit<Run, 'text'>, codes: number[]) => {
   let next = { ...style }
   for (let i = 0; i < codes.length; i++) {
@@ -20,12 +22,13 @@ const apply = (style: Omit<Run, 'text'>, codes: number[]) => {
     else if (code === 1) next.bold = true
     else if (code === 3) next.italic = true
     else if (code === 4) next.underline = true
+    else if (code === 9) next.strikethrough = true
     else if ((code === 38 || code === 48) && codes[i + 1] === 2) {
       const color = hex(codes[i + 2] ?? 0, codes[i + 3] ?? 0, codes[i + 4] ?? 0)
       if (code === 38) next.color = color
       else next.backgroundColor = color
       i += 4
-    }
+    } else if ((code === 38 || code === 48) && codes[i + 1] === 5) i += 2
   }
   return next
 }
@@ -35,7 +38,8 @@ const same = (a: Omit<Run, 'text'>, b: Omit<Run, 'text'>) =>
   a.backgroundColor === b.backgroundColor &&
   a.bold === b.bold &&
   a.italic === b.italic &&
-  a.underline === b.underline
+  a.underline === b.underline &&
+  a.strikethrough === b.strikethrough
 
 export const parseAnsi = (output: string): Run[][] =>
   output

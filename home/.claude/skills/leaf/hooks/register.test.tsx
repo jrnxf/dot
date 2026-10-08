@@ -20,8 +20,14 @@ const leaf = (args: string) => ({
   presentation: { isFullscreen: true, columns: 170 },
 })
 
-// The engine beneath the mod: its panes, the files that exist, and leaf itself.
-function world(on: On, stdout = `${ESC}[38;2;140;190;255;1mTitle${ESC}[0m\nbody\n`, exitCode = 0) {
+// The engine beneath the mod: its panes, the paths that exist, and leaf itself.
+function world(
+  on: On,
+  stdout = `${ESC}[38;2;140;190;255;1mTitle${ESC}[0m\nbody\n`,
+  exitCode = 0,
+  isStdoutTruncated = false,
+) {
+  const kinds: Record<string, 'file' | 'dir' | 'other'> = { 'notes.md': 'file', docs: 'dir', 'dangling.md': 'other' }
   const seen = {
     opens: [] as string[],
     isOpen: false,
@@ -32,19 +38,17 @@ function world(on: On, stdout = `${ESC}[38;2;140;190;255;1mTitle${ESC}[0m\nbody\
     seen.isOpen = true
     return { value: { isPlaced: true } }
   })
-  on('ui.close', () => {
-    seen.isOpen = false
-    return { value: undefined }
-  })
   on('ui.panes', () => ({
     value: seen.isOpen ? [{ id: 'leaf', title: 'leaf', isShown: true, isFocused: false, isPlaced: true }] : [],
   }))
-  on('fs.stat', ($, e) =>
-    e.path.endsWith('notes.md') ? { value: { kind: 'file' as const, size: 1, mtimeMs: 0, isLink: false } } : { deny: 'no such file' },
-  )
+  on('fs.stat', ($, e) => {
+    const kind = kinds[e.path.slice(e.path.lastIndexOf('/') + 1)]
+
+    return kind === undefined ? { deny: 'no such file' } : { value: { kind, size: 1, mtimeMs: 0, isLink: kind === 'other' } }
+  })
   on('process.run', ($, e) => {
     seen.runs.push({ argv: e.argv, stdin: e.init?.stdin })
-    return { value: { exitCode, stdout, stderr: exitCode === 0 ? '' : 'bad input', isStdoutTruncated: false, isStderrTruncated: false } }
+    return { value: { exitCode, stdout, stderr: exitCode === 0 ? '' : 'bad input', isStdoutTruncated, isStderrTruncated: false } }
   })
   on('tool.call', () => ({ result: { text: 'ok', isError: false, isReadOnly: false } }))
   on('turn.complete', ($, e) => ({ text: e.answer }))
@@ -75,6 +79,22 @@ test('/leaf <file> names a missing file and opens nothing', async ($, on) => {
   expect(seen.opens).toEqual([])
 })
 
+test('/leaf <path> refuses a folder and a link that leads nowhere, and opens nothing', async ($, on) => {
+  const seen = world(on)
+
+  expect((await $.command.run(leaf('docs'))).text).toBe('Not a file: docs')
+  expect((await $.command.run(leaf('dangling.md'))).text).toBe('Not a file: dangling.md')
+  expect(seen.opens).toEqual([])
+})
+
+test('bare /leaf answers with the usage line and shows nothing, even after a document', async ($, on) => {
+  const seen = world(on)
+  await $.command.run(leaf('notes.md'))
+
+  expect((await $.command.run(leaf(''))).text).toBe('Usage: /leaf <file.md>, /leaf reply')
+  expect(seen.opens).toEqual(['notes.md'])
+})
+
 test('/leaf reply pipes the last reply to leaf, and says so when there is none', async ($, on) => {
   const seen = world(on)
 
@@ -86,14 +106,6 @@ test('/leaf reply pipes the last reply to leaf, and says so when there is none',
   const ui = await $.ui.mount({ ...PANE, props: props() })
   expect(seen.runs).toEqual([{ argv: ['leaf', '--inline', 'ansi:60'], stdin: '# Hello' }])
   await ui.unmount()
-})
-
-test('/leaf close closes the pane', async ($, on) => {
-  const seen = world(on)
-  await $.command.run(leaf('notes.md'))
-
-  expect((await $.command.run(leaf('close'))).text).toBe('Pane closed.')
-  expect(seen.isOpen).toBe(false)
 })
 
 test('a markdown file Claude writes never opens the pane', async ($, on) => {
@@ -117,6 +129,24 @@ test('an open pane follows the markdown files Claude writes and edits, and no ot
   await ui.unmount()
 })
 
+test('a pane the person closed stops following and is not opened again', async ($, on) => {
+  const seen = world(on)
+  await $.command.run(leaf('notes.md'))
+  seen.isOpen = false
+
+  await $.tool.call({ tool: 'Write', tool_use_id: 'w1', file_path: '/repo/plan.md', content: '# Plan' } as never)
+  expect(seen.opens).toEqual(['notes.md'])
+})
+
+test('struck text is drawn struck', async ($, on) => {
+  world(on, `${ESC}[9mdone${ESC}[0m\n`)
+  await $.command.run(leaf('notes.md'))
+
+  const ui = await $.ui.mount({ ...PANE, props: props() })
+  expect((await ui.find({ type: 'Text', text: /^done$/ }))?.children[0]).toMatchObject({ props: { strikethrough: true } })
+  await ui.unmount()
+})
+
 test('a long document is drawn whole: every row is reachable by scrolling', async ($, on) => {
   const total = 2000
   world(on, Array.from({ length: total }, (_, i) => `row ${i + 1}`).join('\n') + '\n')
@@ -131,6 +161,16 @@ test('a long document is drawn whole: every row is reachable by scrolling', asyn
   expect(await end.find({ type: 'Text', text: /^row 2000$/ })).toBeDefined()
   expect(await end.find({ type: 'Text', text: /^row 1$/ })).toBeUndefined()
   await end.unmount()
+})
+
+test('a render cut at the output limit loses its broken last row and ends by saying so', async ($, on) => {
+  world(on, `row 1\nrow 2\nrow 3 ${ESC}[38;2;14`, 0, true)
+  await $.command.run(leaf('notes.md'))
+
+  const ui = await $.ui.mount({ ...PANE, props: props() })
+  const rows = (await ui.findAll({ type: 'Text' })).filter(row => row.props.wrap === 'truncate-end').map(row => row.text)
+  expect(rows).toEqual(['row 1', 'row 2', 'leaf wrote more than 4 MiB: the render is cut here.'])
+  await ui.unmount()
 })
 
 test('a leaf that fails is said in the pane', async ($, on) => {

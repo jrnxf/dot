@@ -6,7 +6,8 @@ import { parseAnsi } from './ansi'
 import type { Run } from './ansi'
 
 const PANE = 'leaf'
-const USAGE = 'Usage: /leaf <file.md>, /leaf reply, /leaf close'
+const USAGE = 'Usage: /leaf <file.md>, /leaf reply'
+const CUT: Run[] = [{ text: 'leaf wrote more than 4 MiB: the render is cut here.', color: 'warning' }]
 const doc = atom({ plugin: 'leaf', key: 'doc' } as const, { kind: 'none' } as LeafDoc)
 const reply = atom({ plugin: 'leaf', key: 'reply' } as const, '')
 
@@ -37,7 +38,12 @@ async function renderLines($: EngineInterface, current: Exclude<LeafDoc, { kind:
     ? $.process.run([...argv, current.path], { timeoutMs: 10_000 })
     : $.process.run(argv, { stdin: current.text, timeoutMs: 10_000 })
   ).then(
-    ran => (ran.exitCode === 0 ? parseAnsi(ran.stdout) : `leaf failed: ${ran.stderr.trim().slice(0, 300)}`),
+    ran => {
+      if (ran.exitCode !== 0) return `leaf failed: ${ran.stderr.trim().slice(0, 300)}`
+      if (!ran.isStdoutTruncated) return parseAnsi(ran.stdout)
+
+      return [...parseAnsi(ran.stdout.slice(0, ran.stdout.lastIndexOf('\n') + 1)), CUT]
+    },
     (error: unknown) => `leaf could not run (is it on PATH?): ${String(error).slice(0, 300)}`,
   )
   rendered = { key, lines }
@@ -49,7 +55,7 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'leaf',
-      description: 'Show markdown in a pane via leaf: /leaf <file>, /leaf reply, /leaf close',
+      description: 'Show markdown in a pane via leaf: /leaf <file>, /leaf reply',
     })
 
     return next(e)
@@ -57,24 +63,16 @@ export const register: Register = on => {
 
   on('command.run', { command: 'leaf' }, async ($, e) => {
     const arg = e.args.trim()
-    if (arg === 'close') {
-      await $.ui.close({ id: PANE })
-      return { text: 'Pane closed.' }
-    }
+    if (arg === '') return { text: USAGE }
     if (arg === 'reply') {
       const text = await read($, reply)
       if (text === '') return { text: 'No reply to show yet.' }
       await show($, { kind: 'reply', text, rev: Date.now() }, 'Last reply')
       return { text: 'Showing the last reply.' }
     }
-    if (arg === '') {
-      const current = await read($, doc)
-      if (current.kind === 'none') return { text: USAGE }
-      await show($, { ...current, rev: Date.now() }, current.kind === 'file' ? basename(current.path) : 'Last reply')
-      return { text: current.kind === 'file' ? `Showing ${current.path}` : 'Showing the last reply.' }
-    }
     const stat = await $.fs.stat(arg).catch(() => undefined)
     if (stat === undefined) return { text: `No such file: ${arg}` }
+    if (stat.kind !== 'file') return { text: `Not a file: ${arg}` }
     await show($, { kind: 'file', path: arg, rev: Date.now() }, basename(arg))
 
     return { text: `Showing ${arg}` }

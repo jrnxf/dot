@@ -27,6 +27,24 @@ test('italic and underline are carried', () => {
   ])
 })
 
+test('struck text stays struck and does not run into what follows', () => {
+  const lines = parseAnsi(`${ESC}[9mdone${ESC}[0mlive${ESC}[38;2;1;2;3;9mcut${ESC}[0m`)
+
+  expect(lines).toEqual([
+    [
+      { text: 'done', strikethrough: true },
+      { text: 'live' },
+      { text: 'cut', color: '#010203', strikethrough: true },
+    ],
+  ])
+})
+
+test('an indexed color is read whole: its index is never taken for a style or a reset', () => {
+  const lines = parseAnsi(`${ESC}[38;5;1;48;5;3ma${ESC}[0m${ESC}[1;38;5;0mb${ESC}[0m${ESC}[48;5;4;9mc${ESC}[0m`)
+
+  expect(lines).toEqual([[{ text: 'a' }, { text: 'b', bold: true }, { text: 'c', strikethrough: true }]])
+})
+
 test('adjacent runs of one style merge', () => {
   const [line] = parseAnsi(`${ESC}[38;2;1;2;3ma${ESC}[0m${ESC}[38;2;1;2;3mb${ESC}[0m`)
 
