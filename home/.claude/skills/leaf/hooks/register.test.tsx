@@ -180,6 +180,53 @@ test('a pane the person closed stops following and is not opened again', async (
   expect(seen.opens).toEqual(['notes.md'])
 })
 
+const answer = (text: string, turnId: string) =>
+  ({ answer: text, durationMs: 1, isAborted: false, turnId }) as never
+
+test('a pane showing a reply is replaced by each new reply', async ($, on) => {
+  const seen = world(on)
+  await $.turn.complete(answer('# One', 't1'))
+  await $.command.run(leaf('reply'))
+
+  await $.turn.complete(answer('# Two', 't2'))
+  expect(seen.opens).toEqual(['Last reply', 'Last reply'])
+  const ui = await $.ui.mount({ ...PANE, props: props() })
+  expect(seen.runs.at(-1)).toEqual({ argv: ['leaf', '--inline', 'ansi:60'], stdin: '# Two' })
+  await ui.unmount()
+})
+
+test('a pane showing a file is left alone by a new reply, until /leaf reply asks for it', async ($, on) => {
+  const seen = world(on)
+  await $.command.run(leaf('notes.md'))
+
+  await $.turn.complete(answer('# Two', 't2'))
+  expect(seen.opens).toEqual(['notes.md'])
+  const ui = await $.ui.mount({ ...PANE, props: props() })
+  expect(seen.runs.at(-1)?.argv).toEqual(['leaf', '--inline', 'ansi:60', 'notes.md'])
+  await ui.unmount()
+
+  await $.command.run(leaf('reply'))
+  await $.tool.call({ tool: 'Write', tool_use_id: 'w1', file_path: '/repo/plan.md', content: '# Plan' } as never)
+  expect(seen.opens).toEqual(['notes.md', 'Last reply', 'plan.md'])
+})
+
+test('a new reply never opens a closed pane', async ($, on) => {
+  const seen = world(on)
+  await $.turn.complete(answer('# One', 't1'))
+  await $.command.run(leaf('reply'))
+  seen.isOpen = false
+
+  await $.turn.complete(answer('# Two', 't2'))
+  expect(seen.opens).toEqual(['Last reply'])
+})
+
+test('a new reply opens nothing when no pane was ever opened', async ($, on) => {
+  const seen = world(on)
+
+  await $.turn.complete(answer('# One', 't1'))
+  expect(seen.opens).toEqual([])
+})
+
 test('struck text is drawn struck', async ($, on) => {
   world(on, `${ESC}[9mdone${ESC}[0m\n`)
   await $.command.run(leaf('notes.md'))
