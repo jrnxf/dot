@@ -50,7 +50,7 @@ export const parseAnsi = (output: string): Run[][] =>
       let style: Omit<Run, 'text'> = {}
       let at = 0
       const push = (text: string) => {
-        // Any escape that is not SGR is dropped rather than drawn.
+        // An escape that is not SGR loses its control characters: it is drawn as plain text, never acted on.
         const clean = text.replace(/[\x00-\x08\x0b-\x1f\x7f]/g, '')
         if (clean === '') return
         const last = runs[runs.length - 1]
