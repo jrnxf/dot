@@ -59,6 +59,8 @@ in
     # render text with
     chromium
     dejavu_fonts
+    # the Captain's Deck plugin registered below runs on it
+    python3
   ]) ++ [ moshi-hook ] ++ (with pkgsUnstable; [
     # Homebrew follows the latest release of these on the Mac; the release
     # branch the rest of this config is pinned to lags too far behind for them.
@@ -80,10 +82,16 @@ in
   # where `plugin install` would clone the repository again on every rebuild.
   # It replaces any earlier registration of the same plugin, and works with or
   # without a herdr server running; a running one sees the plugin at once.
-  # A failure only warns, so a herdr that cannot answer never blocks a rebuild.
-  home.activation.herdrCaptainsDeck = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    run --quiet ${pkgsUnstable.herdr}/bin/herdr plugin link ${captains-deck} --enabled \
-      || warnEcho "herdr did not register the Captain's Deck plugin; the next rebuild retries"
+  # A failure fails the rebuild, so this runs after the other activation steps
+  # and none of them is skipped.
+  home.activation.herdrCaptainsDeck = lib.hm.dag.entryAfter [
+    "linkGeneration"
+    "installPackages"
+    "onFilesChange"
+    "reloadSystemd"
+    "workOverlays"
+  ] ''
+    run --quiet ${pkgsUnstable.herdr}/bin/herdr plugin link ${captains-deck} --enabled
   '';
 
   # The Moshi daemon, as the unit `moshi-hook service install` would write but

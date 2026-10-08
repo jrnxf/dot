@@ -142,7 +142,7 @@ There is no `fm` command any more: it opened a second, standalone herdr attached
 It is a herdr plugin, and herdr runs a plugin on the machine that owns the panes, so it is installed on the Linux machine only: the Mac reaches it through the saved machine and needs nothing.
 `home-linux.nix` pins it to a commit and registers it, enabled, on every rebuild with `herdr plugin link`; herdr keeps its plugin registry in `~/.config/herdr/plugins.json`, which is gitignored.
 Open the board from any pane on the Linux machine with `herdr plugin action invoke herdr-firstmate-flow.open-captain-deck`, or `herdr-firstmate-flow.open-flow` for an overlay; no key is bound to either.
-The plugin runs with the machine's own `python3` and finds `~/firstmate` by default.
+The plugin needs only `python3`, which `home-linux.nix` installs rather than relying on the distribution's, and finds `~/firstmate` by default.
 It reads Firstmate's state and writes only an answer you queue from a Captain's Call card, through Firstmate's own scripts.
 Upstream publishes no releases, so a new version is a `rev` and `hash` bump in `home-linux.nix`.
 
