@@ -7,6 +7,10 @@ home/.config/herdr/herdr.sock.agent
 home/.config/herdr/session-snapshots/
 home/.config/herdr/sessions/
 home/.config/herdr/.plugins.lock
+# herdr's plugin registry and per-plugin config: home-linux.nix registers the
+# plugins at activation, and herdr records absolute paths there
+home/.config/herdr/plugins.json
+home/.config/herdr/plugins/
 
 # Karabiner runtime state (whole dir is symlinked from ~/.config/karabiner,
 # so the GUI writes these next to the tracked karabiner.json; never commit)

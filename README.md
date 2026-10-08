@@ -138,6 +138,14 @@ It expects a `firstmate` entry in your own `~/.ssh/config`, which is not in this
 From a phone, or anywhere without herdr, `ssh firstmate` and run `herdr` there.
 There is no `fm` command any more: it opened a second, standalone herdr attached to that machine alone, which the saved machine made redundant.
 
+[Captain's Deck](https://github.com/deimantasnork/captains-deck) draws Firstmate's flow as a kanban board inside herdr.
+It is a herdr plugin, and herdr runs a plugin on the machine that owns the panes, so it is installed on the Linux machine only: the Mac reaches it through the saved machine and needs nothing.
+`home-linux.nix` pins it to a commit and registers it, enabled, on every rebuild with `herdr plugin link`; herdr keeps its plugin registry in `~/.config/herdr/plugins.json`, which is gitignored.
+Open the board from any pane on the Linux machine with `herdr plugin action invoke herdr-firstmate-flow.open-captain-deck`, or `herdr-firstmate-flow.open-flow` for an overlay; no key is bound to either.
+The plugin needs the Linux machine's system `python3`, which this repo does not install, and finds `~/firstmate` by default.
+It reads Firstmate's state and writes only an answer you queue from a Captain's Call card, through Firstmate's own scripts.
+Upstream publishes no releases, so a new version is a `rev` and `hash` bump in `home-linux.nix`.
+
 [Moshi](https://getmoshi.app) is the phone's terminal for it.
 `home-linux.nix` installs its host half, `moshi-hook`, and runs the daemon as the user service `moshi-hook.service`.
 Pair a phone once, on the Linux machine, with `moshi-hook host setup --host <address> --port <port>`, then scan the QR it prints and run `systemctl --user restart moshi-hook` so the daemon picks up the pairing.
