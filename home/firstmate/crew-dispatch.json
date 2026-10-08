@@ -1,0 +1,15 @@
+{
+  "rules": [
+    {
+      "when": "The task is a trivial mechanical edit: a rote rename, formatting sweep, typo fix, a one-line config or comment change, or gathering a few files.",
+      "use": { "harness": "claude", "model": "haiku", "effort": "low" },
+      "why": "Narrow, low-ambiguity work does not need a strong model."
+    },
+    {
+      "when": "The task is ambiguous or open-ended: an investigation or scout, a design choice, a risky refactor, a bug whose cause is unknown, or work that spans many files and needs many moving parts held in mind.",
+      "use": { "harness": "claude", "model": "opus", "effort": "high" },
+      "why": "Keep the strongest model for the work where a wrong turn is expensive."
+    }
+  ],
+  "default": { "harness": "claude", "model": "sonnet", "effort": "medium" }
+}

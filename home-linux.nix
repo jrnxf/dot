@@ -33,4 +33,9 @@
   # ~/.config/herdr; only the config file moves.
   home.sessionVariables.HERDR_CONFIG_PATH =
     "${config.home.homeDirectory}/.config/herdr-firstmate/config.toml";
+
+  # Firstmate's model and effort choices per task, kept here because the guest
+  # has no backup.
+  home.file."firstmate/config/crew-dispatch.json".source =
+    ./home/firstmate/crew-dispatch.json;
 }
