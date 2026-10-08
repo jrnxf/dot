@@ -129,6 +129,48 @@ test('an open pane follows the markdown files Claude writes and edits, and no ot
   await ui.unmount()
 })
 
+// What a session does when the open pane follows a file: it draws the pane twice at once for the
+// new revision and abandons one of the two draws, which rejects that draw's leaf run. The kit
+// holds one instance per surface, so the abandoned draw stands on another surface here.
+test('a draw the engine abandons leaves the render of the file the pane followed in place', async ($, on) => {
+  const runs: (readonly string[])[] = []
+  let started!: () => void
+  let abandon!: () => void
+  const running = new Promise<void>(resolve => (started = resolve))
+  const abandoned = new Promise<void>(resolve => (abandon = resolve))
+  on('ui.open', () => ({ value: { isPlaced: true } }))
+  on('ui.panes', () => ({ value: [{ id: 'leaf', title: 'leaf', isShown: true, isFocused: false, isPlaced: true }] }))
+  on('fs.stat', () => ({ value: { kind: 'file' as const, size: 1, mtimeMs: 0, isLink: false } }))
+  on('tool.call', () => ({ result: { text: 'ok', isError: false, isReadOnly: false } }))
+  on('process.run', async ($, e) => {
+    runs.push(e.argv)
+    if (runs.length > 1) {
+      return { value: { exitCode: 0, stdout: 'body\n', stderr: '', isStdoutTruncated: false, isStderrTruncated: false } }
+    }
+    started()
+    await abandoned
+
+    return { deny: 'aborted' }
+  })
+  await $.command.run(leaf('notes.md'))
+  await $.tool.call({ tool: 'Write', tool_use_id: 'w1', file_path: '/repo/plan.md', content: '# Plan' } as never)
+
+  const lost = $.ui.mount({ ...PANE, surface: 'desktop', props: props() })
+  await running
+  const kept = await $.ui.mount({ ...PANE, props: props() })
+  expect(await kept.find({ type: 'Text', text: /^body$/ })).toBeDefined()
+  await kept.unmount()
+  abandon()
+  await (await lost).unmount()
+
+  // The next draw of that revision: the person gives the pane the keyboard to scroll it.
+  const again = await $.ui.mount({ ...PANE, props: props() })
+  expect(await again.find({ type: 'Text', text: /could not run/ })).toBeUndefined()
+  expect(await again.find({ type: 'Text', text: /^body$/ })).toBeDefined()
+  expect(runs).toEqual(Array(2).fill(['leaf', '--inline', 'ansi:60', '/repo/plan.md']))
+  await again.unmount()
+})
+
 test('a pane the person closed stops following and is not opened again', async ($, on) => {
   const seen = world(on)
   await $.command.run(leaf('notes.md'))

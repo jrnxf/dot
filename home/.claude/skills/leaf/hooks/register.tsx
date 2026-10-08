@@ -34,18 +34,18 @@ async function renderLines($: EngineInterface, current: Exclude<LeafDoc, { kind:
   if (rendered?.key === key) return rendered.lines
 
   const argv = ['leaf', '--inline', `ansi:${width}`]
-  const lines = await (current.kind === 'file'
+  const ran = await (current.kind === 'file'
     ? $.process.run([...argv, current.path], { timeoutMs: 10_000 })
     : $.process.run(argv, { stdin: current.text, timeoutMs: 10_000 })
-  ).then(
-    ran => {
-      if (ran.exitCode !== 0) return `leaf failed: ${ran.stderr.trim().slice(0, 300)}`
-      if (!ran.isStdoutTruncated) return parseAnsi(ran.stdout)
+  ).catch((error: unknown) => `leaf could not run (is it on PATH?): ${String(error).slice(0, 300)}`)
+  // A run that rejects is never kept: the engine aborts the run of a draw it abandons, and that
+  // must not replace what another draw of the same revision rendered.
+  if (typeof ran === 'string') return ran
 
-      return [...parseAnsi(ran.stdout.slice(0, ran.stdout.lastIndexOf('\n') + 1)), CUT]
-    },
-    (error: unknown) => `leaf could not run (is it on PATH?): ${String(error).slice(0, 300)}`,
-  )
+  let lines: Run[][] | string
+  if (ran.exitCode !== 0) lines = `leaf failed: ${ran.stderr.trim().slice(0, 300)}`
+  else if (!ran.isStdoutTruncated) lines = parseAnsi(ran.stdout)
+  else lines = [...parseAnsi(ran.stdout.slice(0, ran.stdout.lastIndexOf('\n') + 1)), CUT]
   rendered = { key, lines }
 
   return lines
