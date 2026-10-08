@@ -144,7 +144,7 @@ It is a herdr plugin, and herdr runs a plugin on the machine that owns the panes
 Open the board from any pane on the Linux machine with `prefix+shift+b` (bound to `herdr plugin action invoke herdr-firstmate-flow.open-captain-deck`), or `herdr-firstmate-flow.open-flow` for an overlay; no key is bound to open-flow.
 The plugin needs the Linux machine's system `python3`, which this repo does not install, and finds `~/firstmate` by default.
 It reads Firstmate's state and writes only an answer you queue from a Captain's Call card, through Firstmate's own scripts.
-Upstream publishes no releases, so a new version is a `rev` and `hash` bump in `home-linux.nix`.
+Upstream publishes no releases, so a new version is a `rev` and `hash` bump in `home-linux.nix`, which also applies a patch from `patches/`; the comment there says when to drop it.
 
 [Moshi](https://getmoshi.app) is the phone's terminal for it.
 `home-linux.nix` installs its host half, `moshi-hook`, and runs the daemon as the user service `moshi-hook.service`.
