@@ -5,6 +5,8 @@ home/.config/herdr/release-notes.json
 home/.config/herdr/*.sock
 home/.config/herdr/herdr.sock.agent
 home/.config/herdr/session-snapshots/
+home/.config/herdr/sessions/
+home/.config/herdr/.plugins.lock
 
 # Karabiner runtime state (whole dir is symlinked from ~/.config/karabiner,
 # so the GUI writes these next to the tracked karabiner.json; never commit)
