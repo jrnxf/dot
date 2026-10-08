@@ -87,6 +87,11 @@ in
         terminal.new_cwd = "~/firstmate";
       }
     );
+  # Firstmate's model and effort choices per task, kept here so every machine
+  # that runs Firstmate dispatches the same way and the Linux guest, which has
+  # no backup, keeps them.
+  home.file."firstmate/config/crew-dispatch.json".source =
+    ./home/firstmate/crew-dispatch.json;
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/settings.json";
   home.file.".claude/statusline-command.sh".source =
