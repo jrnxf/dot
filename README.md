@@ -292,12 +292,13 @@ To scroll, press ctrl+x then tab to give the pane the keyboard, and Esc to hand 
 Optionally, leaf can draw every reply in the conversation itself.
 The `inlineReplies` option has two values: `off` (the default) and `all`.
 Set it in Claude Code's plugin config menu, or in settings: `"pluginConfigs": { "leaf": { "options": { "inlineReplies": "all" } } }`.
-With `all`, each completed reply is replaced by leaf's drawing; if `leaf` is missing, fails or takes over 5 seconds, Claude Code draws the reply as usual and says nothing.
+With `all`, leaf draws each reply: block by block while it streams, and whole once it finishes; if `leaf` is missing, fails or takes over 5 seconds, Claude Code draws the reply as usual and says nothing.
 Known costs:
 
 - Code copied from a reply carries leaf's frame, line numbers and padding.
 - Links lose their address: leaf draws the word `#link`.
-- A reply streams in Claude Code's drawing and jumps to leaf's the moment it finishes.
+- While a reply streams, a block shows once it is complete: a paragraph when the next block starts, a table or code block when it ends. A long code block shows nothing until then.
+- After a resize mid-reply, the blocks already on screen keep the old width until the reply finishes.
 - A reply is missing for the moment leaf takes to start, and leaf breaks words inside narrow table cells.
 
 The mod runs `leaf --inline ansi:<width>`, which prints the rendered document with no TUI, and converts its colors for the pane.

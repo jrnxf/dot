@@ -4,6 +4,7 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { LeafDoc } from '../types'
 import { parseAnsi } from './ansi'
 import type { Run } from './ansi'
+import { ansiLines, isPrefix, literal, openBlockStart, RESET } from './stream'
 
 const PANE = 'leaf'
 const USAGE = 'Usage: /leaf <file.md>, /leaf reply'
@@ -58,6 +59,13 @@ async function renderLines($: EngineInterface, current: Exclude<LeafDoc, { kind:
   return lines
 }
 
+// leaf's drawing of a reply at a width, or undefined when leaf is missing, failed or wrote too much.
+const leafReply = ($: EngineInterface, text: string, width: number) =>
+  $.process.run(['leaf', '--inline', `ansi:${width}`], { stdin: text, timeoutMs: 5_000 }).then(
+    ran => (ran.exitCode === 0 && !ran.isStdoutTruncated ? ran.stdout : undefined),
+    () => undefined,
+  )
+
 // A reply drawn in the transcript: leaf's lines, or undefined when leaf is missing or failed.
 // Claude Code asks for a reply again on many redraws, so each is kept by width and text.
 const replies = new Map<string, Run[][] | undefined>()
@@ -66,24 +74,130 @@ async function replyLines($: EngineInterface, text: string, width: number) {
   const key = `${width}:${text}`
   if (replies.has(key)) return replies.get(key)
 
-  const lines = await $.process.run(['leaf', '--inline', `ansi:${width}`], { stdin: text, timeoutMs: 5_000 }).then(
-    ran => (ran.exitCode === 0 && !ran.isStdoutTruncated ? parseAnsi(ran.stdout) : undefined),
-    () => undefined,
-  )
+  const stdout = await leafReply($, text, width)
+  const lines = stdout === undefined ? undefined : parseAnsi(stdout)
   if (replies.size >= 400) replies.clear()
   replies.set(key, lines)
 
   return lines
 }
 
-export const register: Register = (on, options) => {
-  // Off by default: the reply is left to Claude Code. With `all`, leaf draws it in the transcript.
-  on('ui.render', { component: 'AssistantMessage' }, async ($, e, next) => {
-    const columns = e.viewport?.columns
-    if (options.inlineReplies !== 'all' || e.surface !== 'terminal' || columns === undefined) return next(e)
+// Two cells for the reply's bullet and its gap, as the engine's own row has.
+const replyWidth = (columns: number) => Math.max(20, Math.min(columns - 2, 200))
 
-    // Two cells for the reply's bullet and its gap, as the engine's own row has.
-    const lines = await replyLines($, e.props.text, Math.max(20, Math.min(columns - 2, 200)))
+// A reply while it streams. Claude Code hands over each batch of new lines and shows what the mod
+// answers with, so the mod answers with leaf's lines for the blocks that are finished.
+type Stream = {
+  raw: string
+  // How much of `raw` is on show, and as how many of leaf's lines at which width.
+  done: number
+  shown: number
+  width: number
+  // Everything answered so far: what the settled row's text will be.
+  out: string
+  // leaf failed once: the rest of this reply is left to Claude Code.
+  isPlain: boolean
+  // The batch before this one: batches are answered in order, each from where the last one stopped.
+  last: Promise<unknown>
+}
+const streams = new Map<string, Stream>()
+// What each streamed reply showed, back to its markdown: the settled row is drawn from the markdown.
+const sources = new Map<string, string>()
+// A streaming batch carries no width, so the transcript's is kept from the last drawing that had one.
+let columns = 80
+
+const leafLines = async ($: EngineInterface, text: string, width: number) => {
+  const stdout = text.trim() === '' ? '' : await leafReply($, text, width)
+
+  return stdout === undefined ? undefined : ansiLines(stdout)
+}
+
+// What one batch adds to the stream. leaf draws the reply so far, not the new block alone, so the
+// lines and the gaps between blocks are the ones the settled row will have.
+async function advance($: EngineInterface, stream: Stream, delta: string, isFinal: boolean) {
+  stream.raw += delta
+  const { raw } = stream
+
+  if (!stream.isPlain) {
+    const to = isFinal ? raw.length : openBlockStart(raw)
+    if (to <= stream.done && !isFinal) return ''
+
+    const width = replyWidth(columns)
+    // Resized mid-reply: what is on show stays as drawn, and is counted again at the new width.
+    const before = width === stream.width ? stream.shown : (await leafLines($, raw.slice(0, stream.done), width))?.length
+    const lines = before === undefined ? undefined : await leafLines($, raw.slice(0, to), width)
+    const whole = isFinal ? lines : lines === undefined ? undefined : await leafLines($, raw, width)
+    if (before !== undefined && lines !== undefined && whole !== undefined) {
+      // A block whose drawing what follows still changes (a list that turns loose) waits for it.
+      if (!isPrefix(lines, whole)) return ''
+      const fresh = lines.slice(before)
+      stream.done = to
+      stream.shown = lines.length
+      stream.width = width
+      const out = fresh.length === 0 ? '' : literal(fresh) + '\n'
+      stream.out += out
+
+      return out
+    }
+    stream.isPlain = true
+  }
+
+  // A blank line first, so the markdown is not read as more of leaf's last line.
+  const rest = (stream.shown > 0 ? '\n' : '') + raw.slice(stream.done)
+  stream.shown = 0
+  stream.done = raw.length
+  stream.out += rest
+
+  return rest
+}
+
+export const register: Register = (on, options) => {
+  // Off by default: the reply is left to Claude Code. With `all`, leaf draws it in the transcript,
+  // block by block while it streams and whole once it has settled.
+  on('classic.MessageDisplay', async ($, e, next) => {
+    if (options.inlineReplies !== 'all') return next(e)
+
+    let stream = streams.get(e.message_id)
+    if (stream === undefined) {
+      stream = { raw: '', done: 0, shown: 0, width: 0, out: '', isPlain: false, last: Promise.resolve() }
+      // A reply that is interrupted never sends its last batch.
+      if (streams.size >= 16) streams.delete(streams.keys().next().value!)
+      streams.set(e.message_id, stream)
+    }
+    if (e.final) streams.delete(e.message_id)
+
+    const streamed = stream
+    const batch = streamed.last.then(() => advance($, streamed, e.delta, e.final))
+    streamed.last = batch.catch(() => undefined)
+    const displayContent = await batch
+    if (e.final && streamed.out !== streamed.raw) {
+      // The oldest goes first: a row whose markdown is forgotten keeps the lines it streamed.
+      if (sources.size >= 400) sources.delete(sources.keys().next().value!)
+      sources.set(streamed.out.trim(), streamed.raw)
+    }
+
+    return { displayContent }
+  })
+
+  // The band above the prompt is drawn at the start and again on every resize, a reply streaming
+  // or not, which the spinner is not: it draws nothing itself and is hooked for its width alone.
+  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    if (e.surface === 'terminal' && e.viewport !== undefined) columns = e.viewport.columns
+
+    return next(e)
+  })
+
+  on('ui.render', { component: 'AssistantMessage' }, async ($, shown, next) => {
+    if (options.inlineReplies !== 'all' || shown.surface !== 'terminal' || shown.viewport === undefined) return next(shown)
+    columns = shown.viewport.columns
+
+    const source = sources.get(shown.props.text.trim())
+    // The mod's own lines with no markdown to draw them from: a row drawn before its reply's last
+    // batch landed, or one whose markdown is forgotten. Claude Code draws them as the stream did.
+    if (source === undefined && shown.props.text.includes(RESET)) return next(shown)
+    const e = source === undefined ? shown : { ...shown, props: { ...shown.props, text: source } }
+
+    const lines = await replyLines($, e.props.text, replyWidth(columns))
     // leaf missing or failed: the engine draws the reply as it always does.
     if (lines === undefined) return next(e)
 
