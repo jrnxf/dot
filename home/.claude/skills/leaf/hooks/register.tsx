@@ -29,6 +29,13 @@ async function follow($: EngineInterface, path: string) {
   await show($, { kind: 'file', path, rev: Date.now() }, basename(path))
 }
 
+// While the pane shows a reply it follows each new one; the last /leaf command decides reply or file.
+async function followReply($: EngineInterface, text: string) {
+  if ((await read($, doc)).kind !== 'reply') return
+  if (!(await $.ui.panes()).some(pane => pane.id === PANE)) return
+  await show($, { kind: 'reply', text, rev: Date.now() }, 'Last reply')
+}
+
 async function renderLines($: EngineInterface, current: Exclude<LeafDoc, { kind: 'none' }>, width: number) {
   const key = `${current.rev}:${width}`
   if (rendered?.key === key) return rendered.lines
@@ -93,7 +100,10 @@ export const register: Register = on => {
   })
 
   on('turn.complete', async ($, e, next) => {
-    if (e.agentId === undefined && e.answer.trim() !== '') await update($, reply, () => e.answer)
+    if (e.agentId === undefined && e.answer.trim() !== '') {
+      await update($, reply, () => e.answer)
+      await followReply($, e.answer)
+    }
 
     return next(e)
   })
