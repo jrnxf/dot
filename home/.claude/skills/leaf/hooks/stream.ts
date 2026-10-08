@@ -7,12 +7,13 @@ const FENCE = /^\s*(`{3,}|~{3,})(.*)$/
 // What every line the mod hands to the stream starts with. A reply's own markdown never holds it.
 export const RESET = '\x1b[0m'
 
-// Where the block still being written starts: the last whole line that follows a blank line and is
-// not inside a code fence. Everything before it is finished; 0 when the reply is still its first block.
-export function openBlockStart(raw: string) {
+// The last block of a reply still being written: where it starts, and whether it can still grow.
+// If it can, the last line leaf draws for it can still change: a paragraph's last line, the bottom
+// border of a table or a code block.
+export function openEnd(raw: string) {
   let fence: string | undefined
   let start = 0
-  let isAfterBlank = false
+  let last = ''
   let at = 0
   for (let eol = raw.indexOf('\n'); eol !== -1; eol = raw.indexOf('\n', at)) {
     const line = raw.slice(at, eol)
@@ -20,16 +21,19 @@ export function openBlockStart(raw: string) {
     if (fence !== undefined) {
       // Only a fence of the same mark, at least as long and with nothing after it, closes a code block.
       if (mark !== null && mark[1]![0] === fence[0] && mark[1]!.length >= fence.length && mark[2]!.trim() === '') fence = undefined
-    } else if (line.trim() === '') isAfterBlank = true
-    else {
-      if (isAfterBlank) start = at
-      isAfterBlank = false
-      if (mark !== null) fence = mark[1]
+      last = fence === undefined ? '' : line
+    } else {
+      if (last.trim() === '') start = at
+      fence = mark?.[1]
+      last = line
     }
     at = eol + 1
   }
 
-  return start
+  // A blank line ends a block, and a heading is whole in its one line.
+  const isOpen = fence !== undefined || (last.trim() !== '' && !/^ {0,3}#{1,6}(\s|$)/.test(last))
+
+  return { isOpen, start: isOpen ? start : at }
 }
 
 // leaf's output as lines, with no empty rows after the last drawn one.
@@ -38,9 +42,6 @@ export const ansiLines = (stdout: string) => {
 
   return body === '' ? [] : body.split('\n')
 }
-
-export const isPrefix = (head: readonly string[], whole: readonly string[]) =>
-  head.length <= whole.length && head.every((line, i) => line === whole[i])
 
 // leaf's lines as text Claude Code's markdown leaves alone: all punctuation escaped, since a mark, a
 // tag, an entity and a bare address are each read as markdown, and every line, an empty one too,

@@ -2,7 +2,7 @@ import { expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 import type { Engine } from 'claude-code/testing'
 
-import { literal, openBlockStart, RESET } from './stream'
+import { literal, openEnd, RESET } from './stream'
 
 const ESC = '\x1b'
 const ALL = { options: { inlineReplies: 'all' } }
@@ -11,14 +11,14 @@ const BAND = { plugin: 'leaf', surface: 'terminal', component: 'AbovePrompt' } a
 const viewport = (columns: number) => ({ columns, rows: 40 })
 
 // A leaf that draws each line of the markdown as one bold line naming the width it was asked for.
-// Like the real one, it draws the start of a document as it draws that start alone, until the
-// markdown says LOOSE: then the first line changes, as a list does when it turns loose.
 const drawn = (markdown: string, width: number) =>
   markdown
     .trimEnd()
     .split('\n')
-    .map((line, i) => (line === '' ? '' : `${ESC}[1m${width}|${i === 0 && markdown.includes('LOOSE') ? 'loose ' : ''}${line}${ESC}[0m`))
-const shownAs = (markdown: string, width: number, from = 0) => literal(drawn(markdown, width).slice(from)) + '\n'
+    .map(line => (line === '' ? '' : `${ESC}[1m${width}|${line}${ESC}[0m`))
+// Some of those lines, as the stream shows them.
+const lines = (markdown: string, width: number, from: number, to?: number) => literal(drawn(markdown, width).slice(from, to)) + '\n'
+const shownAs = (markdown: string, width: number) => lines(markdown, width, 0)
 
 // The engine beneath the mod: leaf, which can stop working or be slow, and the reply it draws unaided.
 function world(on: On) {
@@ -77,22 +77,21 @@ const settle = async ($: Engine, text: string, columns = 62) => {
   return isEngine
 }
 
-test('the open block starts after the last blank line, and a blank line inside a code fence is not one', () => {
-  expect(openBlockStart('one\ntwo\n')).toBe(0)
-  expect(openBlockStart('one\n\ntwo\nthree\n')).toBe('one\n\n'.length)
-  // The last line has not ended, so it is not yet a block of its own.
-  expect(openBlockStart('one\n\ntwo\n\nthr')).toBe('one\n\n'.length)
-
-  const fenced = 'intro\n\n```c\nint a;\n\nint b;\n'
-  expect(openBlockStart(fenced)).toBe('intro\n\n'.length)
-  expect(openBlockStart(fenced + '```\n\nafter\n')).toBe((fenced + '```\n\n').length)
+test('a block can still grow until a blank line ends it, and a heading is whole at once', () => {
+  expect(openEnd('one\ntwo\n')).toEqual({ isOpen: true, start: 0 })
+  expect(openEnd('one\n\ntwo\n')).toEqual({ isOpen: true, start: 'one\n\n'.length })
+  expect(openEnd('one\n\ntwo\n\n')).toEqual({ isOpen: false, start: 'one\n\ntwo\n\n'.length })
+  expect(openEnd('one\n\n## Two\n').isOpen).toBe(false)
 })
 
-test('a code fence is closed only by its own mark, at least as long, with nothing after it', () => {
-  const open = 'intro\n\n````md\n```js\n\nx\n```\n\nstill code\n'
-  expect(openBlockStart(open)).toBe('intro\n\n'.length)
-  expect(openBlockStart(open + '~~~~\n\nstill code\n')).toBe('intro\n\n'.length)
-  expect(openBlockStart(open + '````\n\nafter\n')).toBe((open + '````\n\n').length)
+test('a code block is open until its own fence closes it, blank lines and other fences inside or not', () => {
+  const intro = 'intro\n\n'
+  const open = intro + '````md\n```js\n\nx\n```\n\nstill code\n'
+  expect(openEnd(open)).toEqual({ isOpen: true, start: intro.length })
+  expect(openEnd(open + '~~~~\n')).toEqual({ isOpen: true, start: intro.length })
+  expect(openEnd(open + '```` js\n')).toEqual({ isOpen: true, start: intro.length })
+  expect(openEnd(open + '````\n').isOpen).toBe(false)
+  expect(openEnd(open + '````\n\nafter\n')).toEqual({ isOpen: true, start: (open + '````\n\n').length })
 })
 
 test("leaf's lines reach Claude Code's markdown with all punctuation escaped and every color code whole", () => {
@@ -115,16 +114,16 @@ test('off, the default: a streaming reply is left to Claude Code and leaf is nev
   expect(seen.runs).toEqual([])
 })
 
-test('all: each finished block streams in as leaf drew it, and a code block waits until it is whole', ALL, async ($, on) => {
+test('all: lines stream in as leaf draws them, the last line of a block still growing held back', ALL, async ($, on) => {
   world(on)
   await resize($, 62)
   const reply = '# Title\n\nBody one\n\n```c\nint a;\n\nint b;\n```\n\nLast'
 
   const answers = [
-    // The first block is still open: nothing to show.
     await batch($, '# Title\n'),
+    // The paragraph can still grow: only the gap before it shows.
     await batch($, '\nBody one\n'),
-    // The code block opens, which finishes the paragraph before it.
+    // The code block streams before its fence closes, less its last line.
     await batch($, '\n```c\nint a;\n'),
     await batch($, '\nint b;\n'),
     await batch($, '```\n'),
@@ -133,24 +132,16 @@ test('all: each finished block streams in as leaf drew it, and a code block wait
   ]
 
   expect(answers).toEqual([
+    lines(reply, 60, 0, 1),
+    lines(reply, 60, 1, 2),
+    lines(reply, 60, 2, 5),
+    lines(reply, 60, 5, 7),
+    lines(reply, 60, 7, 9),
     '',
-    shownAs('# Title', 60),
-    literal(['', ...drawn('Body one', 60)]) + '\n',
-    '',
-    '',
-    '',
-    literal(['', ...drawn('```c\nint a;\n\nint b;\n```\n\nLast', 60)]) + '\n',
+    lines(reply, 60, 9),
   ])
   // Batch by batch, the stream shows exactly what leaf draws for the whole reply.
   expect(answers.join('')).toBe(shownAs(reply, 60))
-})
-
-test('all: a block whose drawing the next lines change is held until they have arrived', ALL, async ($, on) => {
-  world(on)
-  await resize($, 62)
-
-  expect(await batch($, '- a\n- b\n\n  LOOSE\n')).toBe('')
-  expect(await batch($, '\nAfter\n')).toBe(shownAs('- a\n- b\n\n  LOOSE', 60))
 })
 
 test('all: batches that overlap are answered in order, each with its own lines', ALL, async ($, on) => {
@@ -158,25 +149,27 @@ test('all: batches that overlap are answered in order, each with its own lines',
   await resize($, 62)
   let release!: () => void
   seen.release = new Promise<void>(resolve => (release = resolve))
+  const reply = 'One\n\nTwo\n\nThree\n'
 
   const first = batch($, 'One\n\nTwo\n')
   const second = batch($, '\nThree\n')
   const third = batch($, '', true)
   release()
 
-  expect(await first).toBe(shownAs('One', 60))
-  expect(await second).toBe(literal(['', ...drawn('Two', 60)]) + '\n')
-  expect(await third).toBe(literal(['', ...drawn('Three', 60)]) + '\n')
+  expect(await first).toBe(lines(reply, 60, 0, 2))
+  expect(await second).toBe(lines(reply, 60, 2, 4))
+  expect(await third).toBe(lines(reply, 60, 4))
 })
 
-test('all: a resize mid-reply draws the next block at the new width and repeats nothing', ALL, async ($, on) => {
+test('all: a resize mid-reply draws the next lines at the new width and repeats nothing', ALL, async ($, on) => {
   world(on)
   await resize($, 62)
-  expect(await batch($, 'One\n\nTwo\n')).toBe(shownAs('One', 60))
+  const reply = 'One\n\nTwo\n\nThree\n'
+  expect(await batch($, 'One\n\nTwo\n')).toBe(lines(reply, 60, 0, 2))
 
   await resize($, 42)
-  expect(await batch($, '\nThree\n')).toBe(literal(['', ...drawn('Two', 40)]) + '\n')
-  expect(await batch($, '', true)).toBe(literal(['', ...drawn('Three', 40)]) + '\n')
+  expect(await batch($, '\nThree\n')).toBe(lines(reply, 40, 2, 4))
+  expect(await batch($, '', true)).toBe(lines(reply, 40, 4))
 })
 
 test('all: the settled row of a streamed reply is drawn by leaf from the markdown, at the row width', ALL, async ($, on) => {
@@ -211,8 +204,8 @@ test('all: leaf failing mid-reply hands the rest over as markdown, and the settl
   const second = await batch($, '\nBody two\n')
   const last = await batch($, '\nLast', true)
 
-  expect(first).toBe(shownAs('# Title', 60))
-  // Nothing of the reply is lost: what leaf had not drawn is shown as it was written.
+  expect(first).toBe(lines(reply, 60, 0, 2))
+  // Nothing of the reply is lost: the block leaf had not drawn whole is shown as it was written.
   expect(second).toBe('\nBody one\n\nBody two\n')
   expect(last).toBe('\nLast')
 
@@ -232,8 +225,8 @@ test('all: two replies streaming at once keep their own text', ALL, async ($, on
   world(on)
   await resize($, 62)
 
-  expect(await batch($, 'One\n\nTwo\n', false, 'a')).toBe(shownAs('One', 60))
-  expect(await batch($, 'Uno\n\nDos\n', false, 'b')).toBe(shownAs('Uno', 60))
-  expect(await batch($, '', true, 'a')).toBe(literal(['', ...drawn('Two', 60)]) + '\n')
-  expect(await batch($, '', true, 'b')).toBe(literal(['', ...drawn('Dos', 60)]) + '\n')
+  expect(await batch($, 'One\n\nTwo\n', false, 'a')).toBe(lines('One\n\nTwo', 60, 0, 2))
+  expect(await batch($, 'Uno\n\nDos\n', false, 'b')).toBe(lines('Uno\n\nDos', 60, 0, 2))
+  expect(await batch($, '', true, 'a')).toBe(lines('One\n\nTwo', 60, 2))
+  expect(await batch($, '', true, 'b')).toBe(lines('Uno\n\nDos', 60, 2))
 })

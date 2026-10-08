@@ -8,7 +8,7 @@
     "inlineReplies": {
       "type": "string",
       "title": "Draw replies with leaf",
-      "description": "off: replies draw as usual. all: every reply is drawn by leaf in the conversation, block by block while it streams.",
+      "description": "off: replies draw as usual. all: every reply is drawn by leaf in the conversation, line by line while it streams.",
       "options": ["off", "all"],
       "default": "off"
     }
