@@ -289,6 +289,17 @@ It never opens by itself, and once you close it (its close mark, or ctrl+x then 
 On a wide fullscreen terminal the pane docks on the right; on a narrow one it sits above the prompt.
 To scroll, press ctrl+x then tab to give the pane the keyboard, and Esc to hand it back.
 
+Optionally, leaf can draw every reply in the conversation itself.
+The `inlineReplies` option has two values: `off` (the default) and `all`.
+Set it in Claude Code's plugin config menu, or in settings: `"pluginConfigs": { "leaf": { "options": { "inlineReplies": "all" } } }`.
+With `all`, each completed reply is replaced by leaf's drawing; if `leaf` is missing, fails or takes over 5 seconds, Claude Code draws the reply as usual and says nothing.
+Known costs:
+
+- Code copied from a reply carries leaf's frame, line numbers and padding.
+- Links lose their address: leaf draws the word `#link`.
+- A reply streams in Claude Code's drawing and jumps to leaf's the moment it finishes.
+- A reply is missing for the moment leaf takes to start, and leaf breaks words inside narrow table cells.
+
 The mod runs `leaf --inline ansi:<width>`, which prints the rendered document with no TUI, and converts its colors for the pane.
 leaf's own interactive screen (sidebar, search, theme picker) is not part of it; run `leaf <file>` in a terminal for that.
 

@@ -58,7 +58,53 @@ async function renderLines($: EngineInterface, current: Exclude<LeafDoc, { kind:
   return lines
 }
 
-export const register: Register = on => {
+// A reply drawn in the transcript: leaf's lines, or undefined when leaf is missing or failed.
+// Claude Code asks for a reply again on many redraws, so each is kept by width and text.
+const replies = new Map<string, Run[][] | undefined>()
+
+async function replyLines($: EngineInterface, text: string, width: number) {
+  const key = `${width}:${text}`
+  if (replies.has(key)) return replies.get(key)
+
+  const lines = await $.process.run(['leaf', '--inline', `ansi:${width}`], { stdin: text, timeoutMs: 5_000 }).then(
+    ran => (ran.exitCode === 0 && !ran.isStdoutTruncated ? parseAnsi(ran.stdout) : undefined),
+    () => undefined,
+  )
+  if (replies.size >= 400) replies.clear()
+  replies.set(key, lines)
+
+  return lines
+}
+
+export const register: Register = (on, options) => {
+  // Off by default: the reply is left to Claude Code. With `all`, leaf draws it in the transcript.
+  on('ui.render', { component: 'AssistantMessage' }, async ($, e, next) => {
+    const columns = e.viewport?.columns
+    if (options.inlineReplies !== 'all' || e.surface !== 'terminal' || columns === undefined) return next(e)
+
+    // Two cells for the reply's bullet and its gap, as the engine's own row has.
+    const lines = await replyLines($, e.props.text, Math.max(20, Math.min(columns - 2, 200)))
+    // leaf missing or failed: the engine draws the reply as it always does.
+    if (lines === undefined) return next(e)
+
+    const { Box, Text } = $.ui.resolve(e)
+
+    return (
+      <Box flexDirection="row" marginTop={1}>
+        <Box width={2} flexShrink={0}>
+          <Text>{e.props.isFirstOfReply ? '●' : ' '}</Text>
+        </Box>
+        <Box flexDirection="column">
+          {lines.map(runs => (
+            <Text wrap="truncate-end">
+              {runs.length === 0 ? ' ' : runs.map(({ text, ...style }) => <Text {...style}>{text}</Text>)}
+            </Text>
+          ))}
+        </Box>
+      </Box>
+    )
+  })
+
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'leaf',
