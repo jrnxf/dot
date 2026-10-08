@@ -33,11 +33,18 @@ let
   # Captain's Deck, the herdr plugin that draws Firstmate's flow as a kanban
   # board. Upstream publishes no releases or tags, so this pins a commit of its
   # default branch (plugin version 0.7.1); bump rev and hash together.
-  captains-deck = pkgs.fetchFromGitHub {
-    owner = "deimantasnork";
-    repo = "captains-deck";
-    rev = "06c8284b1a8e17b7ec0acaa8d32c3bcbb23ec9c3";
-    hash = "sha256-0gFRuxQS8Vx4/kJjBTeGs0drQF9QYHn2kcAOEuEpFTk=";
+  # The patch makes open-captain-deck show a board it has just started: as
+  # pinned, a new board opens behind the current pane and only a second run
+  # brings it forward. Drop the patch once a bump includes that upstream.
+  captains-deck = pkgs.applyPatches {
+    name = "captains-deck";
+    src = pkgs.fetchFromGitHub {
+      owner = "deimantasnork";
+      repo = "captains-deck";
+      rev = "06c8284b1a8e17b7ec0acaa8d32c3bcbb23ec9c3";
+      hash = "sha256-0gFRuxQS8Vx4/kJjBTeGs0drQF9QYHn2kcAOEuEpFTk=";
+    };
+    patches = [ ./patches/captains-deck-show-fresh-board.patch ];
   };
 in
 
