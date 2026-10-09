@@ -125,6 +125,12 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-visual-evidence";
   home.file.".codex/skills/pr-visual-evidence".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/pr-visual-evidence";
+  home.file.".agents/skills/i-have-adhd".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/i-have-adhd";
+  home.file.".claude/skills/i-have-adhd".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/i-have-adhd";
+  home.file.".codex/skills/i-have-adhd".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.agents/skills/i-have-adhd";
 
   # Official axi.md catalog skills invoke their CLIs through Homebrew's npx.
   home.file.".agents/skills/gh-axi".source =
