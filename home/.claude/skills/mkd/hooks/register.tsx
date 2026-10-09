@@ -22,6 +22,10 @@ const HEAD_ROWS = 2
 // rows to scroll: every scroll key then reaches `ui.scroll`, which moves the reply under the head.
 const SCROLL_MARGIN_ROWS = 8
 const MAX_REPLIES = 50
+// The pane's body background, so it reads as the conversation beside it. The engine paints the pane
+// body a lighter grey than the terminal, and a plugin cannot read or name the terminal's own
+// background, so this is the Cursor Dark background the Ghostty config sets (home/.config/ghostty/config).
+const BACKGROUND = '#141414'
 const replies = atom({ plugin: 'mkd', key: 'replies' } as const, [] as MkdReply[])
 const place = atom({ plugin: 'mkd', key: 'place' } as const, { at: 0, top: 0 } as MkdPlace)
 
@@ -214,7 +218,7 @@ export const register: Register = on => {
     const rows = typeof lines === 'string' ? [] : lines.slice(first, first + visibleRows)
 
     return (
-      <Box flexDirection="column">
+      <Box flexDirection="column" backgroundColor={BACKGROUND}>
         <Box flexDirection="row" flexShrink={0} marginBottom={1}>
           <Text dimColor>
             Reply {index + 1} of {list.length}

@@ -332,3 +332,14 @@ test('a missing leaf is said in the pane and run again at the next draw', async 
   await drawn($)
   expect(seen.runs).toHaveLength(2)
 })
+
+test('the pane body paints the conversation background on its root Box', async ($, on) => {
+  world(on)
+  await $.turn.complete(answer('# One'))
+  await $.command.run(mkd())
+  const ui = await $.ui.mount({ ...PANE, props: props() })
+  const root = (await ui.findAll({ type: 'Box' }))[0]
+  await ui.unmount()
+
+  expect(root?.props.backgroundColor).toBe('#141414')
+})
