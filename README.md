@@ -221,7 +221,7 @@ If you don't use it, just remove it from `brews` in your copy.
 - `home.nix` - user-level packages and the symlinks described below, shared by every machine.
 - `home-darwin.nix`, `home-linux.nix` - what only one OS gets, on top of `home.nix`.
 - `firstmate-tools.nix` - pinned agent CLIs, packaged once for both systems.
-- `leaf.nix` - the pinned `leaf` markdown renderer the Claude Code leaf mod runs.
+- `leaf.nix` - the pinned `leaf` markdown renderer the Claude Code `/mkd` mod runs.
 - `rebuild.sh` - re-applies the config after the first switch, on either OS.
   Run this after changing Nix declarations or adding managed links.
 - `work-overlays.sh` - applies the machine-local overlays described below on every switch.
@@ -274,31 +274,29 @@ OAuth or the clients' environment-variable credential settings instead.
 the shadcn and Semble packages on launch, so those package versions are not
 pinned by the Nix lockfile.
 
-## Leaf markdown pane
+## Markdown pane
 
-`home/.claude/skills/leaf/` is a Claude Code mod that shows markdown in a pane beside the conversation, rendered by [leaf](https://leaf.rivolink.mg): headings, tables, code with line numbers, math, and Mermaid diagrams.
+`home/.claude/skills/mkd/` is a Claude Code mod: `/mkd` opens a pane beside the conversation showing Claude's last reply, rendered by [leaf](https://leaf.rivolink.mg): headings, tables, code with line numbers, math, and Mermaid diagrams.
+A second `/mkd` closes it.
 `home.nix` links it into `~/.claude/skills/`, where Claude Code auto-loads it, and installs the `leaf` binary that `leaf.nix` pins, since leaf is not in nixpkgs.
 
-- `/leaf <file>` shows a markdown file.
-- `/leaf reply` shows Claude's last reply.
+The pane opens, closes, takes the keyboard and scrolls the way Claude Code's own `/diff` pane does:
 
-While the pane is open it follows what the last `/leaf` command chose.
-After `/leaf <file>` it follows the markdown files Claude writes or edits, and a new reply does not take it over.
-After `/leaf reply` it shows each new reply as Claude finishes it, with no command per reply.
-It never opens by itself, and once you close it (its close mark, or ctrl+x then x) it stops following.
-On a wide fullscreen terminal the pane docks on the right; on a narrow one it sits above the prompt.
-To scroll, press ctrl+x then tab to give the pane the keyboard, and Esc to hand it back.
+| To | Do |
+| --- | --- |
+| open or close the pane | `/mkd`; the close mark, or ctrl+x then x, also closes it |
+| give the pane the keyboard | ctrl+x then tab, or click in it; Esc hands it back |
+| scroll | the wheel over the pane; with the keyboard, up/down (3 rows), page up/page down, home/end |
+| previous / next reply | `p` / `n` with the keyboard in the pane, or click `previous` / `next` |
 
-Optionally, leaf can draw every reply in the conversation itself.
-The `inlineReplies` option has two values: `off` (the default) and `all`.
-Set it in Claude Code's plugin config menu, or in settings: `"pluginConfigs": { "leaf": { "options": { "inlineReplies": "all" } } }`.
-With `all`, each completed reply is replaced by leaf's drawing; if `leaf` is missing, fails or takes over 5 seconds, Claude Code draws the reply as usual and says nothing.
-Known costs:
+The line at the top (`Reply 2 of 5`) stays put while the reply scrolls under it.
+While the pane is open on the newest reply it shows each new reply as Claude finishes it; paged back to an older one, it stays there.
+It never opens by itself, and it always opens on the last reply.
+It keeps the last 50 replies of the session; in a resumed session it reads them from the conversation.
+`/clear` and `/resume` close it.
 
-- Code copied from a reply carries leaf's frame, line numbers and padding.
-- Links lose their address: leaf draws the word `#link`.
-- A reply streams in Claude Code's drawing and jumps to leaf's the moment it finishes.
-- A reply is missing for the moment leaf takes to start, and leaf breaks words inside narrow table cells.
+On a fullscreen terminal the pane docks on the right and needs 110 columns, as `/diff` does; narrower, `/mkd` asks for a wider terminal.
+Without the fullscreen layout (`CLAUDE_CODE_NO_FLICKER=0`) it opens above the prompt with the keyboard, as tall as the reply, and Esc closes it.
 
 The mod runs `leaf --inline ansi:<width>`, which prints the rendered document with no TUI, and converts its colors for the pane.
 leaf's own interactive screen (sidebar, search, theme picker) is not part of it; run `leaf <file>` in a terminal for that.
@@ -306,12 +304,12 @@ leaf's own interactive screen (sidebar, search, theme picker) is not part of it;
 Things to know:
 
 - Mods are an early-access Claude Code feature (function hooks) whose API can change between releases; this one is verified with 2.1.289.
-  If `/leaf` is missing, function hooks are not enabled for that session.
-- Claude Code's own diff panel takes the same dock. While it is showing, the leaf pane opens behind it; `/diff` hides the diff panel.
+  If `/mkd` is missing, function hooks are not enabled for that session.
+- Claude Code's own diff panel takes the same dock. While both are open they are tabs of it.
 - leaf's default colors are made for a dark terminal.
-- Claude Code writes type declarations into `home/.claude/skills/leaf/.claude-plugin/types/` when it loads the mod. It ignores them itself, so they never show up in `git status`.
+- Claude Code writes type declarations into `home/.claude/skills/mkd/.claude-plugin/types/` when it loads the mod. It ignores them itself, so they never show up in `git status`.
 
-Run `tests/leaf-mod.test.sh` before committing a change to the mod.
+Run `tests/mkd-mod.test.sh` before committing a change to the mod.
 After a Claude Code upgrade, that test is also the quickest check that the mod still loads.
 
 ## Official AXI tools

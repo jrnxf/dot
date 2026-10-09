@@ -32,7 +32,7 @@ in
   ]
   # agent tooling firstmate needs on PATH
   ++ import ./firstmate-tools.nix { inherit pkgs; }
-  # markdown renderer behind the Claude Code leaf mod
+  # markdown renderer behind the Claude Code /mkd mod
   ++ [ (import ./leaf.nix { inherit pkgs; }) ];
   home.sessionVariables.EDITOR = "nvim";
 
@@ -108,9 +108,9 @@ in
   # Claude auto-loads plugins in its skills directory, including MCP-only plugins.
   home.file.".claude/skills/dotfiles-mcp".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/skills/dotfiles-mcp";
-  # The leaf mod: /leaf shows markdown in a pane, rendered by the leaf package above.
-  home.file.".claude/skills/leaf".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/skills/leaf";
+  # The /mkd mod: a pane showing Claude's replies, rendered by the leaf package above.
+  home.file.".claude/skills/mkd".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/.claude/skills/mkd";
 
   # Share the authored skills across agents without replacing installed skills.
   home.file.".agents/skills/pr-walkthrough".source =

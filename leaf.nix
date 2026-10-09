@@ -1,5 +1,5 @@
-# leaf (https://leaf.rivolink.mg), the markdown renderer the Claude Code leaf
-# mod in home/.claude/skills/leaf runs. It is not in nixpkgs, so the pinned
+# leaf (https://leaf.rivolink.mg), the markdown renderer the Claude Code /mkd
+# mod in home/.claude/skills/mkd runs. It is not in nixpkgs, so the pinned
 # upstream release binary is packaged here for both the Mac and the Linux home
 # configuration. To upgrade: bump the version, set the hashes to lib.fakeHash,
 # run `reload`, and paste the hash Nix reports; get the other system's with
