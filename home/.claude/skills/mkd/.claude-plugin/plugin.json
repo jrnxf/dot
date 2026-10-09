@@ -1,0 +1,7 @@
+{
+  "name": "mkd",
+  "version": "0.1.0",
+  "description": "/mkd toggles a pane showing Claude's replies one at a time, rendered by leaf (https://leaf.rivolink.mg)",
+  "author": { "name": "Colby Thomas" },
+  "types": "./types/index.d.ts"
+}
