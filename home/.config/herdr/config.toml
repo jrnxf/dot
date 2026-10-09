@@ -47,6 +47,14 @@ rows = [["state_icon", "workspace", "tab"]]
 [ui.toast]
 delivery = "herdr"
 
+[remote]
+# Plain ssh for saved machines instead of herdr's own shared connection. After
+# the Mac sleeps that connection is stalled, herdr retries through it, and the
+# machine sits on "connecting" for a minute or more (herdrdev/herdr#4721).
+# Drop this once that is fixed: the shared connection is what makes
+# `herdr --machine` commands start fast.
+manage_ssh_config = false
+
 [theme]
 name = "catppuccin"
 auto_switch = false
